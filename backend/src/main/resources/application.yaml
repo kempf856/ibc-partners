@@ -14,5 +14,5 @@ spring:
 
 security:
   jwt:
-    secret: széphosszúésbiztonságossecret
+    secret: ${SECURITY_JWT_SECRET}
     expiration: 3600000
