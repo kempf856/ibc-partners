@@ -4,15 +4,15 @@ spring:
   application:
     name: IBC Partners
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5444/ibcpartner}
     driver-class-name: org.postgresql.Driver
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    username: ${SPRING_DATASOURCE_USERNAME:ibcpartner}
+    password: ${SPRING_DATASOURCE_PASSWORD:ibcpartner}
   flyway:
     baseline-on-migrate: true
     enabled: true
 
 security:
   jwt:
-    secret: ${SECURITY_JWT_SECRET}
+    secret: ${SECURITY_JWT_SECRET:mindegycsakvalamiszóljonjeegyhülyegitárosszólozzonjó}
     expiration: 3600000

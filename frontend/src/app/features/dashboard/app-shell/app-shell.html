@@ -1,0 +1,36 @@
+<div class="shell">
+
+  <!-- TOP BAR -->
+  <mat-toolbar class="topbar">
+
+    <div class="brand">myIBC</div>
+
+    <div class="menu">
+      <button matButton routerLink="/dashboard">Dashboard</button>
+      <button matButton routerLink="/users">Users</button>
+      <button matButton routerLink="/settings">Settings</button>
+    </div>
+
+    <div class="logout">
+      <button matButton (click)="logout()">Kijelentkezés</button>
+    </div>
+
+  </mat-toolbar>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <mat-toolbar class="bottombar">
+
+    <div class="menu">
+      <button matButton routerLink="/dashboard">Dashboard</button>
+      <button matButton routerLink="/users">Users</button>
+      <button matButton routerLink="/settings">Settings</button>
+    </div>
+
+  </mat-toolbar>
+
+</div>

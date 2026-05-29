@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - ibcnet
+
+  backend:
+    image: ghcr.io/kempf856/ibcpartners-backend:latest
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SECURITY_JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - ibcnet
+
+  frontend:
+    image: ghcr.io/kempf856/ibcpartners-frontend:latest
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - ibcnet
+
+volumes:
+  pgdata:
+
+networks:
+  ibcnet:

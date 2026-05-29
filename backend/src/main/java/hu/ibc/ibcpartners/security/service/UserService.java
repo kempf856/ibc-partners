@@ -21,7 +21,6 @@ public class UserService implements UserDetailsService {
     @PostConstruct
     public void initUsers() {
         createDefaultUser("admin");
-        createDefaultUser("user");
     }
 
     @Override

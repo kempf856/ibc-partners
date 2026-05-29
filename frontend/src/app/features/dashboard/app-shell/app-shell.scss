@@ -1,0 +1,44 @@
+.shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP BAR */
+.topbar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 24px;
+}
+
+.menu {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 8px;
+}
+
+.logout {
+  margin-left: auto;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+}
+
+/* BOTTOM BAR */
+.bottombar {
+  display: flex;
+  justify-content: center;
+}
