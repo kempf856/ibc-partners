@@ -2,13 +2,15 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '../../../core/auth/auth';
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
-import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
+import {MatCardModule, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {MatError, MatInputModule, MatLabel} from '@angular/material/input';
+import {MatButtonModule, MatIconButton} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatButton, MatInput, MatError],
+  imports: [FormsModule, MatCardModule, MatCardHeader, MatCardTitle, MatCardContent, MatFormFieldModule, MatLabel, MatButtonModule, MatInputModule, MatError, MatIconModule, MatIconButton],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -19,6 +21,7 @@ export class Login {
 
   username = '';
   password = '';
+  hidePassword = true;
 
   onLogin() {
     this.authService.login(this.username, this.password)
@@ -27,4 +30,7 @@ export class Login {
       });
   }
 
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
 }
