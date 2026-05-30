@@ -6,33 +6,45 @@
 
   <mat-card class="login-card">
 
-    <mat-card-header>
+    <mat-card-header class="login-header">
       <mat-card-title>Bejelentkezés</mat-card-title>
+      <button matButton>
+        Regisztráció
+      </button>
     </mat-card-header>
 
     <mat-card-content>
 
-      <form class="login-form" (ngSubmit)="onLogin()">
+      <form class="login-form" (ngSubmit)="onLogin()" #loginForm="ngForm">
 
-        <mat-form-field>
-          <mat-label>Felhasználónév</mat-label>
-          <input matInput [(ngModel)]="username" name="username">
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail cím</mat-label>
+          <input matInput [(ngModel)]="username" name="username" required #usernameControl="ngModel">
+          @if (usernameControl.invalid && usernameControl.touched) {
+            <mat-error>
+              Az e-mail cím kötelező
+            </mat-error>
+          }
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Jelszó</mat-label>
-          <input matInput type="password"
-                 [(ngModel)]="password"
-                 name="password">
+          <input matInput type="password" [(ngModel)]="password" name="password" required #passwordControl="ngModel">
+          @if (passwordControl.invalid && passwordControl.touched) {
+            <mat-error>
+              A jelszó kötelező
+            </mat-error>
+          }
         </mat-form-field>
 
-        <button matButton="elevated" type="submit">
-          Bejelentkezés
-        </button>
-
-        <button matButton>
-          Regisztráció
-        </button>
+        <div class="actions">
+          <button matButton="elevated" type="submit" [disabled]="loginForm.invalid">
+            Bejelentkezés
+          </button>
+          <button matButton>
+            Elfelejtett jelszó
+          </button>
+        </div>
       </form>
 
     </mat-card-content>

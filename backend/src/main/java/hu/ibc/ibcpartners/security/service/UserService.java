@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -20,24 +22,26 @@ public class UserService implements UserDetailsService {
 
     @PostConstruct
     public void initUsers() {
-        createDefaultUser("admin");
+        createDefaultUser();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    private void createDefaultUser(String username) {
-        if (userRepository.findByUsername(username).isPresent()) {
+    private void createDefaultUser() {
+        String defaultUser = "admin@gmail.com";
+        if (userRepository.findByEmail(defaultUser).isPresent()) {
             return;
         }
 
         User user = User.builder()
-                .username(username)
-                .password(passwordEncoder.encode(username + "password"))
-                .role(username.equalsIgnoreCase(Role.ADMIN.name()) ? Role.ADMIN : Role.USER)
+                .email(defaultUser)
+                .password(passwordEncoder.encode("adminpass123"))
+                .fullName("Default Direktor")
+                .roles(List.of(Role.ADMIN, Role.PARTNER))
                 .build();
         userRepository.save(user);
     }

@@ -37,3 +37,35 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+.snackbar-error {
+  @include mat.snack-bar-overrides((
+    container-color: var(--mat-sys-error),
+    supporting-text-color: var(--mat-sys-on-error),
+    button-color: var(--mat-sys-on-error)
+  ));
+}
+
+.snackbar-warning {
+  @include mat.snack-bar-overrides((
+    container-color: var(--mat-sys-tertiary),
+    supporting-text-color: var(--mat-sys-on-tertiary),
+    button-color: var(--mat-sys-on-tertiary)
+  ));
+}
+
+.snackbar-success {
+  @include mat.snack-bar-overrides((
+    container-color: var(--mat-sys-primary),
+    supporting-text-color: var(--mat-sys-on-primary),
+    button-color: var(--mat-sys-on-primary)
+  ));
+}
+
+.snackbar-info {
+  @include mat.snack-bar-overrides((
+    container-color: var(--mat-sys-surface-container-high),
+    supporting-text-color: var(--mat-sys-on-surface),
+    button-color: var(--mat-sys-primary)
+  ));
+}

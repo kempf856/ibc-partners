@@ -5,6 +5,12 @@
   align-items: center;
 }
 
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .brand {
   position: fixed;
   top: 20px;
@@ -20,15 +26,18 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 2px;
 }
 
 mat-form-field {
   width: 100%;
 }
 
-button {
-  width: 100%;
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
 }
 
 mat-card-header {
