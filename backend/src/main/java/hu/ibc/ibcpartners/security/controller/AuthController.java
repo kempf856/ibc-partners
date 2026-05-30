@@ -31,13 +31,13 @@ public class AuthController {
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                    new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         } catch (AuthenticationException e) {
             log.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Hibás e-mail cím vagy jelszó!");
         }
 
         String token = jwtService.generateToken(authentication);
-        return ResponseEntity.ok(AuthResponse.builder().token(token).build());
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 }

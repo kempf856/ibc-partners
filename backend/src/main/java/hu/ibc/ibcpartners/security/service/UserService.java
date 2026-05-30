@@ -1,10 +1,14 @@
 package hu.ibc.ibcpartners.security.service;
 
+import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.security.dto.UserDto;
 import hu.ibc.ibcpartners.security.entity.Role;
 import hu.ibc.ibcpartners.security.entity.User;
+import hu.ibc.ibcpartners.security.mapper.UserMapper;
 import hu.ibc.ibcpartners.security.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +23,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @PostConstruct
     public void initUsers() {
@@ -29,6 +34,10 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
+    public PageResponse<UserDto> search(String email, String fullName, Role role, Pageable pageable) {
+        return PageResponse.of(userRepository.search(email, fullName, role == null ? null : role.name(), pageable), userMapper::map);
     }
 
     private void createDefaultUser() {

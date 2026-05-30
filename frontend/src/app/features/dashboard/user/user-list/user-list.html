@@ -1,0 +1,61 @@
+<div class="filters">
+
+  <mat-form-field appearance="outline">
+    <mat-label>E-mail</mat-label>
+    <input matInput [(ngModel)]="emailFilter" (ngModelChange)="loadUsers()">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Teljes név</mat-label>
+    <input matInput [(ngModel)]="fullNameFilter" (ngModelChange)="loadUsers()">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Szerepkör</mat-label>
+    <mat-select [(ngModel)]="roleFilter" (selectionChange)="loadUsers()">
+      <mat-option value="">Összes</mat-option>
+      <mat-option value="ADMIN">{{ roleLabel('ADMIN')}}</mat-option>
+      <mat-option value="PARTNER">{{ roleLabel('PARTNER')}}</mat-option>
+      <mat-option value="SALES">{{ roleLabel('SALES')}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</th>
+    <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="fullName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Teljes név</th>
+    <td mat-cell *matCellDef="let user">{{ user.fullName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="roles">
+    <th mat-header-cell *matHeaderCellDef>Szerepkörök</th>
+    <td mat-cell *matCellDef="let user">
+      <mat-chip-set>
+        @for (r of user.roles; track r) {
+          <mat-chip>
+            {{ roleLabel(r) }}
+          </mat-chip>
+        }
+      </mat-chip-set>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['email', 'fullName', 'roles']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['email', 'fullName', 'roles']"></tr>
+
+</table>
+
+<mat-paginator
+  [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[10, 20, 50]"
+  (page)="onPage($event)">
+</mat-paginator>
