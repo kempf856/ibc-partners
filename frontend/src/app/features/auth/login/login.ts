@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { Auth } from '../../../core/auth/auth';
 import {MatCardModule, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatError, MatInputModule, MatLabel} from '@angular/material/input';
-import {MatButtonModule, MatIconButton} from '@angular/material/button';
+import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, MatCardModule, MatCardHeader, MatCardTitle, MatCardContent, MatFormFieldModule, MatLabel, MatButtonModule, MatInputModule, MatError, MatIconModule, MatIconButton],
+  imports: [FormsModule, MatCardModule, MatCardHeader, MatCardTitle, MatCardContent, MatFormFieldModule, MatLabel, MatButtonModule, MatInputModule, MatError, MatIconModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

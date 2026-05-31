@@ -15,8 +15,10 @@ import {
   MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
   MatTable, MatTableDataSource
 } from '@angular/material/table';
-import {ROLE_LABELS} from '../role-labels';
+import {roleLabel} from '../../../../shared/role-labels';
 import {MatChip, MatChipSet} from '@angular/material/chips';
+import {MatButtonModule} from '@angular/material/button';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
@@ -40,12 +42,17 @@ import {MatChip, MatChipSet} from '@angular/material/chips';
     MatRowDef,
     MatPaginator,
     MatChip,
-    MatChipSet
+    MatChipSet,
+    MatButtonModule,
+    RouterLink
   ],
   templateUrl: './user-list.html',
   styleUrl: './user-list.scss',
 })
 export class UserList implements OnInit {
+
+  protected readonly roleLabel = roleLabel;
+
   dataSource = new MatTableDataSource<UserDto>([]);
 
   totalElements = 0;
@@ -88,9 +95,5 @@ export class UserList implements OnInit {
   onSort(event: Sort) {
     this.sort = `${event.active},${event.direction}`;
     this.loadUsers();
-  }
-
-  roleLabel(role: string): string {
-    return ROLE_LABELS[role] ?? role;
   }
 }

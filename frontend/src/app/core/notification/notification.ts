@@ -6,7 +6,7 @@ export type NotificationType = 'success' | 'error' | 'info' | 'warning';
 @Injectable({
   providedIn: 'root',
 })
-export class Notification {
+export class NotificationService {
   constructor(private snackBar: MatSnackBar) {}
 
   show(message: string, type: NotificationType = 'info') {

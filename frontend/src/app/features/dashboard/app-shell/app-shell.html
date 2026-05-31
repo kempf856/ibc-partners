@@ -5,7 +5,9 @@
     <mat-sidenav #drawer position="end" mode="over" [autoFocus]="false">
       <div class="sidenav-menu">
         <button mat-button routerLink="/dashboard" (click)="drawer.close()">Partner adatbázis</button>
-        <button mat-button routerLink="/users" (click)="drawer.close()">Felhasználók</button>
+        @if (authService.hasRole('ADMIN')) {
+          <button mat-button routerLink="/users" (click)="drawer.close()">Felhasználók</button>
+        }
         <button mat-button routerLink="/settings" (click)="drawer.close()">Saját fiók</button>
         <button mat-button (click)="logout()">Kijelentkezés</button>
       </div>
@@ -25,7 +27,9 @@
 
         <div class="menu desktop-only">
           <button matButton routerLink="/dashboard">Partner adatbázis</button>
-          <button matButton routerLink="/users">Felhasználók</button>
+          @if (authService.hasRole('ADMIN')) {
+            <button matButton routerLink="/users">Felhasználók</button>
+          }
           <button matButton routerLink="/settings">Saját fiók</button>
         </div>
 

@@ -1,0 +1,38 @@
+<div class="form-page-wrapper">
+  <div class="page-header">
+    <h1>Felhasználó rögzítés</h1>
+  </div>
+
+  <form class="form-page" #userCreateForm="ngForm">
+    <section class="form-block">
+      <mat-form-field appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input matInput [(ngModel)]="email" name="email" required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Teljes név</mat-label>
+        <input matInput [(ngModel)]="fullName" name="fullName" required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Szerepkörök</mat-label>
+        <mat-select [(ngModel)]="roles" name="roles" multiple required>
+          <mat-option value="ADMIN">{{ roleLabel('ADMIN')}}</mat-option>
+          <mat-option value="PARTNER">{{ roleLabel('PARTNER')}}</mat-option>
+          <mat-option value="SALES">{{ roleLabel('SALES')}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button matButton type="button" (click)="cancel()">
+          Mégsem
+        </button>
+
+        <button matButton="elevated" color="primary" (click)="save()" [disabled]="userCreateForm.invalid">
+          Mentés
+        </button>
+      </div>
+    </section>
+  </form>
+</div>

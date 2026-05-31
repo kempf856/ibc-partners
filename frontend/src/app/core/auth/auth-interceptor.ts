@@ -1,13 +1,13 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Auth } from './auth';
-import { Notification } from '../notification/notification'
+import { NotificationService } from '../notification/notification'
 import {catchError, throwError} from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const notification = inject(Notification);
+  const notification = inject(NotificationService);
 
-  if (req.url.includes('/api/auth/login')) {
+  if (req.url.startsWith('/api/auth/')) {
     return next(req).pipe(
       catchError(err => {
         const msg = err?.error?.detail || 'Ismeretlen hiba!';

@@ -28,4 +28,8 @@ export class UserService {
       }
     });
   }
+
+  createUser(userDto: UserDto) {
+    return this.http.post('/api/users', userDto);
+  }
 }

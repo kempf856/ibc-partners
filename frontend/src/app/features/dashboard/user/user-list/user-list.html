@@ -1,25 +1,30 @@
-<div class="filters">
+<div class="filters-bar">
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail</mat-label>
+      <input matInput [(ngModel)]="emailFilter" (ngModelChange)="loadUsers()">
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>E-mail</mat-label>
-    <input matInput [(ngModel)]="emailFilter" (ngModelChange)="loadUsers()">
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Teljes név</mat-label>
+      <input matInput [(ngModel)]="fullNameFilter" (ngModelChange)="loadUsers()">
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Teljes név</mat-label>
-    <input matInput [(ngModel)]="fullNameFilter" (ngModelChange)="loadUsers()">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Szerepkör</mat-label>
-    <mat-select [(ngModel)]="roleFilter" (selectionChange)="loadUsers()">
-      <mat-option value="">Összes</mat-option>
-      <mat-option value="ADMIN">{{ roleLabel('ADMIN')}}</mat-option>
-      <mat-option value="PARTNER">{{ roleLabel('PARTNER')}}</mat-option>
-      <mat-option value="SALES">{{ roleLabel('SALES')}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
+    <mat-form-field appearance="outline">
+      <mat-label>Szerepkör</mat-label>
+      <mat-select [(ngModel)]="roleFilter" (selectionChange)="loadUsers()">
+        <mat-option value="">Összes</mat-option>
+        <mat-option value="ADMIN">{{ roleLabel('ADMIN')}}</mat-option>
+        <mat-option value="PARTNER">{{ roleLabel('PARTNER')}}</mat-option>
+        <mat-option value="SALES">{{ roleLabel('SALES')}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="actions">
+    <button matButton="elevated" color="primary" routerLink="/users/create">
+      Új felhasználó
+    </button>
+  </div>
 </div>
 
 <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">

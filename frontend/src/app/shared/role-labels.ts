@@ -3,3 +3,7 @@ export const ROLE_LABELS: Record<string, string> = {
   SALES: 'Üzletkötő',
   PARTNER: 'Partner'
 };
+
+export function roleLabel(role: string): string {
+  return ROLE_LABELS[role] ?? role;
+}
