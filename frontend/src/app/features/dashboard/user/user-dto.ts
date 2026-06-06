@@ -1,6 +1,10 @@
+import {Role} from '../../../shared/role';
+
 export interface UserDto {
-  id?: string;
+  id?: number;
   email: string;
   fullName: string;
-  roles: string[];
+  phone: string;
+  referralCode? : string;
+  roles: Role[];
 }

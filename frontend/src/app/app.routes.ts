@@ -5,12 +5,21 @@ import { authGuard } from './core/auth/auth-guard';
 import {AppShell} from './features/dashboard/app-shell/app-shell';
 import {UserList} from './features/dashboard/user/user-list/user-list';
 import {UserCreate} from './features/dashboard/user/user-create/user-create';
-import {Register} from './features/auth/register/register';
+import {ChangePassword} from './features/auth/change-password/change-password';
 import {roleGuard} from './core/auth/role-guard';
+import {Role} from './shared/role';
+import {Application} from './features/auth/application/application';
+import {ApplicationList} from './features/dashboard/application/application-list/application-list';
+import {ApplicationWorkflow} from './features/dashboard/application/application-workflow/application-workflow';
+import {Profile} from './features/dashboard/user/profile/profile';
+import {ForgottenPassword} from './features/auth/forgotten-password/forgotten-password';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
-  { path: 'register', component: Register },
+  { path: 'change-password', component: ChangePassword },
+  { path: 'forgotten-password', component: ForgottenPassword },
+  { path: 'applicant', component: Application },
+  { path: 'applicant/:referralCode', component: Application },
   {
     path: '',
     component: AppShell,
@@ -21,13 +30,26 @@ export const routes: Routes = [
         path: 'users',
         canActivateChild: [roleGuard],
         data: {
-          roles: ['ADMIN']
+          roles: [Role.ADMIN]
         },
         children: [
           { path: '', component: UserList },
-          { path: 'create', component: UserCreate }
+          { path: 'create', component: UserCreate },
+          { path: 'create/:applicationId', component: UserCreate }
         ]
       },
+      {
+        path: 'applications',
+        canActivateChild: [roleGuard],
+        data: {
+          roles: [Role.ADMIN]
+        },
+        children: [
+          { path: '', component: ApplicationList },
+          { path: ':id', component: ApplicationWorkflow },
+        ]
+      },
+      { path: 'profile', component: Profile },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

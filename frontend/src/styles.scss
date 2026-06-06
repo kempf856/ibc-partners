@@ -24,7 +24,19 @@ body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
   // user's system settings.
-  color-scheme: light;
+  color-scheme: dark;
+
+  --mat-sys-background: #02091b;
+  --mat-sys-surface: #0b1326;
+
+  --mat-sys-surface-container-low: #101a31;
+  --mat-sys-surface-container: #16213d;
+  --mat-sys-surface-container-high: #1c294a;
+
+  background-image: url('/myibc_back.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these

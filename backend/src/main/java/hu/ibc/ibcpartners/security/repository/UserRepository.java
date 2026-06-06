@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByOneTimePassword(UUID oneTimePassword);
 
+    Optional<User> findByReferralCode(String referralCode);
+
     @Query(value = """
         select * from users u
         where (:email is null or u.email ilike concat(:email, '%'))

@@ -15,7 +15,7 @@ import {
   MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
   MatTable, MatTableDataSource
 } from '@angular/material/table';
-import {roleLabel} from '../../../../shared/role-labels';
+import {ALL_ROLES, roleLabel} from '../../../../shared/role-labels';
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
@@ -51,6 +51,7 @@ import {RouterLink} from '@angular/router';
 })
 export class UserList implements OnInit {
 
+  protected readonly ALL_ROLES = ALL_ROLES;
   protected readonly roleLabel = roleLabel;
 
   dataSource = new MatTableDataSource<UserDto>([]);

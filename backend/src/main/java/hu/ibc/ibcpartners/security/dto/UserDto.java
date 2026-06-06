@@ -7,4 +7,11 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
-public record UserDto(Long id, @Email @NotBlank String email, @NotBlank String fullName, @NotEmpty List<Role> roles) {}
+public record UserDto(
+        Long id,
+        @Email @NotBlank String email,
+        @NotBlank String fullName,
+        @NotEmpty String phone,
+        String referralCode,
+        @NotEmpty List<Role> roles
+) {}

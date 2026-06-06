@@ -21,6 +21,16 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/profile")
+    public ResponseEntity<UserDto> profile() {
+        return ResponseEntity.ok(userService.getLoggedInUser());
+    }
+
+    @GetMapping("/by-email")
+    public ResponseEntity<UserDto> findByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(userService.findByEmail(email));
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<PageResponse<UserDto>> search(String email, String fullName, Role role, Pageable pageable) {

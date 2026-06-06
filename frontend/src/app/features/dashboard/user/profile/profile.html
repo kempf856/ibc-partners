@@ -1,0 +1,35 @@
+<div class="form-page-wrapper">
+  <div class="page-header">
+    <h1>Ajánlás</h1>
+  </div>
+
+  <div class="form-page">
+    <section class="form-block">
+      <div class="readonly-field">
+        <span class="label">Ajánló kód</span>
+        <span class="value">{{ referralCode() }}</span>
+      </div>
+      <div class="readonly-field">
+        <span class="label">Ajánló link</span>
+        <span class="value">
+          <a [href]="fullUrl()" target="_blank">
+            {{ fullUrl() }}
+          </a>
+
+          <button
+            mat-icon-button
+            (click)="copyUrl()"
+            matTooltip="Másolás">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </span>
+      </div>
+      <div class="readonly-field">
+        <span class="label">QR kód</span>
+        <span>
+          <img [src]="qrUrl()" alt="QR kód"/>
+        </span>
+      </div>
+    </section>
+  </div>
+</div>

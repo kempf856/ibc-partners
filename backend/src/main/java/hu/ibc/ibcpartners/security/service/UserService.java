@@ -3,7 +3,9 @@ package hu.ibc.ibcpartners.security.service;
 import hu.ibc.ibcpartners.common.dto.PageResponse;
 import hu.ibc.ibcpartners.notification.service.EmailService;
 import hu.ibc.ibcpartners.notification.service.EmailTemplate;
+import hu.ibc.ibcpartners.security.dto.ForgottenPasswordRequest;
 import hu.ibc.ibcpartners.security.dto.OtpRequest;
+import hu.ibc.ibcpartners.security.dto.SimplePrincipal;
 import hu.ibc.ibcpartners.security.dto.UserDto;
 import hu.ibc.ibcpartners.security.entity.Role;
 import hu.ibc.ibcpartners.security.entity.User;
@@ -44,9 +46,20 @@ public class UserService implements UserDetailsService {
         createDefaultUser();
     }
 
+    public UserDto getLoggedInUser() {
+        Long userId = AuthHelper.getUserId();
+        return userRepository.findById(userId).map(userMapper::map)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Felhasználó nem található ezzel az ID-val: " + userId));
+    }
+
+    public UserDto findByEmail(String email) {
+        return userRepository.findByEmail(email).map(userMapper::map)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Felhasználó nem található ezzel az e-maillel: " + email));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username)
+        return userRepository.findByEmail(username).map(u -> new SimplePrincipal(u.getId(), u.getEmail(), u.getPassword(), u.getAuthorities()))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
@@ -54,16 +67,25 @@ public class UserService implements UserDetailsService {
         return PageResponse.of(userRepository.search(email, fullName, role == null ? null : role.name(), pageable), userMapper::map);
     }
 
+    @Transactional
     public void create(UserDto userDto) {
+        String referralCode = userDto.referralCode();
+
         User user = userMapper.map(userDto);
         user.setId(null);
+        user.setReferralCode(null);
+
+        if (referralCode != null) {
+            user.setReferralId(userRepository.findByReferralCode(referralCode).map(User::getId).orElse(null));
+        }
 
         userRepository.save(user);
+        user.setReferralCode(PublicIdGenerator.generate(user.getId()));
         handleForgotPassword(userDto.email(), EmailTemplate.REGISTRATION);
     }
 
     @Transactional
-    public void register(OtpRequest otpRequest) {
+    public void changePassword(OtpRequest otpRequest) {
         User user = userRepository.findByOneTimePassword(otpRequest.otp())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Felhasználó nem található ezzel a kóddal: " + otpRequest.otp()));
 
@@ -71,6 +93,7 @@ public class UserService implements UserDetailsService {
         user.setOneTimePassword(null);
     }
 
+    @Transactional
     public void handleForgotPassword(String email, EmailTemplate template) {
         Optional<User> user = userRepository.findByEmail(email);
 
@@ -82,7 +105,7 @@ public class UserService implements UserDetailsService {
         user.get().setOneTimePassword(oneTimePassword);
         userRepository.save(user.get());
 
-        String link = frontendUrl + "/register?otp=" + oneTimePassword;
+        String link = frontendUrl + "/change-password?otp=" + oneTimePassword;
         emailService.sendEmail(email, template, Map.of("name", user.get().getFullName(), "link", link));
     }
 
@@ -97,6 +120,7 @@ public class UserService implements UserDetailsService {
                 .password(passwordEncoder.encode("adminpass123"))
                 .fullName("Default Direktor")
                 .roles(List.of(Role.ADMIN, Role.PARTNER))
+                .referralCode(PublicIdGenerator.generate(1))
                 .build();
         userRepository.save(user);
     }

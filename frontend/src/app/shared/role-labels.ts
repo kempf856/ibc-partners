@@ -1,9 +1,17 @@
-export const ROLE_LABELS: Record<string, string> = {
-  ADMIN: 'Direktor',
-  SALES: 'Üzletkötő',
-  PARTNER: 'Partner'
+import { Role } from './role';
+
+export const ALL_ROLES = [
+  Role.ADMIN,
+  Role.PARTNER,
+  Role.SALES
+];
+
+export const ROLE_LABELS: Record<Role, string> = {
+  [Role.ADMIN]: 'Direktor',
+  [Role.PARTNER]: 'Partner',
+  [Role.SALES]: 'Üzletkötő'
 };
 
-export function roleLabel(role: string): string {
-  return ROLE_LABELS[role] ?? role;
+export function roleLabel(role: Role): string {
+  return ROLE_LABELS[role];
 }

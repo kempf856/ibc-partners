@@ -32,4 +32,12 @@ export class UserService {
   createUser(userDto: UserDto) {
     return this.http.post('/api/users', userDto);
   }
+
+  profile() {
+    return this.http.get<UserDto>('/api/users/profile')
+  }
+
+  findByEmail(email: string) {
+    return this.http.get<UserDto>('/api/users/by-email', { params: { email: email } })
+  }
 }

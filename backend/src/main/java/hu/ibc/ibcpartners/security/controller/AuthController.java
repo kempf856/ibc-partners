@@ -1,8 +1,8 @@
 package hu.ibc.ibcpartners.security.controller;
 
-import hu.ibc.ibcpartners.security.dto.AuthRequest;
-import hu.ibc.ibcpartners.security.dto.AuthResponse;
-import hu.ibc.ibcpartners.security.dto.OtpRequest;
+import hu.ibc.ibcpartners.notification.service.EmailTemplate;
+import hu.ibc.ibcpartners.security.dto.*;
+import hu.ibc.ibcpartners.security.service.ApplicationService;
 import hu.ibc.ibcpartners.security.service.JwtService;
 import hu.ibc.ibcpartners.security.service.UserService;
 import jakarta.validation.Valid;
@@ -29,6 +29,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
+    private final ApplicationService applicationService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
@@ -47,7 +48,19 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@Valid @RequestBody OtpRequest request) {
-        userService.register(request);
+        userService.changePassword(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/application")
+    public ResponseEntity<Void> application(@Valid @RequestBody ApplicationRequest request) {
+        applicationService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/forgotten-password")
+    public ResponseEntity<Void> forgottenPassword(@Valid @RequestBody ForgottenPasswordRequest request) {
+        userService.handleForgotPassword(request.email(), EmailTemplate.FORGOTTEN_PASSWORD);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

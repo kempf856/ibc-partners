@@ -1,13 +1,18 @@
 package hu.ibc.ibcpartners.security.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +23,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +38,8 @@ public class User implements UserDetails {
     @Column(nullable = false, name = "full_name")
     private String fullName;
 
+    private String phone;
+
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Enumerated(EnumType.STRING)
     private List<Role> roles;
@@ -40,12 +47,20 @@ public class User implements UserDetails {
     @Column(name = "one_time_password")
     private UUID oneTimePassword;
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
+    @Column(name = "referral_code")
+    private String referralCode;
 
-    @Override
+    @Column(name = "referral_id")
+    private Long referralId;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "modified_at")
+    private Instant modifiedAt;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(Role::name).map(SimpleGrantedAuthority::new).toList();
     }

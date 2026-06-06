@@ -1,0 +1,71 @@
+<div class="applicant-page">
+
+  <div class="brand">
+    myIBC
+  </div>
+
+  <div class="form-page-wrapper">
+    <div class="page-header">
+      <h1>Regisztráció</h1>
+    </div>
+
+    <form class="form-page" [formGroup]="form">
+      <section class="form-block">
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" name="email" required email/>
+          @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+            <mat-error>
+              Hibás e-mail cím formátum
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teljes név</mat-label>
+          <input matInput formControlName="fullName" name="fullName" required/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Telefonszám</mat-label>
+          <input matInput formControlName="phone" name="phone" required/>
+        </mat-form-field>
+
+        @if (referralCode()) {
+          <div class="readonly-field">
+            <span class="label">Ajánlói kód</span>
+            <span class="value">{{ referralCode() }}</span>
+          </div>
+        }
+      </section>
+
+      <section class="form-block">
+        <mat-form-field appearance="outline">
+          <mat-label>Cégnév</mat-label>
+          <input matInput formControlName="companyName" name="companyName" required/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Adószám</mat-label>
+          <input matInput formControlName="taxNumber" name="taxNumber" required/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Honnan ismered a myIBC-t?</mat-label>
+          <textarea matInput formControlName="source" name="source" required
+                    cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="15"></textarea>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button matButton type="button" (click)="cancel()">
+            Mégsem
+          </button>
+
+          <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
+            Regisztráció
+          </button>
+        </div>
+      </section>
+    </form>
+  </div>
+</div>

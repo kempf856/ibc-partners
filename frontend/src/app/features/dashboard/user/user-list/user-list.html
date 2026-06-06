@@ -14,14 +14,16 @@
       <mat-label>Szerepkör</mat-label>
       <mat-select [(ngModel)]="roleFilter" (selectionChange)="loadUsers()">
         <mat-option value="">Összes</mat-option>
-        <mat-option value="ADMIN">{{ roleLabel('ADMIN')}}</mat-option>
-        <mat-option value="PARTNER">{{ roleLabel('PARTNER')}}</mat-option>
-        <mat-option value="SALES">{{ roleLabel('SALES')}}</mat-option>
+        @for (role of ALL_ROLES; track role) {
+          <mat-option [value]="role">
+            {{ roleLabel(role) }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </div>
   <div class="actions">
-    <button matButton="elevated" color="primary" routerLink="/users/create">
+    <button matButton="elevated" routerLink="/users/create">
       Új felhasználó
     </button>
   </div>

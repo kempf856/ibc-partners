@@ -8,9 +8,7 @@
 
     <mat-card-header class="login-header">
       <mat-card-title>Bejelentkezés</mat-card-title>
-      <button matButton>
-        Regisztráció
-      </button>
+      <button matButton routerLink="/applicant">Regisztráció</button>
     </mat-card-header>
 
     <mat-card-content>
@@ -30,7 +28,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Jelszó</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" required #passwordControl="ngModel">
-          <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
+          <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()" tabindex="-1">
             <mat-icon>
               {{ hidePassword ? 'visibility_off' : 'visibility' }}
             </mat-icon>
@@ -46,7 +44,7 @@
           <button matButton="elevated" type="submit" [disabled]="loginForm.invalid">
             Bejelentkezés
           </button>
-          <button matButton>
+          <button matButton routerLink="/forgotten-password">
             Elfelejtett jelszó
           </button>
         </div>
