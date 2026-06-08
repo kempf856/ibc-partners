@@ -9,7 +9,7 @@
     </div>
 
     @if (authService.isLoggedIn()) {
-      <div class="menu">
+      <div class="menu desktop-menu">
         <button matButton routerLink="/dashboard">Partner adatbázis</button>
         @if (authService.hasRole(Role.ADMIN)) {
           <button matButton routerLink="/applications">Érdeklődők</button>
@@ -18,8 +18,40 @@
         <button matButton routerLink="/profile">Saját fiók</button>
       </div>
 
-      <div class="logout">
+      <div class="logout desktop-menu">
         <button matButton (click)="logout()">Kijelentkezés</button>
+      </div>
+
+      <div class="mobile-menu">
+        <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
+          <mat-icon>menu</mat-icon>
+        </button>
+
+        <mat-menu #mobileMenu="matMenu">
+          <button mat-menu-item routerLink="/dashboard">
+            Partner adatbázis
+          </button>
+
+          @if (authService.hasRole(Role.ADMIN)) {
+            <button mat-menu-item routerLink="/applications">
+              Érdeklődők
+            </button>
+
+            <button mat-menu-item routerLink="/users">
+              Felhasználók
+            </button>
+          }
+
+          <button mat-menu-item routerLink="/profile">
+            Saját fiók
+          </button>
+
+          <mat-divider></mat-divider>
+
+          <button mat-menu-item (click)="logout()">
+            Kijelentkezés
+          </button>
+        </mat-menu>
       </div>
     }
   </mat-toolbar>

@@ -1,9 +1,12 @@
 import {Component, inject} from '@angular/core';
 import {MatToolbar} from '@angular/material/toolbar';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {AuthService} from '../../../core/auth/auth-service';
 import {Role} from '../../../shared/role';
+import {MatIcon} from '@angular/material/icon';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {MatDivider} from '@angular/material/list';
 
 @Component({
   selector: 'app-app-shell',
@@ -11,7 +14,13 @@ import {Role} from '../../../shared/role';
     MatToolbar,
     MatButton,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    MatIcon,
+    MatIconButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatDivider,
+    MatMenuItem
   ],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',
