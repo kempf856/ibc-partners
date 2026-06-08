@@ -19,7 +19,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ApplicationDto} from '../application-dto';
 import {ApplicationService} from '../application-service';
 import {MatChip, MatChipSet} from '@angular/material/chips';
-import {applicationStateLabel} from '../../../../shared/application-state';
+import {applicationStateClass, applicationStateLabel} from '../../../../shared/application-state';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {RouterLink} from '@angular/router';
@@ -54,6 +54,7 @@ import {DatePipe} from '@angular/common';
 })
 export class ApplicationList implements OnInit {
   protected readonly applicationStateLabel = applicationStateLabel;
+  protected readonly applicationStateClass = applicationStateClass;
 
   dataSource = new MatTableDataSource<ApplicationDto>([]);
   applicationService = inject(ApplicationService);

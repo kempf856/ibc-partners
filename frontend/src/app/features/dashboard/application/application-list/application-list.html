@@ -29,7 +29,7 @@
       <th mat-header-cell *matHeaderCellDef>Státusz</th>
       <td mat-cell *matCellDef="let application">
         <mat-chip-set>
-          <mat-chip>
+          <mat-chip [class]="applicationStateClass(application.state)">
             {{ applicationStateLabel(application.state) }}
           </mat-chip>
         </mat-chip-set>

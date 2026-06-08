@@ -8,7 +8,7 @@ import {ApplicationService} from '../application-service';
 import {DatePipe} from '@angular/common';
 import {ApplicationDto} from '../application-dto';
 import {MatChip, MatChipSet} from '@angular/material/chips';
-import {ApplicationState, applicationStateLabel} from '../../../../shared/application-state';
+import {ApplicationState, applicationStateClass, applicationStateLabel} from '../../../../shared/application-state';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import {UserService} from '../../user/user-service';
 import {UserDto} from '../../user/user-dto';
@@ -24,6 +24,7 @@ import {UserDto} from '../../user/user-dto';
 export class ApplicationWorkflow implements OnInit {
 
   protected readonly applicationStateLabel = applicationStateLabel;
+  protected readonly applicationStateClass = applicationStateClass;
   protected readonly ApplicationState = ApplicationState;
 
   applicationService = inject(ApplicationService)

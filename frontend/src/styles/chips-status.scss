@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+
+.status-new {
+  @include mat.chips-overrides((
+    elevated-container-color: var(--mat-sys-tertiary),
+    label-text-color: var(--mat-sys-on-tertiary),
+    elevated-selected-container-color: var(--mat-sys-tertiary),
+    selected-label-text-color: var(--mat-sys-on-tertiary)
+  ));
+}
+
+.status-pending-1 {
+  @include mat.chips-overrides((
+    elevated-container-color: var(--mat-sys-secondary),
+    label-text-color: var(--mat-sys-on-secondary),
+    elevated-selected-container-color: var(--mat-sys-secondary),
+    selected-label-text-color: var(--mat-sys-on-secondary)
+  ));
+}
+
+.status-success {
+  @include mat.chips-overrides((
+    elevated-container-color: var(--mat-sys-primary),
+    label-text-color: var(--mat-sys-on-primary),
+    elevated-selected-container-color: var(--mat-sys-primary),
+    selected-label-text-color: var(--mat-sys-on-primary)
+  ));
+}
+
+.status-error {
+  @include mat.chips-overrides((
+    elevated-container-color: var(--mat-sys-error),
+    label-text-color: var(--mat-sys-on-error),
+    elevated-selected-container-color: var(--mat-sys-error),
+    selected-label-text-color: var(--mat-sys-on-error)
+  ));
+}
