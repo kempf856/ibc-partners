@@ -1,130 +1,132 @@
-<div class="form-page-wrapper">
+<div class="form-page-wrapper mw-lg">
   <div class="page-header">
     <h1>Érdeklődő kezelése</h1>
   </div>
 
-  <form class="form-page" [formGroup]="form">
-    <section class="form-block">
-      <mat-form-field appearance="outline">
-        <mat-label>E-mail</mat-label>
-        <input matInput formControlName="email" name="email" readonly/>
-      </mat-form-field>
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <mat-form-field appearance="fill">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" name="email" readonly/>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Teljes név</mat-label>
-        <input matInput formControlName="fullName" name="fullName" readonly/>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Teljes név</mat-label>
+          <input matInput formControlName="fullName" name="fullName" readonly/>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Telefonszám</mat-label>
-        <input matInput formControlName="phone" name="phone" readonly/>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Telefonszám</mat-label>
+          <input matInput formControlName="phone" name="phone" readonly/>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Cégnév</mat-label>
-        <input matInput formControlName="companyName" name="companyName" readonly/>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Cégnév</mat-label>
+          <input matInput formControlName="companyName" name="companyName" readonly/>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Adószám</mat-label>
-        <input matInput formControlName="taxNumber" name="taxNumber"/>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Adószám</mat-label>
+          <input matInput formControlName="taxNumber" name="taxNumber" readonly/>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Honnan ismered a myIBC-t?</mat-label>
-        <textarea matInput formControlName="source" name="source" readonly
-                  cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="15"></textarea>
-      </mat-form-field>
-    </section>
+        <mat-form-field appearance="fill">
+          <mat-label>Honnan ismered a myIBC-t?</mat-label>
+          <textarea matInput formControlName="source" name="source" readonly
+                    cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="15"></textarea>
+        </mat-form-field>
+      </section>
 
-    <section class="form-block">
-      <div class="readonly-field">
-        <span class="label">Státusz</span>
-        <span class="value">
-          <mat-chip-set>
-            <mat-chip>
-              {{ applicationStateLabel(applicationDto()?.state) }}
-            </mat-chip>
-          </mat-chip-set>
-        </span>
-      </div>
-
-      <div class="readonly-field">
-        <span class="label">Üzeltkötő</span>
-        <span class="value">{{ applicationDto()?.salesName ? applicationDto()?.salesName : 'nincs' }}</span>
-      </div>
-
-      <div class="readonly-field">
-        <span class="label">Ajánlói kód</span>
-        <span class="value">{{ applicationDto()?.referralCode ? applicationDto()?.referralCode : 'nincs' }}</span>
-      </div>
-
-      <div class="readonly-field">
-        <span class="label">Létrehozva</span>
-        <span class="value">{{ applicationDto()?.createdAt | date:'yyyy.MM.dd HH:mm' }}</span>
-      </div>
-
-      <div class="readonly-field">
-        <span class="label">Módosítva</span>
-        <span class="value">{{ applicationDto()?.modifiedAt | date:'yyyy.MM.dd HH:mm' }}</span>
-      </div>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Megjegyzés</mat-label>
-        <textarea matInput formControlName="comment" name="comment" (blur)="comment()"
-                  cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="15"></textarea>
-      </mat-form-field>
-    </section>
-
-    <section class="form-block">
-      <div class="readonly-row">
+      <section class="form-block">
         <div class="readonly-field">
-          <span class="label">Létező felhasználó</span>
-          <span class="value">{{ existingUser()?.fullName ?? 'nincs' }}</span>
+          <span class="label">Státusz</span>
+          <span class="value">
+            <mat-chip-set>
+              <mat-chip>
+                {{ applicationStateLabel(applicationDto()?.state) }}
+              </mat-chip>
+            </mat-chip-set>
+          </span>
         </div>
-        @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && !existingUser()) {
-          <div>
-            <button matButton="tonal" [routerLink]="['/users/create', applicationDto()?.id]">
-              Új felhasználó
-            </button>
-          </div>
-        }
-      </div>
 
-      <div class="readonly-row">
         <div class="readonly-field">
-          <span class="label">Létező partner</span>
-          <span class="value">{{ existingPartner ? 'van' : 'nincs' }}</span>
+          <span class="label">Üzeltkötő</span>
+          <span class="value">{{ applicationDto()?.salesName ? applicationDto()?.salesName : 'nincs' }}</span>
         </div>
-        @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && !existingPartner) {
-          <div>
-            <button matButton="tonal">
-              Új partner
-            </button>
-          </div>
-        }
-      </div>
 
-      <div class="form-actions">
-        <button matButton type="button" (click)="cancel()">
-          Mégsem
+        <div class="readonly-field">
+          <span class="label">Ajánlói kód</span>
+          <span class="value">{{ applicationDto()?.referralCode ? applicationDto()?.referralCode : 'nincs' }}</span>
+        </div>
+
+        <div class="readonly-field">
+          <span class="label">Létrehozva</span>
+          <span class="value">{{ applicationDto()?.createdAt | date:'yyyy.MM.dd HH:mm' }}</span>
+        </div>
+
+        <div class="readonly-field">
+          <span class="label">Módosítva</span>
+          <span class="value">{{ applicationDto()?.modifiedAt | date:'yyyy.MM.dd HH:mm' }}</span>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Megjegyzés</mat-label>
+          <textarea matInput formControlName="comment" name="comment" (blur)="comment()"
+                    cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="15"></textarea>
+        </mat-form-field>
+      </section>
+
+      <section class="form-block">
+        <div class="readonly-row">
+          <div class="readonly-field">
+            <span class="label">Létező felhasználó</span>
+            <span class="value">{{ existingUser()?.fullName ?? 'nincs' }}</span>
+          </div>
+          @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && !existingUser()) {
+            <div>
+              <button matButton="tonal" [routerLink]="['/users/create', applicationDto()?.id]">
+                Új felhasználó
+              </button>
+            </div>
+          }
+        </div>
+
+        <div class="readonly-row">
+          <div class="readonly-field">
+            <span class="label">Létező partner</span>
+            <span class="value">{{ existingPartner ? 'van' : 'nincs' }}</span>
+          </div>
+          @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && !existingPartner) {
+            <div>
+              <button matButton="tonal">
+                Új partner
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+
+    <div class="form-actions">
+      <button matButton type="button" (click)="cancel()">
+        Mégsem
+      </button>
+
+      @if (applicationDto()?.state === ApplicationState.CREATED) {
+        <button matButton="elevated" (click)="process()">
+          Feldolgozás
         </button>
+      }
 
-        @if (applicationDto()?.state === ApplicationState.CREATED) {
-          <button matButton="elevated" (click)="process()">
-            Feldolgozás
-          </button>
-        }
-
-        @if (applicationDto()?.state === ApplicationState.IN_PROGRESS) {
-          <button matButton="elevated" (click)="accept()" [disabled]="!existingUser()">
-            Elfogadás
-          </button>
-          <button matButton="elevated" (click)="deny()">
-            Visszautasítás
-          </button>
-        }
-      </div>
-    </section>
+      @if (applicationDto()?.state === ApplicationState.IN_PROGRESS) {
+        <button matButton="elevated" (click)="accept()" [disabled]="!existingUser()">
+          Elfogadás
+        </button>
+        <button matButton="elevated" (click)="deny()">
+          Visszautasítás
+        </button>
+      }
+    </div>
   </form>
 </div>

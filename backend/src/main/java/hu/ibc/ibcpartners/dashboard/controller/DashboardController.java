@@ -13,6 +13,6 @@ public class DashboardController {
 
     @GetMapping
     public ResponseEntity<String> welcome() {
-        return ResponseEntity.ok("Nézd meg a Felhasználók menüpontot!");
+        return ResponseEntity.ok("Működő menüpontok: Éreklődők | Felhasználók | Saját fiók");
     }
 }

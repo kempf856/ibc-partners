@@ -1,63 +1,41 @@
 <div class="shell">
 
-  <mat-sidenav-container>
+  <!-- TOP BAR -->
+  <mat-toolbar class="topbar">
+    <div class="brand">
+      <a routerLink="/dashboard">
+        <img src="/myibc_logo.png" alt="myIBC"/>
+      </a>
+    </div>
 
-    <mat-sidenav #drawer position="end" mode="over" [autoFocus]="false">
-      <div class="sidenav-menu">
-        <button mat-button routerLink="/dashboard" (click)="drawer.close()">Partner adatbázis</button>
+    @if (authService.isLoggedIn()) {
+      <div class="menu">
+        <button matButton routerLink="/dashboard">Partner adatbázis</button>
         @if (authService.hasRole(Role.ADMIN)) {
-          <button mat-button routerLink="/applications" (click)="drawer.close()">Érdeklődők</button>
-          <button mat-button routerLink="/users" (click)="drawer.close()">Felhasználók</button>
+          <button matButton routerLink="/applications">Érdeklődők</button>
+          <button matButton routerLink="/users">Felhasználók</button>
         }
-        <button mat-button routerLink="/profile" (click)="drawer.close()">Saját fiók</button>
-        <button mat-button (click)="logout()">Kijelentkezés</button>
-      </div>
-    </mat-sidenav>
-
-    <mat-sidenav-content>
-      <!-- TOP BAR -->
-      <mat-toolbar class="topbar">
-
-        <div class="brand">myIBC</div>
-
-        <span class="spacer"></span>
-
-        <button mat-icon-button (click)="drawer.toggle()" class="mobile-menu">
-          <mat-icon>menu</mat-icon>
-        </button>
-
-        <div class="menu desktop-only">
-          <button matButton routerLink="/dashboard">Partner adatbázis</button>
-          @if (authService.hasRole(Role.ADMIN)) {
-            <button matButton routerLink="/applications">Érdeklődők</button>
-            <button matButton routerLink="/users">Felhasználók</button>
-          }
-          <button matButton routerLink="/profile">Saját fiók</button>
-        </div>
-
-        <div class="logout desktop-only">
-          <button matButton (click)="logout()">Kijelentkezés</button>
-        </div>
-
-      </mat-toolbar>
-
-      <!-- CONTENT -->
-      <div class="content">
-        <router-outlet></router-outlet>
+        <button matButton routerLink="/profile">Saját fiók</button>
       </div>
 
-      <!-- BOTTOM BAR -->
-      <mat-toolbar class="bottombar">
+      <div class="logout">
+        <button matButton (click)="logout()">Kijelentkezés</button>
+      </div>
+    }
+  </mat-toolbar>
 
-        <div class="menu">
-          <button matButton routerLink="/aszf">ÁSZF</button>
-          <button matButton routerLink="/gdpr">Adatkezelés nyilatkozat</button>
-          <button matButton routerLink="/info">Általános információk</button>
-        </div>
+  <!-- CONTENT -->
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
 
-      </mat-toolbar>
-    </mat-sidenav-content>
-
-  </mat-sidenav-container>
+  <!-- BOTTOM BAR -->
+  <mat-toolbar class="bottombar">
+    <div class="menu">
+      <button matButton routerLink="/aszf">ÁSZF</button>
+      <button matButton routerLink="/gdpr">Adatkezelés nyilatkozat</button>
+      <button matButton routerLink="/info">Általános információk</button>
+    </div>
+  </mat-toolbar>
 
 </div>

@@ -38,6 +38,7 @@ export class UserCreate {
     phone: new FormControl('', { nonNullable: true }),
     roles: new FormControl([], { nonNullable: true })
   });
+  readonly email = this.form.controls.email;
 
   referralCode?: string;
 

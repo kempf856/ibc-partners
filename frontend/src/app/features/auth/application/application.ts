@@ -32,6 +32,7 @@ export class Application {
     taxNumber: new FormControl('', { nonNullable: true }),
     source: new FormControl('', { nonNullable: true })
   });
+  readonly email = this.form.controls.email;
 
   readonly referralCode = toSignal(
     inject(ActivatedRoute).paramMap.pipe(

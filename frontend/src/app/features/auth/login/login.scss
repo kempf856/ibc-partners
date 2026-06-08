@@ -1,22 +1,12 @@
 .login-page {
-  height: 100dvh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .login-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.brand {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  font-size: 24px;
-  font-weight: bold;
 }
 
 .login-card {

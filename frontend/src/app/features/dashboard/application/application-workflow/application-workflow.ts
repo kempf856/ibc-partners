@@ -36,7 +36,7 @@ export class ApplicationWorkflow implements OnInit {
   existingPartner?: UserDto;
 
   form = new FormGroup({
-    email: new FormControl({ value: '', disabled: true }),
+    email: new FormControl(''),
     fullName: new FormControl(''),
     phone: new FormControl(''),
     companyName: new FormControl(''),

@@ -1,55 +1,57 @@
-<div class="form-page-wrapper">
+<div class="form-page-wrapper mw-sm">
   <div class="page-header">
     <h1>Felhasználó rögzítés</h1>
   </div>
 
-  <form class="form-page" [formGroup]="form">
-    <section class="form-block">
-      <div class="readonly-field">
-        <span class="label">Ajánlói kód</span>
-        <span class="value">{{ referralCode ? referralCode : 'nincs' }}</span>
-      </div>
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <div class="readonly-field">
+          <span class="label">Ajánlói kód</span>
+          <span class="value">{{ referralCode ? referralCode : 'nincs' }}</span>
+        </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>E-mail</mat-label>
-        <input matInput formControlName="email" name="email" required email/>
-        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
-          <mat-error>
-            Hibás e-mail cím formátum
-          </mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Teljes név</mat-label>
-        <input matInput formControlName="fullName" name="fullName" required/>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Telefonszám</mat-label>
-        <input matInput formControlName="phone" name="phone" required/>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Szerepkörök</mat-label>
-        <mat-select formControlName="roles" name="roles" multiple required>
-          @for (role of ALL_ROLES; track role) {
-            <mat-option [value]="role">
-              {{ roleLabel(role) }}
-            </mat-option>
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" name="email" required email/>
+          @if (email.hasError('email') && email.touched) {
+            <mat-error>
+              Hibás e-mail cím formátum
+            </mat-error>
           }
-        </mat-select>
-      </mat-form-field>
+        </mat-form-field>
 
-      <div class="form-actions">
-        <button matButton type="button" (click)="cancel()">
-          Mégsem
-        </button>
+        <mat-form-field appearance="outline">
+          <mat-label>Teljes név</mat-label>
+          <input matInput formControlName="fullName" name="fullName" required/>
+        </mat-form-field>
 
-        <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
-          Mentés
-        </button>
-      </div>
-    </section>
+        <mat-form-field appearance="outline">
+          <mat-label>Telefonszám</mat-label>
+          <input matInput formControlName="phone" name="phone" required/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Szerepkörök</mat-label>
+          <mat-select formControlName="roles" name="roles" multiple required>
+            @for (role of ALL_ROLES; track role) {
+              <mat-option [value]="role">
+                {{ roleLabel(role) }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </section>
+    </div>
+
+    <div class="form-actions">
+      <button matButton type="button" (click)="cancel()">
+        Mégsem
+      </button>
+
+      <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
+        Mentés
+      </button>
+    </div>
   </form>
 </div>

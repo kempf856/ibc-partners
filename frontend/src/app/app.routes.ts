@@ -15,42 +15,47 @@ import {Profile} from './features/dashboard/user/profile/profile';
 import {ForgottenPassword} from './features/auth/forgotten-password/forgotten-password';
 
 export const routes: Routes = [
-  { path: 'login', component: Login },
-  { path: 'change-password', component: ChangePassword },
-  { path: 'forgotten-password', component: ForgottenPassword },
-  { path: 'applicant', component: Application },
-  { path: 'applicant/:referralCode', component: Application },
   {
     path: '',
     component: AppShell,
-    canActivateChild: [authGuard],
     children: [
-      { path: 'dashboard', component: Home },
+      { path: 'login', component: Login },
+      { path: 'change-password', component: ChangePassword },
+      { path: 'forgotten-password', component: ForgottenPassword },
+      { path: 'applicant', component: Application },
+      { path: 'applicant/:referralCode', component: Application },
       {
-        path: 'users',
-        canActivateChild: [roleGuard],
-        data: {
-          roles: [Role.ADMIN]
-        },
+        path: '',
+        canActivateChild: [authGuard],
         children: [
-          { path: '', component: UserList },
-          { path: 'create', component: UserCreate },
-          { path: 'create/:applicationId', component: UserCreate }
+          { path: 'dashboard', component: Home },
+          {
+            path: 'users',
+            canActivateChild: [roleGuard],
+            data: {
+              roles: [Role.ADMIN]
+            },
+            children: [
+              { path: '', component: UserList },
+              { path: 'create', component: UserCreate },
+              { path: 'create/:applicationId', component: UserCreate }
+            ]
+          },
+          {
+            path: 'applications',
+            canActivateChild: [roleGuard],
+            data: {
+              roles: [Role.ADMIN]
+            },
+            children: [
+              { path: '', component: ApplicationList },
+              { path: ':id', component: ApplicationWorkflow },
+            ]
+          },
+          { path: 'profile', component: Profile },
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
-      },
-      {
-        path: 'applications',
-        canActivateChild: [roleGuard],
-        data: {
-          roles: [Role.ADMIN]
-        },
-        children: [
-          { path: '', component: ApplicationList },
-          { path: ':id', component: ApplicationWorkflow },
-        ]
-      },
-      { path: 'profile', component: Profile },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      }
     ]
   },
   { path: '**', redirectTo: '' }

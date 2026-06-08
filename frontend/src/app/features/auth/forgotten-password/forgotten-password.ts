@@ -29,6 +29,7 @@ export class ForgottenPassword {
   form = new FormGroup({
     email: new FormControl('', { nonNullable: true })
   });
+  readonly email = this.form.controls.email;
 
   submit() {
     this.authService.forgottenPassword(this.form.getRawValue()).subscribe(() => {

@@ -1,10 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {MatToolbar} from '@angular/material/toolbar';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {AuthService} from '../../../core/auth/auth-service';
-import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
-import {MatIcon} from '@angular/material/icon';
 import {Role} from '../../../shared/role';
 
 @Component({
@@ -13,12 +11,7 @@ import {Role} from '../../../shared/role';
     MatToolbar,
     MatButton,
     RouterLink,
-    RouterOutlet,
-    MatIconButton,
-    MatSidenavContent,
-    MatSidenav,
-    MatSidenavContainer,
-    MatIcon
+    RouterOutlet
   ],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',
