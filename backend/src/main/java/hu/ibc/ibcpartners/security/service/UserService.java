@@ -3,7 +3,6 @@ package hu.ibc.ibcpartners.security.service;
 import hu.ibc.ibcpartners.common.dto.PageResponse;
 import hu.ibc.ibcpartners.notification.service.EmailService;
 import hu.ibc.ibcpartners.notification.service.EmailTemplate;
-import hu.ibc.ibcpartners.security.dto.ForgottenPasswordRequest;
 import hu.ibc.ibcpartners.security.dto.OtpRequest;
 import hu.ibc.ibcpartners.security.dto.SimplePrincipal;
 import hu.ibc.ibcpartners.security.dto.UserDto;
@@ -11,8 +10,8 @@ import hu.ibc.ibcpartners.security.entity.Role;
 import hu.ibc.ibcpartners.security.entity.User;
 import hu.ibc.ibcpartners.security.mapper.UserMapper;
 import hu.ibc.ibcpartners.security.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -41,10 +40,8 @@ public class UserService implements UserDetailsService {
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
-    @PostConstruct
-    public void initUsers() {
-        createDefaultUser();
-    }
+    @Value("${app.bootstrap-admin-email}")
+    private String adminEmail;
 
     public UserDto getLoggedInUser() {
         Long userId = AuthHelper.getUserId();
@@ -109,15 +106,13 @@ public class UserService implements UserDetailsService {
         emailService.sendEmail(email, template, Map.of("name", user.get().getFullName(), "link", link));
     }
 
-    private void createDefaultUser() {
-        String defaultUser = "admin@gmail.com";
-        if (userRepository.findByEmail(defaultUser).isPresent()) {
+    public void createDefaultUser() {
+        if (StringUtils.isBlank(adminEmail) || userRepository.count() > 0) {
             return;
         }
 
         User user = User.builder()
-                .email(defaultUser)
-                .password(passwordEncoder.encode("adminpass123"))
+                .email(adminEmail)
                 .fullName("Default Direktor")
                 .roles(List.of(Role.ADMIN, Role.PARTNER))
                 .referralCode(PublicIdGenerator.generate(1))

@@ -1,29 +1,26 @@
 package hu.ibc.ibcpartners.security.entity;
 
+import hu.ibc.ibcpartners.common.entity.AuditedEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@ToString(exclude = "password")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends AuditedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,14 +49,6 @@ public class User {
 
     @Column(name = "referral_id")
     private Long referralId;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private Instant createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "modified_at")
-    private Instant modifiedAt;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(Role::name).map(SimpleGrantedAuthority::new).toList();

@@ -30,3 +30,4 @@ security:
 
 app:
   frontend-url: ${APP_FRONTEND_URL:http://localhost:4200}
+  bootstrap-admin-email: ${APP_ADMIN_EMAIL}
