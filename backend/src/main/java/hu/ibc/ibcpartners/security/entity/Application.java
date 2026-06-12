@@ -8,7 +8,7 @@ import lombok.*;
 @Table(name = "applications")
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
