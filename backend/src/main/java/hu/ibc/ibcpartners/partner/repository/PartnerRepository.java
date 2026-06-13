@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
@@ -16,5 +18,7 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
         AND (cardinality(cast(:ids AS INTEGER[])) = 0 OR p.activities && cast(:ids AS INTEGER[]))
         """, nativeQuery = true)
     Page<Partner> search(String name, String address, Long[] ids, Pageable pageable);
+
+    Optional<Partner> findByTaxNumber(String taxNumber);
 }
 

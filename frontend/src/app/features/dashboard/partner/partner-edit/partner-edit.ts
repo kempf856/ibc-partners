@@ -11,6 +11,7 @@ import {ActivityDto} from '../../activity/activity-dto';
 import {ActivityService} from '../../activity/activity-service';
 import {PartnerService} from '../partner-service';
 import {NotificationService} from '../../../../core/notification/notification';
+import {ApplicationService} from '../../application/application-service';
 
 type Mode = 'view' | 'edit' | 'create';
 
@@ -30,6 +31,7 @@ export class PartnerEdit implements OnInit {
   partnerService = inject(PartnerService);
   activityService = inject(ActivityService);
   notificationService = inject(NotificationService);
+  applicationService = inject(ApplicationService);
 
   form = new FormGroup({
     id: new FormControl<number | undefined>(undefined, { nonNullable: true }),
@@ -44,6 +46,7 @@ export class PartnerEdit implements OnInit {
 
   activities: ActivityDto[] = [];
   mode!: Mode;
+  applicationId: string | undefined;
 
   ngOnInit(): void {
     this.loadActivities();
@@ -53,6 +56,17 @@ export class PartnerEdit implements OnInit {
     if (id) {
       this.partnerService.getById(id).subscribe(partner => {
         this.form.patchValue(partner);
+      });
+      return;
+    }
+
+    const applicationId = this.route.snapshot.paramMap.get('applicationId');
+    if (applicationId) {
+      this.applicationService.getApplication(applicationId).subscribe(application => {
+        this.form.patchValue({
+          name: application.companyName,
+          taxNumber: application.taxNumber
+        });
       });
     }
   }
@@ -65,7 +79,11 @@ export class PartnerEdit implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/partners']);
+    if (this.applicationId) {
+      this.router.navigate(['/applications', this.applicationId]);
+    } else {
+      this.router.navigate(['/partners']);
+    }
   }
 
   loadActivities() {

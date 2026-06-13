@@ -39,6 +39,11 @@ public class PartnerController {
         return ResponseEntity.ok(partnerService.getById(id));
     }
 
+    @GetMapping("/by-tax-number")
+    public ResponseEntity<PartnerDto> findByTaxNumber(@RequestParam String taxNumber) {
+        return ResponseEntity.ok(partnerService.findByTaxNumber(taxNumber));
+    }
+
     @GetMapping
     public ResponseEntity<PageResponse<PartnerDto>> search(
             @RequestParam(required = false) String name, @RequestParam(required = false) String address,

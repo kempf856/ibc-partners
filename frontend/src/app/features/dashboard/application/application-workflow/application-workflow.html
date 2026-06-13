@@ -95,16 +95,37 @@
         <div class="readonly-row">
           <div class="readonly-field">
             <span class="label">Létező partner</span>
-            <span class="value">{{ existingPartner ? 'van' : 'nincs' }}</span>
+            <span class="value">{{ existingPartner()?.name ?? 'nincs' }}</span>
           </div>
-          @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && !existingPartner) {
+          @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && !existingPartner()) {
             <div>
-              <button matButton="tonal">
+              <button matButton="tonal" [routerLink]="['/partners/create', applicationDto()?.id]">
                 Új partner
               </button>
             </div>
           }
         </div>
+
+        <div class="readonly-row">
+          <div class="readonly-field">
+            <span class="label">Partner kapcsolat</span>
+            <span class="value">{{ membershipLabel(membership()?.role) ?? 'nincs' }}</span>
+          </div>
+        </div>
+
+        @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && existingPartner() && existingUser() && !membership()) {
+          <div class="readonly-row">
+            <mat-button-toggle-group [formControl]="membershipRole">
+              <mat-button-toggle [value]="PartnerMembershipRole.OWNER">Tulajdonos</mat-button-toggle>
+              <mat-button-toggle [value]="PartnerMembershipRole.EMPLOYEE">Alkalmazott</mat-button-toggle>
+            </mat-button-toggle-group>
+            <div>
+              <button matButton="tonal" (click)="saveMembershipRole()" [disabled]="membershipRole.invalid">
+              Mentés
+              </button>
+            </div>
+          </div>
+        }
       </section>
     </div>
 
@@ -120,7 +141,7 @@
       }
 
       @if (applicationDto()?.state === ApplicationState.IN_PROGRESS) {
-        <button matButton="elevated" (click)="accept()" [disabled]="!existingUser()">
+        <button matButton="elevated" (click)="accept()" [disabled]="!existingUser() || !existingPartner()">
           Elfogadás
         </button>
         <button matButton="elevated" (click)="deny()">

@@ -36,6 +36,7 @@ export const routes: Routes = [
             children: [
               { path: '', component: PartnerList },
               { path: 'create', component: PartnerEdit, data: { mode: 'create' }},
+              { path: 'create/:applicationId', component: PartnerEdit, data: { mode: 'create' }},
               { path: 'view/:partnerId', component: PartnerEdit, data: { mode: 'view' }},
               { path: 'edit/:partnerId', component: PartnerEdit, data: { mode: 'edit' }}
             ]

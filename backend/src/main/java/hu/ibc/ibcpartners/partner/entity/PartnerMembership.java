@@ -22,13 +22,18 @@ public class PartnerMembership extends AuditedEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "partner_id", nullable = false)
-    private Partner partner;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "partner_id", nullable = false)
+//    private Partner partner;
+
+    @Column(name = "partner_id", nullable = false)
+    private Long partnerId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)

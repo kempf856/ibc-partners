@@ -5,7 +5,7 @@ import hu.ibc.ibcpartners.partner.entity.Partner;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {ActivityMapper.class})
+@Mapper(componentModel = "spring")
 public interface PartnerMapper {
 
     Partner map(PartnerDto dto);

@@ -29,6 +29,11 @@ public class PartnerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Partner nem található ezzel az ID-val: " + id));
     }
 
+    public PartnerDto findByTaxNumber(String taxNumber) {
+        return partnerRepository.findByTaxNumber(taxNumber).map(partnerMapper::map)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Partner nem található ezzel az adószámmal: " + taxNumber));
+    }
+
     public PageResponse<PartnerDto> search(String name, String address, Long[] activityIds, Pageable pageable) {
         Page<Partner> page = partnerRepository.search(name, address, activityIds == null ? new Long[] {} : activityIds, pageable);
         return PageResponse.of(page, partnerMapper::map);
