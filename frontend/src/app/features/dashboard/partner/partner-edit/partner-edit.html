@@ -1,0 +1,70 @@
+<div class="form-page-wrapper mw-md">
+  <div class="page-header">
+    <h1>Partner</h1>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Adószám</mat-label>
+          <input matInput formControlName="taxNumber" name="taxNumber" required [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Cégnév</mat-label>
+          <input matInput formControlName="name" name="name" required [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Székhely</mat-label>
+          <input matInput formControlName="headquarters" name="headquarters" required [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Telephely</mat-label>
+          <input matInput formControlName="site" name="site" [readonly]="readonly()"/>
+        </mat-form-field>
+      </section>
+
+      <section class="form-block">
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Telefonszám</mat-label>
+          <input matInput formControlName="phone" name="phone" [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Webhely</mat-label>
+          <input matInput formControlName="website" name="website" [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Tevékenységek</mat-label>
+          @if (readonly()) {
+            <input matInput [value]="activitiesText(form.get('activities')!.value)" [readonly]="readonly()"/>
+          } @else {
+            <mat-select formControlName="activities" multiple>
+              @for (activity of activities; track activity) {
+                <mat-option [value]="activity.id">
+                  {{ activity.activity }}
+                </mat-option>
+              }
+            </mat-select>
+          }
+        </mat-form-field>
+      </section>
+    </div>
+
+    <div class="form-actions">
+      <button matButton type="button" (click)="cancel()">
+        Mégsem
+      </button>
+
+      @if (!readonly()) {
+        <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
+          Mentés
+        </button>
+      }
+    </div>
+  </form>
+</div>

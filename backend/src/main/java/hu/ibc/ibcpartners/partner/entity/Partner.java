@@ -45,17 +45,7 @@ public class Partner extends AuditedEntity {
     @Column(name = "website")
     private String website;
 
-    /**
-     * Persisted integer[] column (activity IDs). Mapped using Hibernate array support.
-     */
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "activities", columnDefinition = "long[]", nullable = false)
-    private List<Long> activityIds;
-
-    /**
-     * Transient convenience view with resolved Activity entities. Populated by service layer when needed.
-     */
-    @Transient
-    private List<Activity> activities;
-
+    private List<Long> activities;
 }

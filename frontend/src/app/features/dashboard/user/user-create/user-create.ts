@@ -7,7 +7,6 @@ import {ALL_ROLES, roleLabel} from '../../../../shared/role-labels';
 import {UserService} from '../user-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../../../core/notification/notification';
-import {Role} from '../../../../shared/role';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {filter, map} from 'rxjs';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';

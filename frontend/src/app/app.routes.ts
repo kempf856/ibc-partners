@@ -13,6 +13,8 @@ import {ApplicationList} from './features/dashboard/application/application-list
 import {ApplicationWorkflow} from './features/dashboard/application/application-workflow/application-workflow';
 import {Profile} from './features/dashboard/user/profile/profile';
 import {ForgottenPassword} from './features/auth/forgotten-password/forgotten-password';
+import {PartnerList} from './features/dashboard/partner/partner-list/partner-list';
+import {PartnerEdit} from './features/dashboard/partner/partner-edit/partner-edit';
 
 export const routes: Routes = [
   {
@@ -29,6 +31,15 @@ export const routes: Routes = [
         canActivateChild: [authGuard],
         children: [
           { path: 'dashboard', component: Home },
+          {
+            path: 'partners',
+            children: [
+              { path: '', component: PartnerList },
+              { path: 'create', component: PartnerEdit, data: { mode: 'create' }},
+              { path: 'view/:partnerId', component: PartnerEdit, data: { mode: 'view' }},
+              { path: 'edit/:partnerId', component: PartnerEdit, data: { mode: 'edit' }}
+            ]
+          },
           {
             path: 'users',
             canActivateChild: [roleGuard],

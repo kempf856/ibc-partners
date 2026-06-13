@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSortModule, Sort} from '@angular/material/sort';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
@@ -10,16 +10,24 @@ import {
   MatColumnDef,
   MatHeaderCell,
   MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
-  MatTable, MatTableDataSource
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
-import {ALL_ROLES, roleLabel} from '../../../../shared/role-labels';
-import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
+import {PartnerDto} from '../partner-dto';
+import {PartnerService} from '../partner-service';
+import {ActivityDto} from '../../activity/activity-dto';
+import {ActivityService} from '../../activity/activity-service';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-partner-list',
   imports: [
     MatFormField,
     MatLabel,
@@ -39,60 +47,76 @@ import {RouterLink} from '@angular/router';
     MatHeaderRowDef,
     MatRowDef,
     MatPaginator,
-    MatChip,
-    MatChipSet,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    MatIcon,
+    MatTooltip
   ],
   templateUrl: './partner-list.html',
   styleUrl: './partner-list.scss',
 })
 export class PartnerList implements OnInit {
 
-  protected readonly ALL_ROLES = ALL_ROLES;
-  protected readonly roleLabel = roleLabel;
+  dataSource = new MatTableDataSource<PartnerDto>([]);
+  partnerService = inject(PartnerService);
+  activityService = inject(ActivityService);
 
-  dataSource = new MatTableDataSource<UserDto>([]);
+  activities: ActivityDto[] = [];
 
   totalElements = 0;
 
-  pageSize = 10;
+  pageSize = 20;
   pageIndex = 0;
 
-  sort = 'email,asc';
+  sort = 'name,asc';
 
-  emailFilter = '';
-  fullNameFilter = '';
-  roleFilter = '';
-
-  constructor(private userService: UserService) {}
+  nameFilter = '';
+  addressFilter = '';
+  activityFilter: number[] = [];
 
   ngOnInit() {
-    this.loadUsers();
+    this.loadActivities();
+    this.loadPartners();
   }
 
-  loadUsers() {
-    this.userService.getUsers({
+  loadPartners() {
+    this.partnerService.search({
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sort,
-      email: this.emailFilter,
-      fullName: this.fullNameFilter,
-      role: this.roleFilter
+      name: this.nameFilter,
+      address: this.addressFilter,
+      activities: this.activityFilter.length > 0 ? this.activityFilter : undefined
     }).subscribe(res => {
       this.dataSource.data = res.content;
       this.totalElements = res.totalElements;
     });
   }
 
+  loadActivities() {
+    this.activityService.search({
+      page: 0,
+      size: 1000, // Adjust the size as needed
+      sort: 'activity,asc'
+    }).subscribe(res => {
+      this.activities = res.content;
+    });
+  }
+
   onPage(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.loadUsers();
+    this.loadPartners();
   }
 
   onSort(event: Sort) {
     this.sort = `${event.active},${event.direction}`;
-    this.loadUsers();
+    this.loadPartners();
+  }
+
+  activitiesText(activities: number[]): string {
+    return activities
+      .map(id => this.activities.find(a => a.id === id)?.activity)
+      .join(', ');
   }
 }

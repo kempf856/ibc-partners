@@ -1,78 +1,47 @@
 package hu.ibc.ibcpartners.partner.service;
 
-import hu.ibc.ibcpartners.partner.entity.Activity;
+import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.partner.dto.PartnerDto;
 import hu.ibc.ibcpartners.partner.entity.Partner;
-import hu.ibc.ibcpartners.partner.repository.ActivityRepository;
+import hu.ibc.ibcpartners.partner.mapper.PartnerMapper;
 import hu.ibc.ibcpartners.partner.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
 public class PartnerService {
 
     private final PartnerRepository partnerRepository;
-    private final ActivityRepository activityRepository;
+    private final PartnerMapper partnerMapper;
 
-    @Transactional(readOnly = true)
-    public Optional<Partner> findByIdWithActivities(Long id) {
-        return partnerRepository.findById(id).map(p -> {
-            populateActivities(p);
-            return p;
-        });
+    public PartnerDto getById(Long id) {
+        return partnerMapper.map(findById(id));
     }
 
-    @Transactional(readOnly = true)
-    public List<Partner> findAllWithActivities() {
-        List<Partner> partners = partnerRepository.findAll();
-        populateActivitiesForMany(partners);
-        return partners;
+    private Partner findById(Long id) {
+        return partnerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Partner nem található ezzel az ID-val: " + id));
+    }
+
+    public PageResponse<PartnerDto> search(String name, String address, Long[] activityIds, Pageable pageable) {
+        Page<Partner> page = partnerRepository.search(name, address, activityIds == null ? new Long[] {} : activityIds, pageable);
+        return PageResponse.of(page, partnerMapper::map);
     }
 
     @Transactional
-    public Partner save(Partner partner) {
-        // If caller set activities (entity list), convert to ids before saving
-        if (partner.getActivities() != null) {
-            List<Long> ids = partner.getActivities().stream()
-                    .map(Activity::getId)
-                    .toList();
-            partner.setActivityIds(ids);
-        }
-        return partnerRepository.save(partner);
+    public void update(PartnerDto dto) {
+        Partner partner = findById(dto.id());
+        partnerMapper.map(dto, partner);
+        partnerRepository.save(partner);
     }
 
-    private void populateActivities(Partner p) {
-        List<Long> ids = p.getActivityIds();
-        if (ids == null || ids.isEmpty()) {
-            p.setActivities(Collections.emptyList());
-            return;
-        }
-        p.setActivities(activityRepository.findAllById(ids));
-    }
-
-    private void populateActivitiesForMany(List<Partner> partners) {
-        // collect all activity ids
-        List<Activity> activities = activityRepository.findAll();
-        Map<Long, Activity> activityById = activities.stream().collect(Collectors.toMap(Activity::getId, Function.identity()));
-
-        for (Partner p : partners) {
-            List<Long> ids = p.getActivityIds();
-            if (ids == null || ids.isEmpty()) {
-                p.setActivities(Collections.emptyList());
-                continue;
-            }
-
-            p.setActivities(ids.stream()
-                    .map(activityById::get)
-                    .toList());
-        }
+    public void create(PartnerDto dto) {
+        partnerRepository.save(partnerMapper.map(dto));
     }
 }

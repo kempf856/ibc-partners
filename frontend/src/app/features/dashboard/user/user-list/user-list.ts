@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {UserService} from '../user-service';
 import {UserDto} from '../user-dto';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
@@ -55,6 +55,7 @@ export class UserList implements OnInit {
   protected readonly roleLabel = roleLabel;
 
   dataSource = new MatTableDataSource<UserDto>([]);
+  userService = inject(UserService);
 
   totalElements = 0;
 
@@ -66,8 +67,6 @@ export class UserList implements OnInit {
   emailFilter = '';
   fullNameFilter = '';
   roleFilter = '';
-
-  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.loadUsers();
