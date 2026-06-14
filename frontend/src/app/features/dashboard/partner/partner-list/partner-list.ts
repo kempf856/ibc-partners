@@ -21,8 +21,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {PartnerDto} from '../partner-dto';
 import {PartnerService} from '../partner-service';
-import {ActivityDto} from '../../activity/activity-dto';
-import {ActivityService} from '../../activity/activity-service';
+import {ActivityDto} from '../../../core/activity/activity-dto';
+import {ActivityService} from '../../../core/activity/activity-service';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 

@@ -1,0 +1,5 @@
+export enum SettingKey {
+  DIRECTOR1 = 'DIRECTOR1',
+  DIRECTOR2 = 'DIRECTOR2',
+  DIRECTOR3 = 'DIRECTOR3'
+}

@@ -11,6 +11,11 @@
       </mat-form-field>
     </div>
     <div class="list-actions">
+      @if (activityId) {
+        <button mat-icon-button matTooltip="Mégsem" (click)="cancel()">
+          <mat-icon>undo</mat-icon>
+        </button>
+      }
       <button matButton="elevated" (click)="save()" [disabled]="activity.invalid">
         @if (activityId) {
           Mentés

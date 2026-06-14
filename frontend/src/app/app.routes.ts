@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './features/auth/login/login';
 import { Home } from './features/dashboard/home/home';
 import { authGuard } from './core/auth/auth-guard';
-import {AppShell} from './features/dashboard/app-shell/app-shell';
+import {AppShell} from './features/core/app-shell/app-shell';
 import {UserList} from './features/dashboard/user/user-list/user-list';
 import {UserCreate} from './features/dashboard/user/user-create/user-create';
 import {ChangePassword} from './features/auth/change-password/change-password';
@@ -15,7 +15,8 @@ import {Profile} from './features/dashboard/user/profile/profile';
 import {ForgottenPassword} from './features/auth/forgotten-password/forgotten-password';
 import {PartnerList} from './features/dashboard/partner/partner-list/partner-list';
 import {PartnerEdit} from './features/dashboard/partner/partner-edit/partner-edit';
-import {ActivityList} from './features/dashboard/activity/activity-list';
+import {ActivityList} from './features/core/activity/activity-list';
+import {SettingList} from './features/core/setting/setting-list';
 
 export const routes: Routes = [
   {
@@ -68,6 +69,14 @@ export const routes: Routes = [
           {
             path: 'activities',
             component: ActivityList,
+            canActivate: [roleGuard],
+            data: {
+              roles: [Role.ADMIN]
+            }
+          },
+          {
+            path: 'settings',
+            component: SettingList,
             canActivate: [roleGuard],
             data: {
               roles: [Role.ADMIN]

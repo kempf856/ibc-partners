@@ -98,8 +98,7 @@ export class ActivityList implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Törlés',
-        message: `Biztos törölni szeretnéd ezt a tevékenységet: ${activity.activity}?`,
-        yesButton: 'Törlés'
+        message: `Biztos törölni szeretnéd ezt a tevékenységet: ${activity.activity}?`
 
       },
       panelClass: 'confirm-dialog'
@@ -123,11 +122,15 @@ export class ActivityList implements OnInit {
   save(): void {
     this.activityService.save({ id: this.activityId, activity: this.activity.value }).subscribe(() => {
       this.notificationService.success('Tevékenység mentése sikeres');
-      this.activityId = undefined;
-      this.activity.setValue('');
-      this.activity.markAsPristine();
-      this.activity.markAsUntouched();
+      this.cancel();
       this.loadActivities();
     });
+  }
+
+  cancel() {
+    this.activityId = undefined;
+    this.activity.setValue('');
+    this.activity.markAsPristine();
+    this.activity.markAsUntouched();
   }
 }

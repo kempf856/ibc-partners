@@ -19,7 +19,8 @@ public class Setting extends AuditedEntity {
     private Long id;
 
     @Column(name = "key", unique = true, nullable = false)
-    private String key;
+    @Enumerated(EnumType.STRING)
+    private SettingKey key;
 
     @Column(name = "name", nullable = false)
     private String name;

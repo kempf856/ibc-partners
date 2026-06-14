@@ -23,13 +23,13 @@ import {MatButton} from '@angular/material/button';
 
     <mat-dialog-actions align="end">
       <button mat-button [mat-dialog-close]="false">Mégsem</button>
-      <button mat-raised-button color="warn" [mat-dialog-close]="true">{{ data.yesButton }}</button>
+      <button mat-raised-button color="warn" [mat-dialog-close]="true">Igen</button>
     </mat-dialog-actions>
   `
 })
 export class ConfirmDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: { title: string; message: string; yesButton: string }
+    public data: { title: string; message: string }
   ) {}
 }
