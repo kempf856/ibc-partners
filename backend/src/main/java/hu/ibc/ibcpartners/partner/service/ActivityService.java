@@ -24,6 +24,7 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final ActivityMapper activityMapper;
+    private final PartnerRepository partnerRepository;
 
     public ActivityDto getById(Long id) {
         return activityMapper.map(findById(id));
@@ -47,5 +48,12 @@ public class ActivityService {
         Activity activity = findById(dto.id());
         activityMapper.map(dto, activity);
         activityRepository.save(activity);
+    }
+
+    public void delete(Long id) {
+        if (partnerRepository.activityExists(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A tevékenység nem törölhető, mart használatban van!");
+        }
+        activityRepository.deleteById(id);
     }
 }

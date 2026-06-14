@@ -9,12 +9,20 @@ import {ActivityDto} from './activity-dto';
 export class ActivityService {
   constructor(private http: HttpClient) {}
 
-  create(req: ActivityDto) {
-    return this.http.post('/api/activities', req);
+  save(req: ActivityDto) {
+    if (req.id) {
+      return this.http.put(`/api/activities/${req.id}`, req);
+    } else {
+      return this.http.post('/api/activities', req);
+    }
   }
 
   getById(id: number) {
     return this.http.get<ActivityDto>(`/api/activities/${id}`);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`/api/activities/${id}`);
   }
 
   search(req: { page: number; size: number; sort?: string; activity?: string; }) {

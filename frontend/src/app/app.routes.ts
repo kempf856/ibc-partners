@@ -15,6 +15,7 @@ import {Profile} from './features/dashboard/user/profile/profile';
 import {ForgottenPassword} from './features/auth/forgotten-password/forgotten-password';
 import {PartnerList} from './features/dashboard/partner/partner-list/partner-list';
 import {PartnerEdit} from './features/dashboard/partner/partner-edit/partner-edit';
+import {ActivityList} from './features/dashboard/activity/activity-list';
 
 export const routes: Routes = [
   {
@@ -63,6 +64,14 @@ export const routes: Routes = [
               { path: '', component: ApplicationList },
               { path: ':id', component: ApplicationWorkflow },
             ]
+          },
+          {
+            path: 'activities',
+            component: ActivityList,
+            canActivate: [roleGuard],
+            data: {
+              roles: [Role.ADMIN]
+            }
           },
           { path: 'profile', component: Profile },
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

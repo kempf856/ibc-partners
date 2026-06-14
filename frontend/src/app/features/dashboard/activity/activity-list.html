@@ -1,0 +1,55 @@
+<div class="single-page-wrapper mw-sm">
+  <div class="page-header">
+    <h1>Tevékenységek</h1>
+  </div>
+
+  <div class="filters-bar">
+    <div class="filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Tevékenység</mat-label>
+        <input matInput [formControl]="activity" required>
+      </mat-form-field>
+    </div>
+    <div class="list-actions">
+      <button matButton="elevated" (click)="save()" [disabled]="activity.invalid">
+        @if (activityId) {
+          Mentés
+        } @else {
+          Új tevékenység
+        }
+      </button>
+    </div>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">
+    <ng-container matColumnDef="activity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tevékenység</th>
+      <td mat-cell *matCellDef="let activity">{{ activity.activity }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+
+      <td mat-cell *matCellDef="let activity">
+        <button mat-icon-button matTooltip="Szerkesztés" (click)="edit(activity)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Törlés" (click)="delete(activity)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['activity', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['activity', 'actions']"></tr>
+
+  </table>
+
+  <mat-paginator
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="[10, 20, 50]"
+    (page)="onPage($event)">
+  </mat-paginator>
+</div>

@@ -20,5 +20,10 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
     Page<Partner> search(String name, String address, Long[] ids, Pageable pageable);
 
     Optional<Partner> findByTaxNumber(String taxNumber);
+
+    @Query(value = """
+        SELECT EXISTS (SELECT 1 FROM partners p WHERE :activityId = ANY(p.activities))
+        """, nativeQuery = true)
+    boolean activityExists(Long activityId);
 }
 

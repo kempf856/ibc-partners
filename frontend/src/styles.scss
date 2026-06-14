@@ -91,3 +91,9 @@ body {
     button-color: var(--mat-sys-primary)
   ));
 }
+
+.confirm-dialog {
+  .mat-mdc-dialog-surface {
+    background-color: var(--mat-sys-surface-container)
+  }
+}

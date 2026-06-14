@@ -34,6 +34,12 @@ public class ActivityController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        activityService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(activityService.getById(id));
