@@ -8,11 +8,6 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 
-/**
- * Partner entity mapped to the `partners` table defined in V002__create_tables.sql.
- *
- * Columns in DB: id, tax_number (unique), name, headquarters, site, phone, website, activities (integer[]), audit columns...
- */
 @Entity
 @Table(name = "partners")
 @Getter
@@ -36,16 +31,21 @@ public class Partner extends AuditedEntity {
     @Column(name = "headquarters", nullable = false)
     private String headquarters;
 
-    @Column(name = "site")
     private String site;
 
-    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "website")
     private String website;
 
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "activities", columnDefinition = "long[]", nullable = false)
     private List<Long> activities;
+
+    @Column(name = "referral_id")
+    private Long referralId;
+
+    @Column(name = "key_words")
+    private String keyWords;
+
+    private String introduction;
 }

@@ -10,7 +10,6 @@ import {NotificationService} from '../../../../core/notification/notification';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {filter, map} from 'rxjs';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {UserDto} from '../user-dto';
 import {ApplicationService} from '../../application/application-service';
 
 @Component({
@@ -39,8 +38,6 @@ export class UserCreate {
   });
   readonly email = this.form.controls.email;
 
-  referralCode?: string;
-
   readonly applicationId = toSignal(
     this.route.paramMap.pipe(
       map(params => params.get('applicationId')),
@@ -60,17 +57,12 @@ export class UserCreate {
             fullName: app.fullName,
             phone: app.phone
           });
-          this.referralCode = app.referralCode;
         });
     });
   }
 
   protected save() {
-    const request: UserDto = {
-      ...this.form.getRawValue(),
-      referralCode: this.referralCode
-    }
-    this.userService.createUser(request).subscribe(() => {
+    this.userService.createUser(this.form.getRawValue()).subscribe(() => {
         this.notification.success('Sikeres mentés');
         this.cancel();
       });

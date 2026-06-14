@@ -82,13 +82,13 @@ export class ApplicationWorkflow implements OnInit {
   }
 
   loadExistingUser(email: string) {
-    this.userService.findByEmail(email).subscribe(userDto => {
+    this.userService.findByEmail(email, true).subscribe(userDto => {
       this.existingUser.set(userDto);
     })
   }
 
   loadExistingPartner(taxNumber: string) {
-    this.partnerService.findByTaxNumber(taxNumber).subscribe(partnerDto => {
+    this.partnerService.findByTaxNumber(taxNumber, true).subscribe(partnerDto => {
       this.existingPartner.set(partnerDto);
     })
   }

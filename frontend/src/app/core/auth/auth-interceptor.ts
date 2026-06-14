@@ -6,6 +6,7 @@ import {catchError, throwError} from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const notification = inject(NotificationService);
+  const authService = inject(AuthService);
 
   if (req.url.startsWith('/api/auth/')) {
     return next(req).pipe(
@@ -17,10 +18,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     );
   }
 
-  const authService = inject(AuthService);
-
   const token = authService.getToken();
-
   if (token) {
     req = req.clone({
       setHeaders: {

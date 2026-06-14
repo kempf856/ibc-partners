@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {Dashboard} from '../dashboard';
+import {DashboardService} from './dashboard-service';
 
 @Component({
   selector: 'app-home',
@@ -9,12 +9,12 @@ import {Dashboard} from '../dashboard';
 })
 export class Home implements OnInit {
 
-  private dashboardService = inject(Dashboard);
+  private dashboardService = inject(DashboardService);
 
   message = signal('');
 
   ngOnInit(): void {
     this.dashboardService.welcome()
-      .subscribe(message => this.message.set(message));
+      .subscribe(dto => this.message.set(dto.message));
   }
 }

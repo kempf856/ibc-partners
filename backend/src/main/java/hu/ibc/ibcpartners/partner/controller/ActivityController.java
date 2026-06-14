@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -22,9 +25,18 @@ public class ActivityController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ActivityDto req) {
+        if (!Objects.equals(id, req.id())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id nem egyezik!");
+        }
+        activityService.update(req);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(activityService.findById(id));
+        return ResponseEntity.ok(activityService.getById(id));
     }
 
     @GetMapping

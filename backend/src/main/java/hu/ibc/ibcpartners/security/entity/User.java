@@ -47,9 +47,6 @@ public class User extends AuditedEntity {
     @Column(name = "referral_code")
     private String referralCode;
 
-    @Column(name = "referral_id")
-    private Long referralId;
-
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(Role::name).map(SimpleGrantedAuthority::new).toList();
     }

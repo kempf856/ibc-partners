@@ -46,7 +46,8 @@ export class PartnerEdit implements OnInit {
 
   activities: ActivityDto[] = [];
   mode!: Mode;
-  applicationId: string | undefined;
+  applicationId?: string;
+  referralCode?: string;
 
   ngOnInit(): void {
     this.loadActivities();
@@ -67,12 +68,13 @@ export class PartnerEdit implements OnInit {
           name: application.companyName,
           taxNumber: application.taxNumber
         });
+        this.referralCode = application.referralCode;
       });
     }
   }
 
   save() {
-    this.partnerService.save(this.form.getRawValue()).subscribe(() => {
+    this.partnerService.save(this.form.getRawValue(), this.referralCode).subscribe(() => {
       this.notificationService.success('Sikeres mentés');
       this.cancel();
     });

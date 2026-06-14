@@ -9,3 +9,22 @@
 .multiselect-field {
   width: 420px;
 }
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.list-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

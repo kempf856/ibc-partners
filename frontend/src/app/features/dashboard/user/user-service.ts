@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpContext} from '@angular/common/http';
 import {PageResponse} from '../../page-response';
 import {UserDto} from './user-dto';
+import {SKIP_ERROR} from '../../../core/notification/error-interceptor';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,10 @@ export class UserService {
     return this.http.get<UserDto>('/api/users/profile')
   }
 
-  findByEmail(email: string) {
-    return this.http.get<UserDto>('/api/users/by-email', { params: { email: email } })
+  findByEmail(email: string, skipNotFound?: boolean) {
+    return this.http.get<UserDto>('/api/users/by-email', {
+      params: { email: email },
+      context: new HttpContext().set(SKIP_ERROR, skipNotFound ?? false)
+    })
   }
 }

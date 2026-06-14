@@ -20,8 +20,8 @@ public class PartnerController {
     private final PartnerService partnerService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody PartnerDto req) {
-        partnerService.create(req);
+    public ResponseEntity<Void> create(@RequestBody PartnerDto req, @RequestParam(required = false) String referralCode) {
+        partnerService.create(req, referralCode);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

@@ -4,10 +4,8 @@ import hu.ibc.ibcpartners.common.dto.PageResponse;
 import hu.ibc.ibcpartners.security.dto.ApplicationComment;
 import hu.ibc.ibcpartners.security.dto.ApplicationDto;
 import hu.ibc.ibcpartners.security.dto.ApplicationRequest;
-import hu.ibc.ibcpartners.security.dto.UserDto;
 import hu.ibc.ibcpartners.security.entity.Application;
 import hu.ibc.ibcpartners.security.entity.ApplicationState;
-import hu.ibc.ibcpartners.security.entity.Role;
 import hu.ibc.ibcpartners.security.entity.User;
 import hu.ibc.ibcpartners.security.mapper.ApplicationMapper;
 import hu.ibc.ibcpartners.security.repository.ApplicationRepository;
@@ -15,15 +13,10 @@ import hu.ibc.ibcpartners.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -50,8 +43,7 @@ public class ApplicationService {
 
     public ApplicationDto get(Long id) {
         Application application = findById(id);
-        String salesName = Optional.ofNullable(application.getSalesId()).flatMap(userRepository::findById).map(User::getFullName).orElse(null);
-        return applicationMapper.map(application, salesName);
+        return applicationMapper.map(application, getSalesName(application.getSalesId()));
     }
 
     private Application findById(Long id) {
@@ -69,7 +61,11 @@ public class ApplicationService {
         }
 
         applicationRepository.saveAndFlush(application);
-        return applicationMapper.map(application);
+        return applicationMapper.map(application, getSalesName(application.getSalesId()));
+    }
+
+    private String getSalesName(Long salesId) {
+        return Optional.ofNullable(salesId).flatMap(userRepository::findById).map(User::getFullName).orElse(null);
     }
 
     @Transactional

@@ -66,15 +66,9 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void create(UserDto userDto) {
-        String referralCode = userDto.referralCode();
-
         User user = userMapper.map(userDto);
         user.setId(null);
         user.setReferralCode(null);
-
-        if (referralCode != null) {
-            user.setReferralId(userRepository.findByReferralCode(referralCode).map(User::getId).orElse(null));
-        }
 
         userRepository.save(user);
         user.setReferralCode(PublicIdGenerator.generate(user.getId()));

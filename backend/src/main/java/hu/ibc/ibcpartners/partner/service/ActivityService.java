@@ -25,8 +25,12 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
     private final ActivityMapper activityMapper;
 
-    public ActivityDto findById(Long id) {
-        return activityRepository.findById(id).map(activityMapper::map)
+    public ActivityDto getById(Long id) {
+        return activityMapper.map(findById(id));
+    }
+
+    private Activity findById(Long id) {
+        return activityRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tevékenység nem található ezzel az ID-val: " + id));
     }
 
@@ -37,5 +41,11 @@ public class ActivityService {
 
     public void create(ActivityDto dto) {
         activityRepository.save(activityMapper.map(dto));
+    }
+
+    public void update(ActivityDto dto) {
+        Activity activity = findById(dto.id());
+        activityMapper.map(dto, activity);
+        activityRepository.save(activity);
     }
 }

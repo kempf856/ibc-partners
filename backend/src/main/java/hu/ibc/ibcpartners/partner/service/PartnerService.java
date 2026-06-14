@@ -5,7 +5,10 @@ import hu.ibc.ibcpartners.partner.dto.PartnerDto;
 import hu.ibc.ibcpartners.partner.entity.Partner;
 import hu.ibc.ibcpartners.partner.mapper.PartnerMapper;
 import hu.ibc.ibcpartners.partner.repository.PartnerRepository;
+import hu.ibc.ibcpartners.security.entity.User;
+import hu.ibc.ibcpartners.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ public class PartnerService {
 
     private final PartnerRepository partnerRepository;
     private final PartnerMapper partnerMapper;
+    private final UserRepository userRepository;
 
     public PartnerDto getById(Long id) {
         return partnerMapper.map(findById(id));
@@ -46,7 +50,11 @@ public class PartnerService {
         partnerRepository.save(partner);
     }
 
-    public void create(PartnerDto dto) {
-        partnerRepository.save(partnerMapper.map(dto));
+    public void create(PartnerDto dto, String referralCode) {
+        Partner partner = partnerMapper.map(dto);
+        if (StringUtils.isNotBlank(referralCode)) {
+            partner.setReferralId(userRepository.findByReferralCode(referralCode).map(User::getId).orElse(null));
+        }
+        partnerRepository.save(partner);
     }
 }

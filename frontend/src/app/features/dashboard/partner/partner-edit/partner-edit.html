@@ -6,6 +6,11 @@
   <form [formGroup]="form">
     <div class="form-page">
       <section class="form-block">
+        <div class="readonly-field">
+          <span class="label">Ajánlói kód</span>
+          <span class="value">{{ referralCode ? referralCode : 'nincs' }}</span>
+        </div>
+
         <mat-form-field [appearance]="appearance()">
           <mat-label>Adószám</mat-label>
           <input matInput formControlName="taxNumber" name="taxNumber" required [readonly]="readonly()"/>

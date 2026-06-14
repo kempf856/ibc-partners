@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpContext} from '@angular/common/http';
 import {PageResponse} from '../../page-response';
 import {PartnerDto} from './partner-dto';
 import {PartnerMembershipDto} from './partner-membership-dto';
+import {SKIP_ERROR} from '../../../core/notification/error-interceptor';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +11,13 @@ import {PartnerMembershipDto} from './partner-membership-dto';
 export class PartnerService {
   constructor(private http: HttpClient) {}
 
-  save(req: PartnerDto) {
+  save(req: PartnerDto, referralCode?: string) {
     if (req.id) {
       return this.http.put(`/api/partners/${req.id}`, req);
     } else {
-      return this.http.post('/api/partners', req);
+      return this.http.post('/api/partners', req, {
+        params: referralCode ? { referralCode: referralCode } : {}
+      });
     }
   }
 
@@ -22,8 +25,11 @@ export class PartnerService {
     return this.http.get<PartnerDto>(`/api/partners/${id}`);
   }
 
-  findByTaxNumber(taxNumber: string) {
-    return this.http.get<PartnerDto>('/api/partners/by-tax-number', { params: { taxNumber: taxNumber } })
+  findByTaxNumber(taxNumber: string, skipNotFound?: boolean) {
+    return this.http.get<PartnerDto>('/api/partners/by-tax-number', {
+      params: { taxNumber: taxNumber },
+      context: new HttpContext().set(SKIP_ERROR, skipNotFound ?? false)
+    })
   }
 
   search(req: { page: number; size: number; sort?: string; name?: string; address?: string; activities?: number[] }) {

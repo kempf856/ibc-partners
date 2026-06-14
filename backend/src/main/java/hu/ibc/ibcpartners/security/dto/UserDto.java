@@ -11,7 +11,7 @@ public record UserDto(
         Long id,
         @Email @NotBlank String email,
         @NotBlank String fullName,
-        @NotEmpty String phone,
+        @NotBlank String phone,
         String referralCode,
         @NotEmpty List<Role> roles
 ) {}

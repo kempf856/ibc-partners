@@ -51,13 +51,13 @@
         </div>
 
         <div class="readonly-field">
-          <span class="label">Üzeltkötő</span>
-          <span class="value">{{ applicationDto()?.salesName ? applicationDto()?.salesName : 'nincs' }}</span>
+          <span class="label">Üzletkötő</span>
+          <span class="value">{{ applicationDto()?.salesName ?? 'nincs' }}</span>
         </div>
 
         <div class="readonly-field">
           <span class="label">Ajánlói kód</span>
-          <span class="value">{{ applicationDto()?.referralCode ? applicationDto()?.referralCode : 'nincs' }}</span>
+          <span class="value">{{ applicationDto()?.referralCode ?? 'nincs' }}</span>
         </div>
 
         <div class="readonly-field">
@@ -109,7 +109,7 @@
         <div class="readonly-row">
           <div class="readonly-field">
             <span class="label">Partner kapcsolat</span>
-            <span class="value">{{ membershipLabel(membership()?.role) ?? 'nincs' }}</span>
+            <span class="value">{{ membershipLabel(membership()?.role) || 'nincs' }}</span>
           </div>
         </div>
 
