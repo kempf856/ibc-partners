@@ -3,7 +3,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule, MatLabel} from '@angular/material/input';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {TextFieldModule} from '@angular/cdk/text-field';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
@@ -12,13 +12,15 @@ import {ActivityService} from '../../../core/activity/activity-service';
 import {PartnerService} from '../partner-service';
 import {NotificationService} from '../../../../core/notification/notification';
 import {ApplicationService} from '../../application/application-service';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 
 type Mode = 'view' | 'edit' | 'create';
 
 @Component({
   selector: 'app-partner-edit',
   imports: [
-    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect
+    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect, MatIcon, MatTooltip, RouterLink
   ],
   templateUrl: './partner-edit.html',
   styleUrl: './partner-edit.scss',

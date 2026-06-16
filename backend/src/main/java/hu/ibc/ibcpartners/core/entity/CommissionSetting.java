@@ -1,4 +1,4 @@
-package hu.ibc.ibcpartners.partner.entity;
+package hu.ibc.ibcpartners.core.entity;
 
 import hu.ibc.ibcpartners.common.entity.AuditedEntity;
 import jakarta.persistence.*;
@@ -13,6 +13,21 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommissionSetting extends AuditedEntity {
+
+    public CommissionSetting(CommissionSetting commissionSetting) {
+        this.id = null;
+        this.partnerId = commissionSetting.getPartnerId();
+        this.transactionId = commissionSetting.getTransactionId();
+        this.director1Id = commissionSetting.getDirector1Id();
+        this.director1Percent = commissionSetting.getDirector1Percent();
+        this.director2Id = commissionSetting.getDirector2Id();
+        this.director2Percent = commissionSetting.getDirector2Percent();
+        this.director3Id = commissionSetting.getDirector3Id();
+        this.director3Percent = commissionSetting.getDirector3Percent();
+        this.referralId = commissionSetting.getReferralId();
+        this.referralPercent = commissionSetting.getReferralPercent();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,6 +38,9 @@ public class CommissionSetting extends AuditedEntity {
 
     @Column(name = "transaction_id", unique = true)
     private Long transactionId;
+
+    @Column(name = "partner_percent")
+    private Integer partnerPercent;
 
     @Column(name = "director1_id")
     private Long director1Id;

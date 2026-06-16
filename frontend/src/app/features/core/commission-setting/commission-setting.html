@@ -1,0 +1,95 @@
+<div class="form-page-wrapper mw-md">
+  <div class="page-header">
+    <h1>Jutalék beállítások</h1>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <mat-form-field appearance="outline">
+          <mat-label>Partneri jutalék</mat-label>
+          <input matInput type="number" formControlName="partnerPercent" name="partnerPercent" required/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Direktor 1</mat-label>
+          <mat-select formControlName="director1Id">
+            <mat-option></mat-option>
+            @for (admin of admins.value()?.content; track admin.id) {
+              <mat-option [value]="admin.id">
+                {{ admin.fullName }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Direktor 2</mat-label>
+          <mat-select formControlName="director2Id">
+            <mat-option></mat-option>
+            @for (admin of admins.value()?.content; track admin.id) {
+              <mat-option [value]="admin.id">
+                {{ admin.fullName }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Direktor 3</mat-label>
+          <mat-select formControlName="director3Id">
+            <mat-option></mat-option>
+            @for (admin of admins.value()?.content; track admin.id) {
+              <mat-option [value]="admin.id">
+                {{ admin.fullName }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Üzletkötő</mat-label>
+          <mat-select formControlName="referralId">
+            <mat-option></mat-option>
+            @for (admin of allUsers.value()?.content; track admin.id) {
+              <mat-option [value]="admin.id">
+                {{ admin.fullName }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </section>
+      <section class="form-block">
+        <mat-form-field appearance="outline" style="visibility: hidden">
+          <input matInput />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Direktor 1 jutalék</mat-label>
+          <input matInput type="number" formControlName="director1Percent" name="director1Percent"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Direktor 2 jutalék</mat-label>
+          <input matInput type="number" formControlName="director2Percent" name="director2Percent"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Direktor 3 jutalék</mat-label>
+          <input matInput type="number" formControlName="director3Percent" name="director3Percent"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Üzletkötői jutalék</mat-label>
+          <input matInput type="number" formControlName="referralPercent" name="referralPercent"/>
+        </mat-form-field>
+        <div class="readonly-field">
+          <span class="label">Összes jutalék</span>
+          <span class="value">{{ countCommission() }}</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="form-actions">
+      <button matButton type="button" (click)="cancel()">
+        Mégsem
+      </button>
+
+      <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
+        Mentés
+      </button>
+    </div>
+  </form>
+</div>

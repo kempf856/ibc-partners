@@ -17,6 +17,7 @@ import {PartnerList} from './features/dashboard/partner/partner-list/partner-lis
 import {PartnerEdit} from './features/dashboard/partner/partner-edit/partner-edit';
 import {ActivityList} from './features/core/activity/activity-list';
 import {SettingList} from './features/core/setting/setting-list';
+import {CommissionSetting} from './features/core/commission-setting/commission-setting';
 
 export const routes: Routes = [
   {
@@ -77,6 +78,14 @@ export const routes: Routes = [
           {
             path: 'settings',
             component: SettingList,
+            canActivate: [roleGuard],
+            data: {
+              roles: [Role.ADMIN]
+            }
+          },
+          {
+            path: 'commission-setting',
+            component: CommissionSetting,
             canActivate: [roleGuard],
             data: {
               roles: [Role.ADMIN]

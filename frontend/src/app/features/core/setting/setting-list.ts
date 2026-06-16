@@ -25,6 +25,7 @@ import {NotificationService} from '../../../core/notification/notification';
 import {SettingKey} from '../../../shared/setting-key';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-setting-list',
@@ -49,7 +50,8 @@ import {MatSelect} from '@angular/material/select';
     MatTooltip,
     ReactiveFormsModule,
     MatOption,
-    MatSelect
+    MatSelect,
+    RouterLink
   ],
   templateUrl: './setting-list.html',
   styleUrl: './setting-list.scss',

@@ -30,6 +30,15 @@ export class UserService {
     });
   }
 
+  getAll(role?: string) {
+    return this.getUsers({
+      page: 0,
+      size: 1000,
+      sort: 'full_name,asc',
+      role: role
+    });
+  }
+
   createUser(userDto: UserDto) {
     return this.http.post('/api/users', userDto);
   }
