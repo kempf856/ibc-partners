@@ -12,8 +12,7 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable,
-  MatTableDataSource
+  MatTable
 } from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {TransactionDto} from '../transaction-dto';

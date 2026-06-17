@@ -1,13 +1,19 @@
 package hu.ibc.ibcpartners.partner.service;
 
+import hu.ibc.ibcpartners.common.dto.PageResponse;
 import hu.ibc.ibcpartners.core.entity.CommissionSetting;
 import hu.ibc.ibcpartners.core.service.CommissionSettingService;
+import hu.ibc.ibcpartners.partner.dto.CommissionDto;
 import hu.ibc.ibcpartners.partner.entity.Commission;
 import hu.ibc.ibcpartners.partner.entity.CommissionStatus;
 import hu.ibc.ibcpartners.partner.repository.CommissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +21,11 @@ public class CommissionService {
 
     private final CommissionSettingService commissionSettingService;
     private final CommissionRepository commissionRepository;
+
+    public PageResponse<CommissionDto> search(Long userId, Long transactionId, Pageable pageable) {
+        Page<CommissionDto> commissionPage = commissionRepository.search(userId, transactionId, pageable);
+        return PageResponse.of(commissionPage, Function.identity());
+    }
 
     @Transactional
     public void bookCommission(Long transactionId, Long amount) {

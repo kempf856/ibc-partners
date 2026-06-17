@@ -1,7 +1,7 @@
-import { Routes } from '@angular/router';
-import { Login } from './features/auth/login/login';
-import { Home } from './features/dashboard/home/home';
-import { authGuard } from './core/auth/auth-guard';
+import {Routes} from '@angular/router';
+import {Login} from './features/auth/login/login';
+import {Home} from './features/dashboard/home/home';
+import {authGuard} from './core/auth/auth-guard';
 import {AppShell} from './features/core/app-shell/app-shell';
 import {UserList} from './features/dashboard/user/user-list/user-list';
 import {UserCreate} from './features/dashboard/user/user-create/user-create';
@@ -11,7 +11,6 @@ import {Role} from './shared/role';
 import {Application} from './features/auth/application/application';
 import {ApplicationList} from './features/dashboard/application/application-list/application-list';
 import {ApplicationWorkflow} from './features/dashboard/application/application-workflow/application-workflow';
-import {Profile} from './features/dashboard/user/profile/profile';
 import {ForgottenPassword} from './features/auth/forgotten-password/forgotten-password';
 import {PartnerList} from './features/dashboard/partner/partner-list/partner-list';
 import {PartnerEdit} from './features/dashboard/partner/partner-edit/partner-edit';
@@ -21,6 +20,7 @@ import {CommissionSetting} from './features/core/commission-setting/commission-s
 import {TransactionList} from './features/dashboard/transaction/transaction-list/transaction-list';
 import {TransactionCreate} from './features/dashboard/transaction/transaction-create/transaction-create';
 import {TransactionWorkflow} from './features/dashboard/transaction/transaction-workflow/transaction-workflow';
+import {Profile} from './features/dashboard/user/profile/profile/profile';
 
 export const routes: Routes = [
   {

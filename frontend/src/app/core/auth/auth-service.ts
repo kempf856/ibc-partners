@@ -11,12 +11,14 @@ interface JwtPayload {
   sub: string;
   roles: Role[];
   exp: number;
+  userId: number;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  http = inject(HttpClient);
 
   private tokenKey = 'myIBCtoken';
   private router = inject(Router)
@@ -24,6 +26,7 @@ export class AuthService {
   private token: string | null = null;
   private roles: Role[] = [];
   private exp: number = 0;
+  private userId: number | null = null;
 
   login(username: string, password: string) {
     return this.http.post<any>('/api/auth/login', {
@@ -41,6 +44,7 @@ export class AuthService {
     const decoded = jwtDecode<JwtPayload>(token);
     this.exp = decoded.exp ?? 0;
     this.roles = decoded.roles ?? [];
+    this.userId = decoded.userId ?? null;
   }
 
   register(otp: string, password: string) {
@@ -70,6 +74,10 @@ export class AuthService {
     return roles.some(r => this.roles.includes(r));
   }
 
+  getLoggedInUser() {
+    return this.userId;
+  }
+
   isLoggedIn(): boolean {
     if (!this.token) {
       this.token = this.getToken();
@@ -90,6 +98,4 @@ export class AuthService {
     this.exp = 0;
     this.router.navigate(['/login']);
   }
-
-  constructor(private http: HttpClient) {}
 }
