@@ -101,7 +101,7 @@ export class CommissionSetting {
       this.router.navigate(['/partners/edit', partnerId]);
       return;
     }
-    this.router.navigate(['/settings']);
+    this.router.navigate(['/dashboard']);
   }
 
   protected countCommission() {

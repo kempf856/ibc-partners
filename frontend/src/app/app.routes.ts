@@ -15,7 +15,6 @@ import {ForgottenPassword} from './features/auth/forgotten-password/forgotten-pa
 import {PartnerList} from './features/dashboard/partner/partner-list/partner-list';
 import {PartnerEdit} from './features/dashboard/partner/partner-edit/partner-edit';
 import {ActivityList} from './features/core/activity/activity-list';
-import {SettingList} from './features/core/setting/setting-list';
 import {CommissionSetting} from './features/core/commission-setting/commission-setting';
 import {TransactionList} from './features/dashboard/transaction/transaction-list/transaction-list';
 import {TransactionCreate} from './features/dashboard/transaction/transaction-create/transaction-create';
@@ -92,7 +91,7 @@ export const routes: Routes = [
           },
           {
             path: 'settings',
-            component: SettingList,
+            component: CommissionSetting,
             canActivate: [roleGuard],
             data: {
               roles: [Role.ADMIN]
