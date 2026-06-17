@@ -8,7 +8,8 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
   MatRow,
@@ -17,7 +18,7 @@ import {
 } from '@angular/material/table';
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {MatSort, MatSortHeader, Sort} from '@angular/material/sort';
+import {MatSort, Sort} from '@angular/material/sort';
 import {RouterLink} from '@angular/router';
 import {commissionStatusClass, commissionStatusLabel} from '../../../../../shared/commission-status';
 import {CommissionService} from './commission-service';
@@ -44,7 +45,6 @@ import {CommissionDto} from './commission-dto';
     MatRow,
     MatRowDef,
     MatSort,
-    MatSortHeader,
     MatTable,
     RouterLink,
     MatHeaderCellDef,

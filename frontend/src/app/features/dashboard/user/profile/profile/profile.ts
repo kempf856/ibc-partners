@@ -1,9 +1,6 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {UserService} from '../../user-service';
-import {MatIconButton} from '@angular/material/button';
-import {MatTooltip} from '@angular/material/tooltip';
-import {MatIcon} from '@angular/material/icon';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {ReferralCode} from '../referral-code/referral-code';
 import {CommissionList} from '../commissions/commission-list';
@@ -12,9 +9,6 @@ import {CommissionList} from '../commissions/commission-list';
   selector: 'app-profile',
   imports: [
     ReactiveFormsModule,
-    MatIconButton,
-    MatTooltip,
-    MatIcon,
     MatTab,
     MatTabGroup,
     ReferralCode,
