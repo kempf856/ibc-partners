@@ -39,7 +39,8 @@ export class CommissionSetting {
     id: new FormControl<number>(0, { nonNullable: true }),
     partnerId: new FormControl<number | null>(null),
     transactionId: new FormControl<number | null>(null),
-    partnerPercent: new FormControl<number>(15, { nonNullable: true }),
+    sellerPercent: new FormControl<number>(15, { nonNullable: true }),
+    buyerPercent: new FormControl<number | null>(null),
     director1Id: new FormControl<number | null>(null),
     director1Percent: new FormControl<number | null>(null),
     director2Id: new FormControl<number | null>(null),
@@ -90,6 +91,11 @@ export class CommissionSetting {
   }
 
   cancel() {
+    const transactionId = this.routeParams()?.transactionId;
+    if (transactionId) {
+      this.router.navigate(['/transactions', transactionId]);
+      return;
+    }
     const partnerId = this.routeParams()?.partnerId;
     if (partnerId) {
       this.router.navigate(['/partners/edit', partnerId]);
@@ -100,6 +106,7 @@ export class CommissionSetting {
 
   protected countCommission() {
     return (this.form.controls.director1Percent.value ?? 0) + (this.form.controls.director2Percent.value ?? 0) +
-      (this.form.controls.director3Percent.value ?? 0) + (this.form.controls.referralPercent.value ?? 0);
+      (this.form.controls.director3Percent.value ?? 0) + (this.form.controls.referralPercent.value ?? 0) +
+      (this.form.controls.buyerPercent.value ?? 0);
   }
 }

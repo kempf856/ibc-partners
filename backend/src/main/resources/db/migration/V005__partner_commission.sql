@@ -1,1 +1,0 @@
-ALTER TABLE commission_settings ADD COLUMN partner_percent INTEGER NOT NULL DEFAULT 15;

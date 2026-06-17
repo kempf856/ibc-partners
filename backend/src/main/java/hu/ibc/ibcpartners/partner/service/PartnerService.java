@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PartnerService {
@@ -44,6 +46,10 @@ public class PartnerService {
     public PageResponse<PartnerDto> search(String name, String address, Long[] activityIds, Pageable pageable) {
         Page<Partner> page = partnerRepository.search(name, address, activityIds == null ? new Long[] {} : activityIds, pageable);
         return PageResponse.of(page, partnerMapper::map);
+    }
+
+    public List<PartnerDto> getAll() {
+        return partnerRepository.findAll().stream().map(partnerMapper::map).toList();
     }
 
     @Transactional

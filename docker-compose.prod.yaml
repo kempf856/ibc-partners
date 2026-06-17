@@ -1,4 +1,27 @@
 services:
+  traefik:
+    image: traefik:v3.6
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --certificatesresolvers.letsencrypt.acme.email=${ADMIN_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    restart: unless-stopped
+    networks:
+      - ibcnet
+
   db:
     image: postgres:16
     environment:
@@ -24,16 +47,18 @@ services:
       SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
       APP_FRONTEND_URL: ${FRONTEND_URL}
       APP_ADMIN_EMAIL: ${ADMIN_EMAIL}
-    ports:
-      - "8080:8080"
     restart: unless-stopped
     networks:
       - ibcnet
 
   frontend:
     image: ghcr.io/kempf856/ibcpartners-frontend:latest
-    ports:
-      - "80:80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
+      - traefik.http.services.frontend.loadbalancer.server.port=80
     restart: unless-stopped
     networks:
       - ibcnet

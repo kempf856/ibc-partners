@@ -28,6 +28,7 @@ public class Commission extends AuditedEntity {
     private Long commission;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private CommissionStatus status;
 
 }

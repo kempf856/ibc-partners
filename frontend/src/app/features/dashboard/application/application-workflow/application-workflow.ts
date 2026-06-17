@@ -31,7 +31,9 @@ export class ApplicationWorkflow implements OnInit {
 
   protected readonly applicationStateLabel = applicationStateLabel;
   protected readonly applicationStateClass = applicationStateClass;
+  protected readonly membershipLabel = membershipLabel;
   protected readonly ApplicationState = ApplicationState;
+  protected readonly PartnerMembershipRole = PartnerMembershipRole;
 
   applicationService = inject(ApplicationService);
   userService = inject(UserService);
@@ -148,7 +150,4 @@ export class ApplicationWorkflow implements OnInit {
       this.loadMembership();
     })
   }
-
-  protected readonly PartnerMembershipRole = PartnerMembershipRole;
-  protected readonly membershipLabel = membershipLabel;
 }

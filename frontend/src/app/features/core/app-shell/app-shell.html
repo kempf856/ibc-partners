@@ -11,6 +11,7 @@
     @if (authService.isLoggedIn()) {
       <div class="menu desktop-menu">
         <button matButton routerLink="/partners">Partner adatbázis</button>
+        <button matButton routerLink="/transactions">Ügyletek</button>
         @if (authService.hasRole(Role.ADMIN)) {
           <button matButton routerLink="/applications">Érdeklődők</button>
           <button matButton [matMenuTriggerFor]="adminMenu">Admin</button>
@@ -35,6 +36,7 @@
 
         <mat-menu #mobileMenu="matMenu">
           <button mat-menu-item routerLink="/partners">Partner adatbázis</button>
+          <button mat-menu-item routerLink="/transactions">Ügyletek</button>
           @if (authService.hasRole(Role.ADMIN)) {
             <button mat-menu-item routerLink="/applications">Érdeklődők</button>
             <button mat-menu-item routerLink="/users">Felhasználók</button>

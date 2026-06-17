@@ -3,7 +3,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule, MatLabel} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
-import {ALL_ROLES, roleLabel} from '../../../../shared/role-labels';
+import {ALL_ROLES, roleLabel} from '../../../../shared/role';
 import {UserService} from '../user-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../../../core/notification/notification';

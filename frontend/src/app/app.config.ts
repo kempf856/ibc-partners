@@ -6,12 +6,15 @@ import { authInterceptor} from './core/auth/auth-interceptor';
 import {MatPaginatorIntl} from '@angular/material/paginator';
 import {HungarianPaginatorIntl} from './core/hungarian/hungarian-paginator-intl';
 import {errorInterceptor} from './core/notification/error-interceptor';
+import {MAT_DATE_LOCALE, provideNativeDateAdapter} from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
-    { provide: MatPaginatorIntl, useClass: HungarianPaginatorIntl }
+    { provide: MatPaginatorIntl, useClass: HungarianPaginatorIntl },
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'hu-HU' },
   ]
 };

@@ -30,6 +30,9 @@ public class Transaction extends AuditedEntity {
     @Column(name = "buyer_id", nullable = false)
     private Long buyerId;
 
+    @Column(name = "invoice_number")
+    private String invoiceNumber;
+
     @Column(name = "amount", nullable = false)
     private Long amount;
 
@@ -46,5 +49,6 @@ public class Transaction extends AuditedEntity {
     private Instant buyerApproved;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
 }

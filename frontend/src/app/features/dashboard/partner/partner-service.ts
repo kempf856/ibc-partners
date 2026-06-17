@@ -48,6 +48,10 @@ export class PartnerService {
     return this.http.get<PageResponse<PartnerDto>>('/api/partners', { params });
   }
 
+  getAll() {
+    return this.http.get<PartnerDto[]>('/api/partners/all');
+  }
+
   findMembership(userId?: number, partnerId?: number) {
     const params: any = {
       userId: userId,

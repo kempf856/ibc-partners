@@ -12,4 +12,3 @@ public interface PartnerMapper {
     PartnerDto map(Partner partner);
     void map(PartnerDto dto, @MappingTarget Partner partner);
 }
-

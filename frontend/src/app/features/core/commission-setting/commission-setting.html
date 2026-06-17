@@ -3,12 +3,17 @@
     <h1>Jutalék beállítások</h1>
   </div>
 
+  <div class="readonly-field">
+    <span class="label">Jutalék szint</span>
+    <span class="value">{{ commissionSetting.value()?.transactionId ? 'Ügylet' : commissionSetting.value()?.partnerId ? 'Partner' : 'myIBC' }}</span>
+  </div>
+
   <form [formGroup]="form">
     <div class="form-page">
       <section class="form-block">
         <mat-form-field appearance="outline">
           <mat-label>Partneri jutalék</mat-label>
-          <input matInput type="number" formControlName="partnerPercent" name="partnerPercent" required/>
+          <input matInput type="number" formControlName="sellerPercent" required/>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Direktor 1</mat-label>
@@ -56,24 +61,25 @@
         </mat-form-field>
       </section>
       <section class="form-block">
-        <mat-form-field appearance="outline" style="visibility: hidden">
-          <input matInput />
+        <mat-form-field appearance="outline">
+          <mat-label>Vevő kedvezmény</mat-label>
+          <input matInput type="number" formControlName="buyerPercent"/>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Direktor 1 jutalék</mat-label>
-          <input matInput type="number" formControlName="director1Percent" name="director1Percent"/>
+          <input matInput type="number" formControlName="director1Percent"/>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Direktor 2 jutalék</mat-label>
-          <input matInput type="number" formControlName="director2Percent" name="director2Percent"/>
+          <input matInput type="number" formControlName="director2Percent"/>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Direktor 3 jutalék</mat-label>
-          <input matInput type="number" formControlName="director3Percent" name="director3Percent"/>
+          <input matInput type="number" formControlName="director3Percent"/>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Üzletkötői jutalék</mat-label>
-          <input matInput type="number" formControlName="referralPercent" name="referralPercent"/>
+          <input matInput type="number" formControlName="referralPercent"/>
         </mat-form-field>
         <div class="readonly-field">
           <span class="label">Összes jutalék</span>

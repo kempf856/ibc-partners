@@ -1,0 +1,63 @@
+<div class="form-page-wrapper mw-sm">
+  <div class="page-header">
+    <h1>Ügylet rögzítés</h1>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <mat-form-field appearance="outline">
+          <mat-label>Eladó</mat-label>
+          <input type="text" matInput [formControl]="sellerSearch" [matAutocomplete]="autoSeller" required/>
+          <mat-autocomplete #autoSeller="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedSeller($event.option.value)">
+            @for (partner of filteredSellers(); track partner.id) {
+              <mat-option [value]="partner">{{ partner.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Vevő</mat-label>
+          <input type="text" matInput [formControl]="buyerSearch" [matAutocomplete]="autoBuyer" required/>
+          <mat-autocomplete #autoBuyer="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedBuyer($event.option.value)">
+            @for (partner of filteredBuyers(); track partner.id) {
+              <mat-option [value]="partner">{{ partner.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Bizonylat száma</mat-label>
+          <input matInput formControlName="invoiceNumber"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Összeg</mat-label>
+          <input matInput formControlName="amount" name="amount" required/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Megnevezés</mat-label>
+          <input matInput formControlName="description"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teljesítés dátuma</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fulfillmentDate"/>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </section>
+    </div>
+
+    <div class="form-actions">
+      <button matButton type="button" (click)="cancel()">
+        Mégsem
+      </button>
+
+      <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
+        Mentés
+      </button>
+    </div>
+  </form>
+</div>

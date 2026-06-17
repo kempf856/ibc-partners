@@ -1,5 +1,8 @@
 kind: Application
 
+server:
+  forward-headers-strategy: framework
+
 spring:
   application:
     name: IBC Partners

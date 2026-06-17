@@ -26,6 +26,7 @@ public class CommissionSetting extends AuditedEntity {
         this.director3Percent = commissionSetting.getDirector3Percent();
         this.referralId = commissionSetting.getReferralId();
         this.referralPercent = commissionSetting.getReferralPercent();
+        this.sellerPercent = commissionSetting.getSellerPercent();
     }
 
     @Id
@@ -39,8 +40,11 @@ public class CommissionSetting extends AuditedEntity {
     @Column(name = "transaction_id", unique = true)
     private Long transactionId;
 
-    @Column(name = "partner_percent")
-    private Integer partnerPercent;
+    @Column(name = "seller_percent", nullable = false)
+    private Integer sellerPercent;
+
+    @Column(name = "buyer_percent")
+    private Integer buyerPercent;
 
     @Column(name = "director1_id")
     private Long director1Id;

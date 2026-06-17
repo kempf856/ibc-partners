@@ -8,7 +8,7 @@
       <section class="form-block">
         <mat-form-field appearance="outline">
           <mat-label>E-mail</mat-label>
-          <input matInput formControlName="email" name="email" required email/>
+          <input matInput formControlName="email" required email/>
           @if (email.hasError('email') && email.touched) {
             <mat-error>
               Hibás e-mail cím formátum
@@ -18,17 +18,17 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Teljes név</mat-label>
-          <input matInput formControlName="fullName" name="fullName" required/>
+          <input matInput formControlName="fullName" required/>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Telefonszám</mat-label>
-          <input matInput formControlName="phone" name="phone" required/>
+          <input matInput formControlName="phone" required/>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Szerepkörök</mat-label>
-          <mat-select formControlName="roles" name="roles" multiple required>
+          <mat-select formControlName="roles" multiple required>
             @for (role of ALL_ROLES; track role) {
               <mat-option [value]="role">
                 {{ roleLabel(role) }}

@@ -19,13 +19,14 @@
 
 html {
   height: 100%;
+  font-size: 14px;
   @include mat.theme((
     color: (
       primary: mat.$azure-palette,
       tertiary: mat.$violet-palette,
     ),
     typography: Roboto,
-    density: -3,
+    density: -1,
   ));
 }
 

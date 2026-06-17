@@ -11,6 +11,7 @@ CREATE TABLE transactions (
     amount INTEGER NOT NULL,
     description TEXT,
     fulfillment_date DATE,
+    invoice_number TEXT,
     seller_approved TIMESTAMP WITH TIME ZONE,
     buyer_approved TIMESTAMP WITH TIME ZONE,
     status TEXT NOT NULL,
@@ -20,7 +21,7 @@ CREATE TABLE transactions (
     modified_by INTEGER,
     FOREIGN KEY (seller_id) REFERENCES partners(id),
     FOREIGN KEY (buyer_id) REFERENCES partners(id),
-    CHECK (status IN ('PENDING', 'APPROVED', 'PAID', 'ACCOUNTED'))
+    CHECK (status IN ('PENDING', 'APPROVED', 'ACCOUNTED'))
 );
 
 CREATE TABLE discounts (
@@ -42,6 +43,8 @@ CREATE TABLE commission_settings (
     id SERIAL PRIMARY KEY,
     partner_id INTEGER UNIQUE,
     transaction_id INTEGER UNIQUE,
+    seller_percent INTEGER NOT NULL,
+    buyer_percent INTEGER,
     director1_id INTEGER,
     director1_percent INTEGER,
     director2_id INTEGER,

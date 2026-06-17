@@ -1,0 +1,108 @@
+<div class="form-page-wrapper mw-md">
+  <div class="page-header">
+    <h1>Ügylet</h1>
+    <button mat-icon-button matTooltip="Jutalék beállítások" routerLink="/commission-setting" [queryParams]="{ transactionId: form.controls.id.value }">
+      <mat-icon>paid</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <mat-form-field appearance="fill">
+          <mat-label>Eladó</mat-label>
+          <input type="text" matInput [formControl]="sellerSearch" [matAutocomplete]="autoSeller" required readonly/>
+          <mat-autocomplete #autoSeller="matAutocomplete" (optionSelected)="onSelectedSeller($event.option.value)">
+            @for (partner of filteredSellers(); track partner.id) {
+              <mat-option [value]="partner">{{ partner.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Vevő</mat-label>
+          <input type="text" matInput [formControl]="buyerSearch" [matAutocomplete]="autoBuyer" required readonly/>
+          <mat-autocomplete #autoBuyer="matAutocomplete" (optionSelected)="onSelectedBuyer($event.option.value)">
+            @for (partner of filteredBuyers(); track partner.id) {
+              <mat-option [value]="partner">{{ partner.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Bizonylat száma</mat-label>
+          <input matInput formControlName="invoiceNumber" readonly/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Összeg</mat-label>
+          <input matInput formControlName="amount" name="amount" required readonly/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Megnevezés</mat-label>
+          <input matInput formControlName="description" readonly/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Teljesítés dátuma</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fulfillmentDate" readonly/>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </section>
+
+      <section class="form-block">
+        <div class="readonly-field">
+          <span class="label">Státusz</span>
+          <span class="value">
+            <mat-chip-set>
+              <mat-chip [class]="transactionStatusClass(transactionDto.value()?.status)">
+                {{ transactionStatusLabel(transactionDto.value()?.status) }}
+              </mat-chip>
+            </mat-chip-set>
+          </span>
+        </div>
+
+        <div class="readonly-row">
+          <div class="readonly-field">
+            <span class="label">Eladói jóváhagyás</span>
+            @if (transactionDto.value()?.sellerApproved; as approved) {
+              <span class="value">{{ approved | date:'yyyy.MM.dd HH:mm' }}</span>
+            } @else {
+              <span class="value">nincs</span>
+            }
+          </div>
+          @if (transactionDto.value()?.status === TransactionStatus.PENDING && !transactionDto.value()?.sellerApproved) {
+            <div>
+              <button matButton="tonal" (click)="sellerApprove()">Jóváhagyás</button>
+            </div>
+          }
+        </div>
+
+        <div class="readonly-row">
+          <div class="readonly-field">
+            <span class="label">Vevői jóváhagyás</span>
+            @if (transactionDto.value()?.buyerApproved; as approved) {
+              <span class="value">{{ approved | date:'yyyy.MM.dd HH:mm' }}</span>
+            } @else {
+              <span class="value">nincs</span>
+            }
+          </div>
+          @if (transactionDto.value()?.status === TransactionStatus.PENDING && !transactionDto.value()?.buyerApproved) {
+            <div>
+              <button matButton="tonal" (click)="buyerApprove()">Jóváhagyás</button>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+
+    <div class="form-actions">
+      <button matButton type="button" (click)="cancel()">Mégsem</button>
+      @if (transactionDto.value()?.status === TransactionStatus.APPROVED) {
+        <button matButton="elevated" (click)="book()">Elszámolás</button>
+      }
+    </div>
+  </form>
+</div>

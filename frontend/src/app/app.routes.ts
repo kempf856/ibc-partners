@@ -18,6 +18,9 @@ import {PartnerEdit} from './features/dashboard/partner/partner-edit/partner-edi
 import {ActivityList} from './features/core/activity/activity-list';
 import {SettingList} from './features/core/setting/setting-list';
 import {CommissionSetting} from './features/core/commission-setting/commission-setting';
+import {TransactionList} from './features/dashboard/transaction/transaction-list/transaction-list';
+import {TransactionCreate} from './features/dashboard/transaction/transaction-create/transaction-create';
+import {TransactionWorkflow} from './features/dashboard/transaction/transaction-workflow/transaction-workflow';
 
 export const routes: Routes = [
   {
@@ -65,6 +68,18 @@ export const routes: Routes = [
             children: [
               { path: '', component: ApplicationList },
               { path: ':id', component: ApplicationWorkflow },
+            ]
+          },
+          {
+            path: 'transactions',
+            canActivateChild: [roleGuard],
+            data: {
+              roles: [Role.ADMIN]
+            },
+            children: [
+              { path: '', component: TransactionList },
+              { path: 'create', component: TransactionCreate },
+              { path: ':id', component: TransactionWorkflow },
             ]
           },
           {

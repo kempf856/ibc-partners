@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -34,7 +35,7 @@ public class PartnerController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public ResponseEntity<PartnerDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(partnerService.getById(id));
     }
@@ -58,6 +59,11 @@ public class PartnerController {
         }
 
         return ResponseEntity.ok(partnerService.search(name, address, activityIds, pageable));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<PartnerDto>> getAll() {
+        return ResponseEntity.ok(partnerService.getAll());
     }
 }
 

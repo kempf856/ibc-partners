@@ -24,7 +24,7 @@ public class CommissionSettingService {
         return commissionSettingMapper.map(findByIds(partnerId, transactionId));
     }
 
-    private CommissionSetting findByIds(Long partnerId, Long transactionId) {
+    public CommissionSetting findByIds(Long partnerId, Long transactionId) {
         return commissionSettingRepository.findByIds(partnerId, transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Jutalék beállítás nem található a partherhez [" + partnerId + "] és ügylethez [" + transactionId + "]"));
     }
@@ -42,14 +42,16 @@ public class CommissionSettingService {
     public void createForTransaction(Long partnerId, Long transactionId) {
         CommissionSetting globalSetting = findByIds(partnerId, null);
         CommissionSetting partnerSetting = new CommissionSetting(globalSetting);
+        partnerSetting.setPartnerId(null);
         partnerSetting.setTransactionId(transactionId);
         commissionSettingRepository.save(partnerSetting);
     }
 
     @Transactional
     public void update(CommissionSettingDto dto) {
-        if (nvl(dto.director1Percent()) + nvl(dto.director2Percent()) + nvl(dto.director3Percent()) + nvl(dto.referralPercent()) > 100) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A jutalékok összege nem lehet nagyobb, mint 100%!");
+        if (nvl(dto.director1Percent()) + nvl(dto.director2Percent()) + nvl(dto.director3Percent()) + nvl(dto.referralPercent()) +
+                nvl(dto.buyerPercent()) > dto.sellerPercent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A jutalékok összege nem lehet nagyobb a Partneri jutaléknál!");
         }
 
         CommissionSetting setting = findByIds(dto.partnerId(), dto.transactionId());
@@ -68,9 +70,11 @@ public class CommissionSettingService {
         }
 
         CommissionSetting setting = new CommissionSetting();
+        setting.setSellerPercent(15);
+        setting.setBuyerPercent(5);
         setting.setDirector1Id(1L);
-        setting.setDirector1Percent(80);
-        setting.setReferralPercent(10);
+        setting.setDirector1Percent(8);
+        setting.setReferralPercent(1);
         commissionSettingRepository.save(setting);
     }
 }

@@ -15,7 +15,7 @@ import {
   MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
   MatTable, MatTableDataSource
 } from '@angular/material/table';
-import {ALL_ROLES, roleLabel} from '../../../../shared/role-labels';
+import {ALL_ROLES, roleLabel} from '../../../../shared/role';
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';

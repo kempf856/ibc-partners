@@ -1,0 +1,75 @@
+<div class="single-page-wrapper mw-md">
+  <div class="page-header">
+    <h1>Ügyletek</h1>
+  </div>
+
+  <div class="filters-bar">
+    <div class="filters">
+      <mat-form-field appearance="outline" style="visibility: hidden">
+        <input matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="list-actions">
+      <button matButton="elevated" routerLink="/transactions/create">
+        Új ügylet
+      </button>
+    </div>
+  </div>
+
+  <table mat-table [dataSource]="transactions()" matSort (matSortChange)="onSort($event)">
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Megnevezés</th>
+      <td mat-cell *matCellDef="let transaction">{{ transaction.description }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="sellerName">
+      <th mat-header-cell *matHeaderCellDef>Eladó</th>
+      <td mat-cell *matCellDef="let transaction">{{ transaction.sellerName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="buyerName">
+      <th mat-header-cell *matHeaderCellDef>Vevő</th>
+      <td mat-cell *matCellDef="let transaction">{{ transaction.buyerName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef>Összeg</th>
+      <td mat-cell *matCellDef="let transaction">{{ transaction.amount | number:'1.0-0' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Státusz</th>
+      <td mat-cell *matCellDef="let transaction">
+        <mat-chip-set>
+          <mat-chip [class]="transactionStatusClass(transaction.status)">
+            {{ transactionStatusLabel(transaction.status) }}
+          </mat-chip>
+        </mat-chip-set>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+
+      <td mat-cell *matCellDef="let transaction">
+        <button mat-icon-button matTooltip="Megtekintés" [routerLink]="['/transactions', transaction.id]">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['description', 'sellerName', 'buyerName', 'amount', 'status', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['description', 'sellerName', 'buyerName', 'amount', 'status', 'actions']"></tr>
+
+  </table>
+
+  <mat-paginator
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    [pageSizeOptions]="[10, 20, 50]"
+    (page)="onPage($event)">
+  </mat-paginator>
+</div>

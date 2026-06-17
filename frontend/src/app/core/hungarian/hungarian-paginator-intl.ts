@@ -9,4 +9,15 @@ export class HungarianPaginatorIntl extends MatPaginatorIntl {
   override previousPageLabel = 'Előző oldal';
   override firstPageLabel = 'Első oldal';
   override lastPageLabel = 'Utolsó oldal';
+
+  override getRangeLabel = (page: number, pageSize: number, length: number) => {
+    if (length === 0) {
+      return `0 / 0`;
+    }
+
+    const start = page * pageSize;
+    const end = Math.min(start + pageSize, length);
+
+    return `${start + 1} – ${end} / ${length}`;
+  };
 }
