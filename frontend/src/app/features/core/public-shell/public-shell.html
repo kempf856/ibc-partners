@@ -1,0 +1,26 @@
+<div class="shell">
+
+  <!-- TOP BAR -->
+  <mat-toolbar class="topbar">
+    <div class="brand">
+      <a routerLink="/public/login">
+        <img src="/myibc_logo.png" alt="myIBC"/>
+      </a>
+    </div>
+  </mat-toolbar>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <mat-toolbar class="bottombar">
+    <div class="menu">
+      <button matButton routerLink="/aszf">ÁSZF</button>
+      <button matButton routerLink="/gdpr">Adatkezelés nyilatkozat</button>
+      <button matButton routerLink="/info">Általános információk</button>
+    </div>
+  </mat-toolbar>
+
+</div>

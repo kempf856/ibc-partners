@@ -1,12 +1,9 @@
 package hu.ibc.ibcpartners.partner.service;
 
-import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.partner.dto.ActivityDto;
-import hu.ibc.ibcpartners.partner.dto.PartnerDto;
 import hu.ibc.ibcpartners.partner.entity.Activity;
-import hu.ibc.ibcpartners.partner.entity.Partner;
 import hu.ibc.ibcpartners.partner.mapper.ActivityMapper;
-import hu.ibc.ibcpartners.partner.mapper.PartnerMapper;
 import hu.ibc.ibcpartners.partner.repository.ActivityRepository;
 import hu.ibc.ibcpartners.partner.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

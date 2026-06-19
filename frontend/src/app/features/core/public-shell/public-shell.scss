@@ -28,10 +28,6 @@
   gap: 8px;
 }
 
-.logout {
-  margin-left: auto;
-}
-
 /* CONTENT */
 .content {
   flex: 1;
@@ -47,20 +43,4 @@
   left: 0;
   right: 0;
   z-index: 1000;
-}
-
-.mobile-menu {
-  display: none;
-  margin-left: auto;
-}
-
-@media (max-width: 1000px) {
-
-  .desktop-menu {
-    display: none;
-  }
-
-  .mobile-menu {
-    display: block;
-  }
 }

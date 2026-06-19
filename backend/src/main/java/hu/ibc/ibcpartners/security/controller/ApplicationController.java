@@ -1,6 +1,6 @@
 package hu.ibc.ibcpartners.security.controller;
 
-import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.security.dto.ApplicationComment;
 import hu.ibc.ibcpartners.security.dto.ApplicationDto;
 import hu.ibc.ibcpartners.security.entity.ApplicationState;

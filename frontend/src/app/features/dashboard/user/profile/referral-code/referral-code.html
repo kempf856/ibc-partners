@@ -12,8 +12,8 @@
       <div class="readonly-field">
         <span class="label">Ajánló link</span>
         <span class="value">
-          <a [href]="fullUrl()" target="_blank">
-            {{ fullUrl() }}
+          <a [href]="fullUrl()" target="_blank" matTooltip="{{ fullUrl() }}">
+            {{ shortUrl() }}
           </a>
 
           <button

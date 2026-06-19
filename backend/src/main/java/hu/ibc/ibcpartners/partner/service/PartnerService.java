@@ -1,6 +1,6 @@
 package hu.ibc.ibcpartners.partner.service;
 
-import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.core.service.CommissionSettingService;
 import hu.ibc.ibcpartners.partner.dto.PartnerDto;
 import hu.ibc.ibcpartners.partner.entity.Partner;

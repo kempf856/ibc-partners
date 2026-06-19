@@ -99,6 +99,6 @@ export class AuthService {
     this.token = null;
     this.roles = [];
     this.exp = 0;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/public/login']);
   }
 }

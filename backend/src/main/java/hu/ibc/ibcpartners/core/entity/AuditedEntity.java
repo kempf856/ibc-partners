@@ -1,4 +1,4 @@
-package hu.ibc.ibcpartners.common.entity;
+package hu.ibc.ibcpartners.core.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

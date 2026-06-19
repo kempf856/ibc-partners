@@ -1,6 +1,6 @@
 package hu.ibc.ibcpartners.security.controller;
 
-import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.security.dto.UserDto;
 import hu.ibc.ibcpartners.security.entity.Role;
 import hu.ibc.ibcpartners.security.service.UserService;
@@ -26,6 +26,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getLoggedInUser());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/by-email")
     public ResponseEntity<UserDto> findByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.findByEmail(email));

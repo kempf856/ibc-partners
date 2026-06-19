@@ -52,6 +52,6 @@ export class Application {
   }
 
   cancel() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/public/login']);
   }
 }

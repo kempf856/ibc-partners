@@ -1,6 +1,6 @@
 package hu.ibc.ibcpartners.security.service;
 
-import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.notification.service.EmailService;
 import hu.ibc.ibcpartners.notification.service.EmailTemplate;
 import hu.ibc.ibcpartners.security.dto.OtpRequest;
@@ -96,7 +96,7 @@ public class UserService implements UserDetailsService {
         user.get().setOneTimePassword(oneTimePassword);
         userRepository.save(user.get());
 
-        String link = frontendUrl + "/change-password?otp=" + oneTimePassword;
+        String link = frontendUrl + "/public/change-password?otp=" + oneTimePassword;
         emailService.sendEmail(email, template, Map.of("name", user.get().getFullName(), "link", link));
     }
 

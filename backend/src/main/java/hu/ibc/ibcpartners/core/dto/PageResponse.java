@@ -1,4 +1,4 @@
-package hu.ibc.ibcpartners.common.dto;
+package hu.ibc.ibcpartners.core.dto;
 
 import org.springframework.data.domain.Page;
 

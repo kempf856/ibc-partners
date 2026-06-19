@@ -22,7 +22,10 @@ export class ReferralCode implements OnInit {
 
   referralCode = signal('');
   fullUrl = computed(() =>
-    `${window.location.origin}/applicant/${this.referralCode()}`
+    `${window.location.origin}/public/applicant/${this.referralCode()}`
+  );
+  shortUrl = computed(() =>
+    `${window.location.origin}/.../${this.referralCode()}`
   );
   qrUrl = computed(() =>
     `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(this.fullUrl())}`

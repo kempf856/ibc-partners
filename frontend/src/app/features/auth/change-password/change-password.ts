@@ -78,7 +78,7 @@ export class ChangePassword implements OnInit {
   submit() {
     this.authService.register(this.otp, this.form.value.password!).subscribe(() => {
       this.notification.success('Új jelszó beállítása sikeres');
-      this.router.navigate(['/login']);
+      this.router.navigate(['/public/login']);
     });
   }
 

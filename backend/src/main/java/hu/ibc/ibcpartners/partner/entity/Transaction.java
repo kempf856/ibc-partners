@@ -1,14 +1,11 @@
 package hu.ibc.ibcpartners.partner.entity;
 
-import hu.ibc.ibcpartners.common.entity.AuditedEntity;
+import hu.ibc.ibcpartners.core.entity.AuditedEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "transactions")

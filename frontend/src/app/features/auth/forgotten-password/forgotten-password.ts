@@ -39,6 +39,6 @@ export class ForgottenPassword {
   }
 
   cancel() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/public/login']);
   }
 }

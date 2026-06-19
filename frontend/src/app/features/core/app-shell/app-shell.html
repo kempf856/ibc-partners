@@ -25,18 +25,24 @@
 
     @if (authService.isLoggedIn()) {
       <div class="menu desktop-menu">
-        <button matButton routerLink="/partners">Partner adatbázis</button>
-        <button matButton routerLink="/transactions">Ügyletek</button>
-        @if (authService.hasRole(Role.ADMIN)) {
+        @if (authService.hasAnyRole(Role.ADMIN, Role.SALES)) {
           <button matButton routerLink="/applications">Érdeklődők</button>
-          <button matButton [matMenuTriggerFor]="adminMenu">Admin</button>
+        }
 
+        <button matButton>Partner adatbázis</button>
+        <button matButton>Ügyleteim</button>
+
+        @if (authService.hasRole(Role.ADMIN)) {
+          <button matButton [matMenuTriggerFor]="adminMenu">Admin</button>
           <mat-menu #adminMenu="matMenu">
+            <button mat-menu-item routerLink="/partners">Partnerkezelő</button>
+            <button mat-menu-item routerLink="/transactions">Ügyletkezelő</button>
             <button mat-menu-item routerLink="/users">Felhasználók</button>
-            <button mat-menu-item routerLink="/activities">Tevékenységek</button>
             <button mat-menu-item routerLink="/settings">Jutalék beállítások</button>
+            <button mat-menu-item routerLink="/activities">Tevékenységek</button>
           </mat-menu>
         }
+
         <button matButton routerLink="/profile">Saját fiók</button>
       </div>
 
@@ -50,13 +56,19 @@
         </button>
 
         <mat-menu #mobileMenu="matMenu">
-          <button mat-menu-item routerLink="/partners">Partner adatbázis</button>
-          <button mat-menu-item routerLink="/transactions">Ügyletek</button>
-          @if (authService.hasRole(Role.ADMIN)) {
+          @if (authService.hasAnyRole(Role.ADMIN, Role.SALES)) {
             <button mat-menu-item routerLink="/applications">Érdeklődők</button>
+          }
+
+          <button mat-menu-item>Partner adatbázis</button>
+          <button mat-menu-item>Ügyleteim</button>
+
+          @if (authService.hasRole(Role.ADMIN)) {
+            <button mat-menu-item routerLink="/partners">Partnerkezelő</button>
+            <button mat-menu-item routerLink="/transactions">Ügyletkezelő</button>
             <button mat-menu-item routerLink="/users">Felhasználók</button>
-            <button mat-menu-item routerLink="/activities">Tevékenységek</button>
             <button mat-menu-item routerLink="/settings">Jutalék beállítások</button>
+            <button mat-menu-item routerLink="/activities">Tevékenységek</button>
           }
           <button mat-menu-item routerLink="/profile">Saját fiók</button>
 

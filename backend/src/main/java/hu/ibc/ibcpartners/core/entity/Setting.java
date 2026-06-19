@@ -1,6 +1,5 @@
 package hu.ibc.ibcpartners.core.entity;
 
-import hu.ibc.ibcpartners.common.entity.AuditedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

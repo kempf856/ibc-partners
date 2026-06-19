@@ -1,6 +1,6 @@
 package hu.ibc.ibcpartners.core.service;
 
-import hu.ibc.ibcpartners.common.dto.PageResponse;
+import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.core.dto.SettingDto;
 import hu.ibc.ibcpartners.core.entity.Setting;
 import hu.ibc.ibcpartners.core.entity.SettingKey;

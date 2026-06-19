@@ -5,6 +5,7 @@ import hu.ibc.ibcpartners.partner.service.PartnerMembershipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,18 +18,21 @@ public class PartnerMembershipController {
     private final PartnerMembershipService partnerMembershipService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> create(@RequestBody PartnerMembershipDto req) {
         partnerMembershipService.create(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         partnerMembershipService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<PartnerMembershipDto>> findByIds(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long partnerId) {
         return ResponseEntity.ok(partnerMembershipService.findByIds(userId, partnerId));
     }
