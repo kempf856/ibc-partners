@@ -96,3 +96,12 @@ body {
     background-color: var(--mat-sys-surface-container)
   }
 }
+
+.partner-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+.partner-field {
+  @include mat.form-field-overrides((
+    filled-container-color: var(--mat-sys-surface),
+  ));
+}

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,5 +26,10 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
         SELECT EXISTS (SELECT 1 FROM partners p WHERE :activityId = ANY(p.activities))
         """, nativeQuery = true)
     boolean activityExists(Long activityId);
+
+    @Query(value = """
+        SELECT p from Partner p JOIN PartnerMembership pm ON p.id = pm.partnerId WHERE pm.userId = :userId
+        """)
+    List<Partner> findByUserId(Long userId);
 }
 

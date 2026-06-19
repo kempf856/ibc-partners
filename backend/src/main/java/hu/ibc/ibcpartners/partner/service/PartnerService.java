@@ -52,6 +52,10 @@ public class PartnerService {
         return partnerRepository.findAll().stream().map(partnerMapper::map).toList();
     }
 
+    public List<PartnerDto> findByUserId(Long userId) {
+        return partnerRepository.findByUserId(userId).stream().map(partnerMapper::map).toList();
+    }
+
     @Transactional
     public void update(PartnerDto dto) {
         Partner partner = findById(dto.id());

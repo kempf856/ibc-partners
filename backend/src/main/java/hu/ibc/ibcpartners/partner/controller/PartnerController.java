@@ -3,6 +3,7 @@ package hu.ibc.ibcpartners.partner.controller;
 import hu.ibc.ibcpartners.common.dto.PageResponse;
 import hu.ibc.ibcpartners.partner.dto.PartnerDto;
 import hu.ibc.ibcpartners.partner.service.PartnerService;
+import hu.ibc.ibcpartners.security.service.AuthHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -64,6 +65,11 @@ public class PartnerController {
     @GetMapping("/all")
     public ResponseEntity<List<PartnerDto>> getAll() {
         return ResponseEntity.ok(partnerService.getAll());
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<PartnerDto>> getActive() {
+        return ResponseEntity.ok(partnerService.findByUserId(AuthHelper.getUserId()));
     }
 }
 

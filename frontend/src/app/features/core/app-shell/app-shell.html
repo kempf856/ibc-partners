@@ -8,6 +8,21 @@
       </a>
     </div>
 
+    @if (activePartnerService.activePartnerId()) {
+      <div>
+        <mat-form-field class="partner-field">
+          <mat-label>Aktív partner</mat-label>
+          <mat-select
+            [value]="activePartnerService.activePartnerId()"
+            (selectionChange)="activePartnerService.setActivePartner($event.value)">
+            @for (partner of activePartnerService.partners(); track partner.id) {
+              <mat-option [value]="partner.id">{{ partner.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    }
+
     @if (authService.isLoggedIn()) {
       <div class="menu desktop-menu">
         <button matButton routerLink="/partners">Partner adatbázis</button>

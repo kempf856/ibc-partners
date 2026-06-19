@@ -6,6 +6,7 @@ import {jwtDecode} from 'jwt-decode';
 import {Role} from '../../shared/role';
 import {ApplicationRequest} from '../../features/auth/application/application-request';
 import {ForgottanPasswordRequest} from '../../features/auth/forgotten-password/forgotten-password-request';
+import {ActivePartnerService} from './active-partner-service';
 
 interface JwtPayload {
   sub: string;
@@ -19,6 +20,7 @@ interface JwtPayload {
 })
 export class AuthService {
   http = inject(HttpClient);
+  activePartnerService = inject(ActivePartnerService);
 
   private tokenKey = 'myIBCtoken';
   private router = inject(Router)
@@ -45,6 +47,7 @@ export class AuthService {
     this.exp = decoded.exp ?? 0;
     this.roles = decoded.roles ?? [];
     this.userId = decoded.userId ?? null;
+    this.activePartnerService.loadActivePartners();
   }
 
   register(otp: string, password: string) {
