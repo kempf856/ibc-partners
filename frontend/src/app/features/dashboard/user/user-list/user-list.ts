@@ -19,6 +19,8 @@ import {ALL_ROLES, roleLabel} from '../../../../shared/role';
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-user-list',
@@ -44,7 +46,9 @@ import {RouterLink} from '@angular/router';
     MatChip,
     MatChipSet,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    MatIcon,
+    MatTooltip
   ],
   templateUrl: './user-list.html',
   styleUrl: './user-list.scss',

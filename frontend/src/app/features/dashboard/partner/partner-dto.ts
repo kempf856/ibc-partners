@@ -1,10 +1,10 @@
 export interface PartnerDto {
-  id?: number;
+  id: number;
   taxNumber: string;
   name: string;
   headquarters: string;
-  site?: string;
-  phone?: string;
-  website?: string;
+  site: string | null;
+  phone: string | null;
+  website: string | null;
   activities: number[];
 }

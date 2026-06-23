@@ -24,9 +24,13 @@ public class Discount extends AuditedEntity {
     @Column(name = "buyer_id", nullable = false)
     private Long buyerId;
 
+    @Column(name = "transaction_id", nullable = false)
+    private Long transactionId;
+
     @Column(name = "discount", nullable = false)
     private Long discount;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private DiscountStatus status;
 }

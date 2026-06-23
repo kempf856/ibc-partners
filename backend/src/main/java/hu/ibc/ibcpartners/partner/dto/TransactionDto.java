@@ -18,6 +18,8 @@ public record TransactionDto(
         LocalDate fulfillmentDate,
         Instant sellerApproved,
         Instant buyerApproved,
-        TransactionStatus status
+        TransactionStatus status,
+        Instant createdAt,
+        Instant modifiedAt
 ) {
 }

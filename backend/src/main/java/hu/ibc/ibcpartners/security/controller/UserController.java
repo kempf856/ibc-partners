@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/users")
@@ -44,4 +47,21 @@ public class UserController {
         userService.create(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UserDto req) {
+        if (!Objects.equals(id, req.id())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id nem egyezik!");
+        }
+        userService.update(req);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{id:\\d+}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getById(id));
+    }
+
 }

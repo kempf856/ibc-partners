@@ -19,7 +19,6 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import {TransactionStatus, transactionStatusClass, transactionStatusLabel} from '../../../../shared/transaction-status';
 import {DatePipe} from '@angular/common';
-import {ApplicationState} from '../../../../shared/application-state';
 
 @Component({
   selector: 'app-transaction-create',
@@ -97,11 +96,11 @@ export class TransactionWorkflow {
   }
 
   onSelectedSeller(partner: PartnerDto) {
-    this.form.patchValue({ sellerId: partner.id });
+    if (partner.id) this.form.patchValue({ sellerId: partner.id });
   }
 
   onSelectedBuyer(partner: PartnerDto) {
-    this.form.patchValue({ buyerId: partner.id });
+    if (partner.id) this.form.patchValue({ buyerId: partner.id });
   }
 
   cancel() {

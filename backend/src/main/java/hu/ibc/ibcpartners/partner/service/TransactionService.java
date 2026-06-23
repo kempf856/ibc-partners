@@ -27,6 +27,7 @@ public class TransactionService {
     private final PartnerProvider partnerProvider;
     private final CommissionSettingService commissionSettingService;
     private final CommissionService commissionService;
+    private final DiscountService discountService;
 
     public void create(TransactionRequest transactionRequest) {
         Transaction transaction = transactionMapper.map(transactionRequest);
@@ -60,6 +61,7 @@ public class TransactionService {
     public void book(Long transactionId) {
         Transaction transaction = findById(transactionId);
         commissionService.bookCommission(transactionId, transaction.getAmount());
+        discountService.bookDiscount(transaction);
         transaction.setStatus(TransactionStatus.ACCOUNTED);
         transactionRepository.save(transaction);
     }

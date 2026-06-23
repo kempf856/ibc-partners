@@ -15,8 +15,6 @@ import {ApplicationService} from '../../application/application-service';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 
-type Mode = 'view' | 'edit' | 'create';
-
 @Component({
   selector: 'app-partner-edit',
   imports: [
@@ -36,25 +34,24 @@ export class PartnerEdit implements OnInit {
   applicationService = inject(ApplicationService);
 
   form = new FormGroup({
-    id: new FormControl<number | undefined>(undefined, { nonNullable: true }),
+    id: new FormControl<number>(0, { nonNullable: true }),
     taxNumber: new FormControl('', { nonNullable: true }),
     name: new FormControl('', { nonNullable: true }),
     headquarters: new FormControl('', { nonNullable: true }),
-    site: new FormControl('', { nonNullable: true }),
-    phone: new FormControl('', { nonNullable: true }),
-    website: new FormControl('', { nonNullable: true }),
+    site: new FormControl<string | null>(''),
+    phone: new FormControl<string | null>(''),
+    website: new FormControl<string | null>(''),
     activities: new FormControl<number[]>([], { nonNullable: true })
   });
 
   activities: ActivityDto[] = [];
-  mode!: Mode;
+  displayMode = this.route.snapshot.data['mode'] as DisplayMode;
   applicationId?: string;
   referralCode?: string;
 
   ngOnInit(): void {
     this.loadActivities();
 
-    this.mode = this.route.snapshot.data['mode'] as Mode;
     const id = this.route.snapshot.paramMap.get('partnerId');
     if (id) {
       this.partnerService.getById(id).subscribe(partner => {
@@ -101,7 +98,7 @@ export class PartnerEdit implements OnInit {
   }
 
   readonly() {
-    return this.mode === 'view';
+    return this.displayMode === 'view';
   }
 
   appearance() {

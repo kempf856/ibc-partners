@@ -44,8 +44,15 @@ public class UserService implements UserDetailsService {
     private String adminEmail;
 
     public UserDto getLoggedInUser() {
-        Long userId = AuthHelper.getUserId();
-        return userRepository.findById(userId).map(userMapper::map)
+        return getById(AuthHelper.getUserId());
+    }
+
+    public UserDto getById(Long userId) {
+        return userMapper.map(findById(userId));
+    }
+
+    private User findById(Long userId) {
+        return userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Felhasználó nem található ezzel az ID-val: " + userId));
     }
 
@@ -67,12 +74,16 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void create(UserDto userDto) {
         User user = userMapper.map(userDto);
-        user.setId(null);
-        user.setReferralCode(null);
-
         userRepository.save(user);
         user.setReferralCode(PublicIdGenerator.generate(user.getId()));
         handleForgotPassword(userDto.email(), EmailTemplate.REGISTRATION);
+    }
+
+    @Transactional
+    public void update(UserDto userDto) {
+        User user = findById(userDto.id());
+        userMapper.map(userDto, user);
+        userRepository.save(user);
     }
 
     @Transactional

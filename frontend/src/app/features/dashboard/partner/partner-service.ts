@@ -52,15 +52,22 @@ export class PartnerService {
     return this.http.get<PartnerDto[]>('/api/partners/all');
   }
 
-  findMembership(userId?: number, partnerId?: number) {
-    const params: any = {
-      userId: userId,
-      partnerId: partnerId
+  findMembership(userId?: number | string, partnerId?: number | string) {
+    const params: any = {}
+    if (userId) {
+      params.userId = userId;
+    }
+    if (partnerId) {
+      params.partnerId = partnerId;
     }
     return this.http.get<PartnerMembershipDto[]>('/api/partner-memberships', { params });
   }
 
   saveMembership(dto: PartnerMembershipDto) {
     return this.http.post('/api/partner-memberships', dto);
+  }
+
+  deleteMembership(id: number) {
+    return this.http.delete(`/api/partner-memberships/${id}`);
   }
 }

@@ -13,4 +13,6 @@ export interface TransactionDto {
   sellerApproved: string | null;
   buyerApproved: string | null;
   status: TransactionStatus;
+  createdAt: string;
+  modifiedAt: string;
 }

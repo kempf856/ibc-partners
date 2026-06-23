@@ -23,7 +23,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {RouterLink} from '@angular/router';
 import {MatFormField, MatInput} from '@angular/material/input';
-import {DecimalPipe} from '@angular/common';
+import {DatePipe, DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-transaction-list',
@@ -49,7 +49,8 @@ import {DecimalPipe} from '@angular/common';
     RouterLink,
     MatFormField,
     MatInput,
-    DecimalPipe
+    DecimalPipe,
+    DatePipe
   ],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.scss',

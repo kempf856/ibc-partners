@@ -57,11 +57,11 @@ export class TransactionCreate {
   });
 
   onSelectedSeller(partner: PartnerDto) {
-    this.form.patchValue({ sellerId: partner.id });
+    if (partner.id) this.form.patchValue({ sellerId: partner.id });
   }
 
   onSelectedBuyer(partner: PartnerDto) {
-    this.form.patchValue({ buyerId: partner.id });
+    if (partner.id) this.form.patchValue({ buyerId: partner.id });
   }
 
   displayPartner = (partner?: PartnerDto): string => {

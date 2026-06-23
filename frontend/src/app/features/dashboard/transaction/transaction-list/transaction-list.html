@@ -1,4 +1,4 @@
-<div class="single-page-wrapper mw-md">
+<div class="single-page-wrapper mw-lg">
   <div class="page-header">
     <h1>Ügyletek</h1>
   </div>
@@ -35,8 +35,18 @@
     </ng-container>
 
     <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef>Összeg</th>
+      <th mat-header-cell *matHeaderCellDef>Nettó összeg</th>
       <td mat-cell *matCellDef="let transaction">{{ transaction.amount | number:'1.0-0' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="invoiceNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bizonylat szám</th>
+      <td mat-cell *matCellDef="let transaction">{{ transaction.invoiceNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Rögzítés dátuma</th>
+      <td mat-cell *matCellDef="let transaction">{{ transaction.createdAt | date:'yyyy.MM.dd HH:mm' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -60,8 +70,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['description', 'sellerName', 'buyerName', 'amount', 'status', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['description', 'sellerName', 'buyerName', 'amount', 'status', 'actions']"></tr>
+    <tr mat-header-row *matHeaderRowDef="['description', 'sellerName', 'buyerName', 'amount', 'invoiceNumber', 'createdAt', 'status', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['description', 'sellerName', 'buyerName', 'amount', 'invoiceNumber', 'createdAt', 'status', 'actions']"></tr>
 
   </table>
 

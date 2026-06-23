@@ -17,6 +17,8 @@ public class CommissionSetting extends AuditedEntity {
         this.id = null;
         this.partnerId = commissionSetting.getPartnerId();
         this.transactionId = commissionSetting.getTransactionId();
+        this.sellerPercent = commissionSetting.getSellerPercent();
+        this.buyerPercent = commissionSetting.getBuyerPercent();
         this.director1Id = commissionSetting.getDirector1Id();
         this.director1Percent = commissionSetting.getDirector1Percent();
         this.director2Id = commissionSetting.getDirector2Id();
@@ -25,7 +27,6 @@ public class CommissionSetting extends AuditedEntity {
         this.director3Percent = commissionSetting.getDirector3Percent();
         this.referralId = commissionSetting.getReferralId();
         this.referralPercent = commissionSetting.getReferralPercent();
-        this.sellerPercent = commissionSetting.getSellerPercent();
     }
 
     @Id

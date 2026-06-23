@@ -1,0 +1,132 @@
+<div class="form-page-wrapper mw-sm">
+  <div class="page-header">
+    <h1>Felhasználó</h1>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <mat-form-field [appearance]="appearance(true)">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" required email [readonly]="readonly(true)"/>
+          @if (email.hasError('email') && email.touched) {
+            <mat-error>
+              Hibás e-mail cím formátum
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Teljes név</mat-label>
+          <input matInput formControlName="fullName" required [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Telefonszám</mat-label>
+          <input matInput formControlName="phone" required [readonly]="readonly()"/>
+        </mat-form-field>
+
+        @if (readonly()) {
+          <div class="readonly-field">
+            <span class="label">Szerepkörök</span>
+            <span class="value">
+              <mat-chip-set>
+                @for (r of form.controls.roles.value; track r) {
+                  <mat-chip>
+                    {{ roleLabel(r) }}
+                  </mat-chip>
+                }
+              </mat-chip-set>
+            </span>
+          </div>
+        } @else {
+          <mat-form-field [appearance]="appearance()">
+            <mat-label>Szerepkörök</mat-label>
+            <mat-select formControlName="roles" multiple required>
+              @for (role of ALL_ROLES; track role) {
+                <mat-option [value]="role">
+                  {{ roleLabel(role) }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+
+        @if (displayMode === 'view' || displayMode === 'edit') {
+          <div class="readonly-field">
+            <span class="label">Ajánlói kód</span>
+            <span class="value">{{ userDto()?.referralCode ?? 'nincs' }}</span>
+          </div>
+        }
+      </section>
+    </div>
+
+    <div class="form-actions">
+      <button matButton type="button" (click)="cancel()">Mégsem</button>
+      @if (!readonly()) {
+        <button matButton="elevated" (click)="save()" [disabled]="form.invalid">Mentés</button>
+      }
+    </div>
+  </form>
+
+  @if (displayMode === 'view' || displayMode === 'edit') {
+    <div class="page-header">
+      <h1>Partner kapcsolat</h1>
+    </div>
+
+    <div class="readonly-row">
+      <mat-form-field appearance="outline" class="partner-member-field">
+        <mat-label>Partner</mat-label>
+        <input type="text" matInput [formControl]="partnerSearch" [matAutocomplete]="autoPartner" required/>
+        <mat-autocomplete #autoPartner="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedPartner($event.option.value)">
+          @for (partner of filteredPartners(); track partner.id) {
+            <mat-option [value]="partner">{{ partner.name }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="readonly-row" style="margin-top: 10px; margin-bottom: 10px;">
+      <mat-button-toggle-group [formControl]="membershipRole">
+        <mat-button-toggle [value]="PartnerMembershipRole.OWNER">Tulajdonos</mat-button-toggle>
+        <mat-button-toggle [value]="PartnerMembershipRole.EMPLOYEE">Alkalmazott</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div>
+        <button matButton="tonal" (click)="saveMembershipRole()" [disabled]="membershipRole.invalid || partnerSearch.invalid">Mentés</button>
+      </div>
+    </div>
+
+    <table mat-table [dataSource]="memberships()">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Partner</th>
+        <td mat-cell *matCellDef="let membership">{{ membership.partnerName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Szerepkör</th>
+        <td mat-cell *matCellDef="let membership">
+          <mat-chip-set>
+            <mat-chip>
+              {{ membershipLabel(membership.role) }}
+            </mat-chip>
+          </mat-chip-set>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+
+        <td mat-cell *matCellDef="let membership" (click)="deleteMembershipRole(membership)">
+          <button mat-icon-button matTooltip="Törlés">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['name', 'role', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['name', 'role', 'actions']"></tr>
+
+    </table>
+  }
+</div>

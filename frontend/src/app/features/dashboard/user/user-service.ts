@@ -39,8 +39,12 @@ export class UserService {
     });
   }
 
-  createUser(userDto: UserDto) {
-    return this.http.post('/api/users', userDto);
+  saveUser(userDto: UserDto) {
+    if (userDto.id) {
+      return this.http.put(`/api/users/${userDto.id}`, userDto);
+    } else {
+      return this.http.post('/api/users', userDto);
+    }
   }
 
   profile() {
@@ -52,5 +56,9 @@ export class UserService {
       params: { email: email },
       context: new HttpContext().set(SKIP_ERROR, skipNotFound ?? false)
     })
+  }
+
+  findById(id: string) {
+    return this.http.get<UserDto>(`/api/users/${id}`);
   }
 }

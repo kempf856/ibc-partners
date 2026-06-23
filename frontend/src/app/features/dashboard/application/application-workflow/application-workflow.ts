@@ -145,7 +145,7 @@ export class ApplicationWorkflow implements OnInit {
   }
 
   protected saveMembershipRole() {
-    this.partnerService.saveMembership({userId: this.existingUser()!.id, partnerId: this.existingPartner()!.id, role: this.membershipRole.value} as PartnerMembershipDto).subscribe(() => {
+    this.partnerService.saveMembership({ userId: this.existingUser()!.id, partnerId: this.existingPartner()!.id, role: this.membershipRole.value } as PartnerMembershipDto).subscribe(() => {
       this.notificationService.success('Partner kapcsolat mentése sikeres');
       this.loadMembership();
     })

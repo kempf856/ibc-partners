@@ -4,7 +4,7 @@ import {Home} from './features/dashboard/home/home';
 import {authGuard} from './core/auth/auth-guard';
 import {AppShell} from './features/core/app-shell/app-shell';
 import {UserList} from './features/dashboard/user/user-list/user-list';
-import {UserCreate} from './features/dashboard/user/user-create/user-create';
+import {UserEdit} from './features/dashboard/user/user-edit/user-edit';
 import {ChangePassword} from './features/auth/change-password/change-password';
 import {roleGuard} from './core/auth/role-guard';
 import {Role} from './shared/role';
@@ -71,8 +71,10 @@ export const routes: Routes = [
         data: { roles: [Role.ADMIN] },
         children: [
           { path: '', component: UserList },
-          { path: 'create', component: UserCreate },
-          { path: 'create/:applicationId', component: UserCreate }
+          { path: 'create', component: UserEdit, data: { mode: 'create' }},
+          { path: 'create/:applicationId', component: UserEdit, data: { mode: 'create' }},
+          { path: 'view/:userId', component: UserEdit, data: { mode: 'view' }},
+          { path: 'edit/:userId', component: UserEdit, data: { mode: 'edit' }}
         ]
       },
       {
