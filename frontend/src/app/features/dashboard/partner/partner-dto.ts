@@ -7,4 +7,6 @@ export interface PartnerDto {
   phone: string | null;
   website: string | null;
   activities: number[];
+  keyWords: string | null;
+  introduction: string | null;
 }

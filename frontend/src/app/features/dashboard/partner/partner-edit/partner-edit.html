@@ -1,4 +1,4 @@
-<div class="form-page-wrapper mw-md">
+<div class="form-page-wrapper mw-md" xmlns="http://www.w3.org/1999/html">
   <div class="page-header">
     <h1>Partner</h1>
     @if (displayMode === 'edit') {
@@ -9,6 +9,12 @@
   </div>
 
   <form [formGroup]="form">
+    @if (displayMode === 'view') {
+      <div>
+        <div [innerHTML]="form.controls.introduction.value"></div>
+      </div>
+    }
+
     <div class="form-page">
       <section class="form-block">
         <div class="readonly-field">
@@ -27,7 +33,7 @@
         </mat-form-field>
 
         <mat-form-field [appearance]="appearance()">
-          <mat-label>Székhely</mat-label>
+          <mat-label>Település</mat-label>
           <input matInput formControlName="headquarters" required [readonly]="readonly()"/>
         </mat-form-field>
 
@@ -62,8 +68,24 @@
             </mat-select>
           }
         </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Kulcs szavak</mat-label>
+          <input matInput formControlName="keyWords" [readonly]="readonly()"/>
+        </mat-form-field>
+
       </section>
     </div>
+
+    @if (displayMode === 'edit') {
+      <div class="form-actions">
+        <ckeditor
+          [editor]="editor"
+          [config]="config"
+          formControlName="introduction">
+        </ckeditor>
+      </div>
+    }
 
     <div class="form-actions">
       <button matButton type="button" (click)="cancel()">

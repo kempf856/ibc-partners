@@ -14,11 +14,26 @@ import {NotificationService} from '../../../../core/notification/notification';
 import {ApplicationService} from '../../application/application-service';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import {
+  ClassicEditor,
+  Bold,
+  Italic,
+  Heading,
+  List,
+  Link,
+  Image,
+  ImageToolbar,
+  ImageInsert,
+  SimpleUploadAdapter
+} from 'ckeditor5';
+import hu from 'ckeditor5/translations/hu.js';
+import {AuthService} from '../../../../core/auth/auth-service';
 
 @Component({
   selector: 'app-partner-edit',
   imports: [
-    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect, MatIcon, MatTooltip, RouterLink
+    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect, MatIcon, MatTooltip, RouterLink, CKEditorModule
   ],
   templateUrl: './partner-edit.html',
   styleUrl: './partner-edit.scss',
@@ -32,6 +47,49 @@ export class PartnerEdit implements OnInit {
   activityService = inject(ActivityService);
   notificationService = inject(NotificationService);
   applicationService = inject(ApplicationService);
+  authService = inject(AuthService);
+
+  public editor = ClassicEditor;
+  public config = {
+    licenseKey: 'GPL',
+    language: {
+      ui: 'hu',
+      content: 'hu'
+    },
+    translations: [ hu ],
+    simpleUpload: {
+      uploadUrl: '/api/files',
+      headers: {
+        Authorization: 'Bearer ' + this.authService.getToken()
+      }
+    },
+    plugins: [
+      Bold,
+      Italic,
+      Heading,
+      List,
+      Link,
+      Image,
+      ImageToolbar,
+      ImageInsert,
+      SimpleUploadAdapter
+    ],
+    toolbar: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      '|',
+      'bulletedList',
+      'numberedList',
+      '|',
+      'link',
+      'insertImage'
+    ],
+    link: {
+      addTargetToExternalLinks: true
+    }
+  };
 
   form = new FormGroup({
     id: new FormControl<number>(0, { nonNullable: true }),
@@ -41,6 +99,8 @@ export class PartnerEdit implements OnInit {
     site: new FormControl<string | null>(''),
     phone: new FormControl<string | null>(''),
     website: new FormControl<string | null>(''),
+    keyWords: new FormControl<string | null>(''),
+    introduction: new FormControl<string | null>(''),
     activities: new FormControl<number[]>([], { nonNullable: true })
   });
 

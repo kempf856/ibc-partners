@@ -41,8 +41,13 @@
     </ng-container>
 
     <ng-container matColumnDef="headquarters">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Székhely</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Település</th>
       <td mat-cell *matCellDef="let partner">{{ partner.headquarters }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="keyWords">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Kulcs szavak</th>
+      <td mat-cell *matCellDef="let partner">{{ partner.keyWords }}</td>
     </ng-container>
 
     <ng-container matColumnDef="activities">
@@ -75,8 +80,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['name', 'headquarters', 'activities', 'website', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['name', 'headquarters', 'activities', 'website', 'actions']"></tr>
+    <tr mat-header-row *matHeaderRowDef="['name', 'headquarters', 'keyWords', 'activities', 'website', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['name', 'headquarters', 'keyWords', 'activities', 'website', 'actions']"></tr>
 
   </table>
 

@@ -67,10 +67,10 @@
 .readonly-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   padding-left: 16px;
-  padding-top: 2px;
-  padding-bottom: 6px;
+  padding-top: 6px;
+  padding-bottom: 8px;
   margin-bottom: var(--mat-sys-body-small-line-height);
 }
 
@@ -85,5 +85,6 @@
 }
 
 .value {
+  height: 20px;
   font-size: 16px;
 }
