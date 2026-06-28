@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSortModule, Sort} from '@angular/material/sort';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatCell,
   MatCellDef,
@@ -19,11 +19,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {ApplicationDto} from '../application-dto';
 import {ApplicationService} from '../application-service';
 import {MatChip, MatChipSet} from '@angular/material/chips';
-import {applicationStateClass, applicationStateLabel} from '../../../../shared/application-state';
+import {ApplicationState, applicationStateClass, applicationStateLabel} from '../../../../shared/application-state';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {RouterLink} from '@angular/router';
 import {DatePipe} from '@angular/common';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-application-list',
@@ -47,7 +48,10 @@ import {DatePipe} from '@angular/common';
     MatIcon,
     MatTooltip,
     DatePipe,
-    RouterLink
+    RouterLink,
+    MatButtonToggle,
+    MatButtonToggleGroup,
+    ReactiveFormsModule
   ],
   templateUrl: './application-list.html',
   styleUrl: './application-list.scss',
@@ -58,6 +62,8 @@ export class ApplicationList implements OnInit {
 
   dataSource = new MatTableDataSource<ApplicationDto>([]);
   applicationService = inject(ApplicationService);
+
+  stateFilter = new FormControl<'live' | 'closed' | 'all'>('live');
 
   totalElements = 0;
   pageSize = 20;
@@ -70,6 +76,8 @@ export class ApplicationList implements OnInit {
 
   loadApplications() {
     this.applicationService.getApplications({
+      states: this.stateFilter.value === 'live' ? [ApplicationState.CREATED, ApplicationState.IN_PROGRESS]
+        : this.stateFilter.value === 'closed' ? [ApplicationState.ACCEPTED, ApplicationState.DENIED] : undefined,
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sort

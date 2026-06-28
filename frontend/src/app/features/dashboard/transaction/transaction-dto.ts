@@ -11,7 +11,11 @@ export interface TransactionDto {
   description: string | null;
   fulfillmentDate: string | null;
   sellerApproved: string | null;
+  sellerApprover: number | null;
+  sellerApproverName: string | null;
   buyerApproved: string | null;
+  buyerApprover: number | null;
+  buyerApproverName: string | null;
   status: TransactionStatus;
   createdAt: string;
   modifiedAt: string;

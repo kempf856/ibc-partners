@@ -54,6 +54,11 @@
 
       <section class="form-block">
         <div class="readonly-field">
+          <span class="label">Rögzítés dátuma</span>
+          <span class="value">{{ transactionDto.value()?.createdAt | date:'yyyy.MM.dd HH:mm' }}</span>
+        </div>
+
+        <div class="readonly-field">
           <span class="label">Státusz</span>
           <span class="value">
             <mat-chip-set>
@@ -68,7 +73,7 @@
           <div class="readonly-field">
             <span class="label">Eladói jóváhagyás</span>
             @if (transactionDto.value()?.sellerApproved; as approved) {
-              <span class="value">{{ approved | date:'yyyy.MM.dd HH:mm' }}</span>
+              <span class="value">{{ transactionDto.value()?.sellerApproverName + ', ' + (approved | date:'yyyy.MM.dd HH:mm') }}</span>
             } @else {
               <span class="value">nincs</span>
             }
@@ -84,7 +89,7 @@
           <div class="readonly-field">
             <span class="label">Vevői jóváhagyás</span>
             @if (transactionDto.value()?.buyerApproved; as approved) {
-              <span class="value">{{ approved | date:'yyyy.MM.dd HH:mm' }}</span>
+              <span class="value">{{ transactionDto.value()?.buyerApproverName + ', ' + (approved | date:'yyyy.MM.dd HH:mm') }}</span>
             } @else {
               <span class="value">nincs</span>
             }

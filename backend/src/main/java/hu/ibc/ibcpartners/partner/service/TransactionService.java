@@ -8,6 +8,8 @@ import hu.ibc.ibcpartners.partner.entity.Transaction;
 import hu.ibc.ibcpartners.partner.entity.TransactionStatus;
 import hu.ibc.ibcpartners.partner.mapper.TransactionMapper;
 import hu.ibc.ibcpartners.partner.repository.TransactionRepository;
+import hu.ibc.ibcpartners.security.service.AuthHelper;
+import hu.ibc.ibcpartners.security.service.UserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
     private final PartnerProvider partnerProvider;
+    private final UserProvider userProvider;
     private final CommissionSettingService commissionSettingService;
     private final CommissionService commissionService;
     private final DiscountService discountService;
@@ -41,6 +44,7 @@ public class TransactionService {
     public void sellerApprove(Long transactionId) {
         Transaction transaction = findById(transactionId);
         transaction.setSellerApproved(Instant.now());
+        transaction.setSellerApprover(AuthHelper.getUserId());
         if (transaction.getBuyerApproved() != null) {
             transaction.setStatus(TransactionStatus.APPROVED);
         }
@@ -51,6 +55,7 @@ public class TransactionService {
     public void buyerApprove(Long transactionId) {
         Transaction transaction = findById(transactionId);
         transaction.setBuyerApproved(Instant.now());
+        transaction.setBuyerApprover(AuthHelper.getUserId());
         if (transaction.getSellerApproved() != null) {
             transaction.setStatus(TransactionStatus.APPROVED);
         }
@@ -81,6 +86,7 @@ public class TransactionService {
     }
 
     private TransactionDto map(Transaction t) {
-        return transactionMapper.map(t, partnerProvider.getName(t.getSellerId()), partnerProvider.getName(t.getBuyerId()));
+        return transactionMapper.map(t, partnerProvider.getName(t.getSellerId()), partnerProvider.getName(t.getBuyerId()),
+                userProvider.getName(t.getSellerApprover()), userProvider.getName(t.getBuyerApprover()));
     }
 }

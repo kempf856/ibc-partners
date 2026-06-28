@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/applications")
@@ -23,8 +25,8 @@ public class ApplicationController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
-    public ResponseEntity<PageResponse<ApplicationDto>> search(Pageable pageable) {
-        return ResponseEntity.ok(applicationService.search(pageable));
+    public ResponseEntity<PageResponse<ApplicationDto>> search(@RequestParam(required = false) List<ApplicationState> states, Pageable pageable) {
+        return ResponseEntity.ok(applicationService.search(states, pageable));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

@@ -35,6 +35,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final UserProvider userProvider;
     private final EmailService emailService;
 
     @Value("${app.frontend-url}")
@@ -77,6 +78,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         user.setReferralCode(PublicIdGenerator.generate(user.getId()));
         handleForgotPassword(userDto.email(), EmailTemplate.REGISTRATION);
+        userProvider.reset();
     }
 
     @Transactional
@@ -84,6 +86,7 @@ public class UserService implements UserDetailsService {
         User user = findById(userDto.id());
         userMapper.map(userDto, user);
         userRepository.save(user);
+        userProvider.reset();
     }
 
     @Transactional

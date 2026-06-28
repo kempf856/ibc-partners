@@ -1,4 +1,4 @@
-import {Component, effect, inject, resource} from '@angular/core';
+import {Component, computed, effect, inject, resource} from '@angular/core';
 import {MatSortModule} from '@angular/material/sort';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -11,6 +11,7 @@ import {CommissionSettingService} from './commission-setting-service';
 import {UserService} from '../../dashboard/user/user-service';
 import {Role} from '../../../shared/role';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {PartnerService} from '../../dashboard/partner/partner-service';
 
 @Component({
   selector: 'app-commission-setting',
@@ -31,6 +32,7 @@ export class CommissionSetting {
 
   commissionSettingService = inject(CommissionSettingService);
   userService = inject(UserService);
+  partnerService = inject(PartnerService);
   notification = inject(NotificationService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -64,6 +66,25 @@ export class CommissionSetting {
     params: () => this.routeParams(),
     loader: ({ params }) =>
       firstValueFrom(this.commissionSettingService.search(params.partnerId, params.transactionId))
+  });
+
+  partner = resource({
+    params: () => this.commissionSetting.value()?.partnerId,
+    loader: ({ params }) => {
+      if (!params) return Promise.resolve(null);
+      return firstValueFrom(this.partnerService.getById(params));
+    }
+  });
+
+  commissionLevel = computed(() => {
+    const setting = this.commissionSetting.value();
+
+    if (!setting) return '';
+    if (setting.transactionId) return 'Ügylet';
+    if (setting.partnerId) {
+      return `Partner: ${this.partner.value()?.name ?? '...'}`;
+    }
+    return 'DEFAULT';
   });
 
   readonly admins = resource({

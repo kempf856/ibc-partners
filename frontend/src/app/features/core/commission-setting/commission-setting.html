@@ -5,7 +5,7 @@
 
   <div class="readonly-field">
     <span class="label">Jutalék szint</span>
-    <span class="value">{{ commissionSetting.value()?.transactionId ? 'Ügylet' : commissionSetting.value()?.partnerId ? 'Partner' : 'myIBC' }}</span>
+    <span class="value">{{ commissionLevel() }}</span>
   </div>
 
   <form [formGroup]="form">

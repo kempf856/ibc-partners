@@ -17,7 +17,11 @@ public record TransactionDto(
         String description,
         LocalDate fulfillmentDate,
         Instant sellerApproved,
+        Integer sellerApprover,
+        String sellerApproverName,
         Instant buyerApproved,
+        Integer buyerApprover,
+        String buyerApproverName,
         TransactionStatus status,
         Instant createdAt,
         Instant modifiedAt

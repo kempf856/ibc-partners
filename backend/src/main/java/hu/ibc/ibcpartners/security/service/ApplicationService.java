@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,8 +38,8 @@ public class ApplicationService {
         applicationRepository.save(application);
     }
 
-    public PageResponse<ApplicationDto> search(Pageable pageable) {
-        return PageResponse.of(applicationRepository.findAll(pageable), applicationMapper::map);
+    public PageResponse<ApplicationDto> search(List<ApplicationState> states, Pageable pageable) {
+        return PageResponse.of(applicationRepository.findAllByStates(states, pageable), applicationMapper::map);
     }
 
     public ApplicationDto get(Long id) {

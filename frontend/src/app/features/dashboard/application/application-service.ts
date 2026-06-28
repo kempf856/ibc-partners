@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {PageResponse} from '../../page-response';
 import {ApplicationDto} from './application-dto';
+import {ApplicationState} from '../../../shared/application-state';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ export class ApplicationService {
   constructor(private http: HttpClient) {}
 
   getApplications(req: {
+    states?: ApplicationState[]
     page: number;
     size: number;
     sort?: string
@@ -19,6 +21,7 @@ export class ApplicationService {
         page: req.page,
         size: req.size,
         ...(req.sort ? { sort: req.sort } : {}),
+        ...(req.states ? { states: req.states } : {})
       }
     });
    }

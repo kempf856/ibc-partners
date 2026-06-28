@@ -31,7 +31,7 @@ public class LocalStorageService implements FileUploadService {
             String original = file.getOriginalFilename();
             String ext = original.substring(original.lastIndexOf("."));
 
-            String id = UUID.randomUUID().toString() + ext;
+            String id = UUID.randomUUID() + ext;
             Path target = root.resolve(id);
             Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
             return id;

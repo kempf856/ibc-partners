@@ -42,8 +42,14 @@ public class Transaction extends AuditedEntity {
     @Column(name = "seller_approved")
     private Instant sellerApproved;
 
+    @Column(name = "seller_approver")
+    private Long sellerApprover;
+
     @Column(name = "buyer_approved")
     private Instant buyerApproved;
+
+    @Column(name = "buyer_approver")
+    private Long buyerApprover;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

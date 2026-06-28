@@ -21,7 +21,7 @@ export class PartnerService {
     }
   }
 
-  getById(id: string) {
+  getById(id: string | number) {
     return this.http.get<PartnerDto>(`/api/partners/${id}`);
   }
 

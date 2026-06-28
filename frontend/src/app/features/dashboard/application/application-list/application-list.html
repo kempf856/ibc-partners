@@ -3,6 +3,16 @@
     <h1>Érdeklődők</h1>
   </div>
 
+  <div class="filters-bar space-after">
+    <div class="filters">
+      <mat-button-toggle-group [formControl]="stateFilter" (change)="loadApplications()">
+        <mat-button-toggle [value]="'live'">Élő</mat-button-toggle>
+        <mat-button-toggle [value]="'closed'">Lezárt</mat-button-toggle>
+        <mat-button-toggle [value]="'all'">Mind</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">
 
     <ng-container matColumnDef="email">

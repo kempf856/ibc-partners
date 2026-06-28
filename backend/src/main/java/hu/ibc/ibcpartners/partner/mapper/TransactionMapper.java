@@ -10,7 +10,7 @@ import org.mapstruct.MappingTarget;
 public interface TransactionMapper {
 
     Transaction map(TransactionRequest dto);
-    TransactionDto map(Transaction transaction, String sellerName, String buyerName);
+    TransactionDto map(Transaction transaction, String sellerName, String buyerName, String sellerApproverName, String buyerApproverName);
     void map(TransactionRequest dto, @MappingTarget Transaction transaction);
 }
 

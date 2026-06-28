@@ -26,6 +26,7 @@ public class PartnerService {
 
     private final PartnerRepository partnerRepository;
     private final PartnerMapper partnerMapper;
+    private final PartnerProvider partnerProvider;
     private final UserRepository userRepository;
     private final CommissionSettingService commissionSettingService;
 
@@ -61,6 +62,7 @@ public class PartnerService {
         Partner partner = findById(dto.id());
         partnerMapper.map(dto, partner);
         partnerRepository.save(partner);
+        partnerProvider.reset();
     }
 
     @Transactional
@@ -73,6 +75,7 @@ public class PartnerService {
             partner.setReferralId(AuthHelper.getUserId());
         }
         partnerRepository.save(partner);
+        partnerProvider.reset();
 
         commissionSettingService.createForPartner(partner.getId(), partner.getReferralId());
     }
