@@ -7,6 +7,7 @@ import {MatPaginatorIntl} from '@angular/material/paginator';
 import {HungarianPaginatorIntl} from './core/hungarian/hungarian-paginator-intl';
 import {errorInterceptor} from './core/notification/error-interceptor';
 import {MAT_DATE_LOCALE, provideNativeDateAdapter} from '@angular/material/core';
+import {DatePipe} from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     { provide: MatPaginatorIntl, useClass: HungarianPaginatorIntl },
     provideNativeDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'hu-HU' },
+    DatePipe
   ]
 };

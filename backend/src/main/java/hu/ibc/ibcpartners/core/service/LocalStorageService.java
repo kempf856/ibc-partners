@@ -19,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 public class LocalStorageService implements FileUploadService {
 
-    private final Path root = Paths.get("uploads");
+    private final Path root = Paths.get("/uploads");
 
     public LocalStorageService() throws Exception {
         Files.createDirectories(root);

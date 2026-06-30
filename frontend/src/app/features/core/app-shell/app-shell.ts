@@ -10,6 +10,7 @@ import {MatDivider} from '@angular/material/list';
 import {ActivePartnerService} from '../../../core/auth/active-partner-service';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatFormField, MatLabel} from '@angular/material/input';
+import {VersionService} from '../version/version-service';
 
 @Component({
   selector: 'app-app-shell',
@@ -31,7 +32,8 @@ import {MatFormField, MatLabel} from '@angular/material/input';
 export class AppShell {
 
   authService = inject(AuthService);
-  activePartnerService = inject(ActivePartnerService)
+  activePartnerService = inject(ActivePartnerService);
+  versionService = inject(VersionService);
 
   logout() {
     this.authService.logout();

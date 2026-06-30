@@ -47,6 +47,8 @@ services:
       SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
       APP_FRONTEND_URL: ${FRONTEND_URL}
       APP_ADMIN_EMAIL: ${ADMIN_EMAIL}
+    volumes:
+      - ./uploads:/uploads
     restart: unless-stopped
     networks:
       - ibcnet
