@@ -99,7 +99,7 @@
           </div>
           @if (applicationDto()?.state === ApplicationState.IN_PROGRESS && !existingPartner()) {
             <div>
-              <button matButton="tonal" [routerLink]="['/partners/create', applicationDto()?.id]">
+              <button matButton="tonal" [routerLink]="['/partners/create', applicationDto()?.id]" [queryParams]="{ returnUrl: router.url }">
                 Új partner
               </button>
             </div>

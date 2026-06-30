@@ -18,7 +18,7 @@ import {
   MatTableDataSource
 } from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {PartnerDto} from '../partner-dto';
 import {PartnerService} from '../partner-service';
 import {ActivityDto} from '../../../core/activity/activity-dto';
@@ -60,6 +60,8 @@ export class PartnerList implements OnInit {
   dataSource = new MatTableDataSource<PartnerDto>([]);
   partnerService = inject(PartnerService);
   activityService = inject(ActivityService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
 
   activities: ActivityDto[] = [];
 
@@ -73,6 +75,8 @@ export class PartnerList implements OnInit {
   nameFilter = '';
   addressFilter = '';
   activityFilter: number[] = [];
+
+  listMode = this.route.snapshot.data['mode'] as ListMode;
 
   ngOnInit() {
     this.loadActivities();

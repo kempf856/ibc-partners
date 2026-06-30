@@ -130,4 +130,20 @@ export class TransactionWorkflow {
       }
     );
   }
+
+  sellerApproved() {
+    const transactionDto = this.transactionDto.value();
+    if (transactionDto && transactionDto.sellerApproved && transactionDto.sellerApproverName) {
+      return transactionDto.sellerApproverName + ', ';
+    }
+    return '';
+  }
+
+  buyerApproved() {
+    const transactionDto = this.transactionDto.value();
+    if (transactionDto && transactionDto.buyerApproved && transactionDto.buyerApproverName) {
+      return transactionDto.buyerApproverName + ', ';
+    }
+    return '';
+  }
 }

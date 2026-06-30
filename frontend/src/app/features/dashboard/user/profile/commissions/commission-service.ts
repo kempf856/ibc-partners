@@ -9,6 +9,16 @@ import {PageResponse} from '../../../../page-response';
 export class CommissionService {
   http = inject(HttpClient);
 
+  my(req: {
+    page: number;
+    size: number;
+    sort: string;
+  }) {
+    return this.http.get<PageResponse<CommissionDto>>('/api/commissions/my', {
+      params: req
+    });
+  }
+
   getCommissions(req: {
     page: number;
     size: number;

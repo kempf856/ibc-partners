@@ -3,6 +3,7 @@ package hu.ibc.ibcpartners.partner.controller;
 import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.partner.dto.CommissionDto;
 import hu.ibc.ibcpartners.partner.service.CommissionService;
+import hu.ibc.ibcpartners.security.service.AuthHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommissionController {
 
     private final CommissionService commissionService;
+
+    @GetMapping("/my")
+    public ResponseEntity<PageResponse<CommissionDto>> my(Pageable pageable) {
+        return ResponseEntity.ok(commissionService.search(AuthHelper.getUserId(), null, pageable));
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")

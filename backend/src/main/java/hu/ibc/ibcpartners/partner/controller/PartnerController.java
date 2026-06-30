@@ -23,7 +23,7 @@ public class PartnerController {
     private final PartnerService partnerService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     public ResponseEntity<Void> create(@RequestBody PartnerDto req, @RequestParam(required = false) String referralCode) {
         partnerService.create(req, referralCode);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -40,21 +40,19 @@ public class PartnerController {
     }
 
     @GetMapping("/{id:\\d+}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PartnerDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(partnerService.getById(id));
     }
 
     @GetMapping("/by-tax-number")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     public ResponseEntity<PartnerDto> findByTaxNumber(@RequestParam String taxNumber) {
         return ResponseEntity.ok(partnerService.findByTaxNumber(taxNumber));
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PageResponse<PartnerDto>> search(
-            @RequestParam(required = false) String name, @RequestParam(required = false) String address,
+            @RequestParam(required = false) String name,
             @RequestParam(required = false) String activities, Pageable pageable) {
         Long[] activityIds = null;
         if (activities != null && !activities.isBlank()) {
@@ -65,7 +63,7 @@ public class PartnerController {
                     .toArray(Long[]::new);
         }
 
-        return ResponseEntity.ok(partnerService.search(name, address, activityIds, pageable));
+        return ResponseEntity.ok(partnerService.search(name, activityIds, pageable));
     }
 
     @GetMapping("/all")

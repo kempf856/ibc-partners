@@ -15,25 +15,17 @@ import {ApplicationService} from '../../application/application-service';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
-import {
-  ClassicEditor,
-  Bold,
-  Italic,
-  Heading,
-  List,
-  Link,
-  Image,
-  ImageToolbar,
-  ImageInsert,
-  SimpleUploadAdapter
-} from 'ckeditor5';
+import {Bold, ClassicEditor, Heading, Italic, Link, List} from 'ckeditor5';
 import hu from 'ckeditor5/translations/hu.js';
 import {AuthService} from '../../../../core/auth/auth-service';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {map} from 'rxjs';
+import {ImageUpload} from '../../../core/image-upload/image-upload';
 
 @Component({
   selector: 'app-partner-edit',
   imports: [
-    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect, MatIcon, MatTooltip, RouterLink, CKEditorModule
+    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect, MatIcon, MatTooltip, RouterLink, CKEditorModule, ImageUpload
   ],
   templateUrl: './partner-edit.html',
   styleUrl: './partner-edit.scss',
@@ -68,11 +60,7 @@ export class PartnerEdit implements OnInit {
       Italic,
       Heading,
       List,
-      Link,
-      Image,
-      ImageToolbar,
-      ImageInsert,
-      SimpleUploadAdapter
+      Link
     ],
     toolbar: [
       'heading',
@@ -83,8 +71,7 @@ export class PartnerEdit implements OnInit {
       'bulletedList',
       'numberedList',
       '|',
-      'link',
-      'insertImage'
+      'link'
     ],
     link: {
       addTargetToExternalLinks: true
@@ -97,17 +84,28 @@ export class PartnerEdit implements OnInit {
     name: new FormControl('', { nonNullable: true }),
     headquarters: new FormControl('', { nonNullable: true }),
     site: new FormControl<string | null>(''),
+    location: new FormControl<string | null>(''),
+    contact: new FormControl<string | null>(''),
     phone: new FormControl<string | null>(''),
+    email: new FormControl<string | null>(''),
     website: new FormControl<string | null>(''),
     keyWords: new FormControl<string | null>(''),
     introduction: new FormControl<string | null>(''),
-    activities: new FormControl<number[]>([], { nonNullable: true })
+    activities: new FormControl<number[]>([], { nonNullable: true }),
+    photo: new FormControl<string | null>(''),
+    logo: new FormControl<string | null>('')
   });
 
   activities: ActivityDto[] = [];
   displayMode = this.route.snapshot.data['mode'] as DisplayMode;
   applicationId?: string;
   referralCode?: string;
+
+  readonly returnUrl = toSignal(
+    this.route.queryParamMap.pipe(
+      map(params => params.get('returnUrl') ? params.get('returnUrl') : undefined)
+    )
+  );
 
   ngOnInit(): void {
     this.loadActivities();
@@ -140,8 +138,9 @@ export class PartnerEdit implements OnInit {
   }
 
   cancel() {
-    if (this.applicationId) {
-      this.router.navigate(['/applications', this.applicationId]);
+    const returnUrl = this.returnUrl();
+    if (returnUrl) {
+      this.router.navigateByUrl(returnUrl);
     } else {
       this.router.navigate(['/partners']);
     }
@@ -150,24 +149,10 @@ export class PartnerEdit implements OnInit {
   loadActivities() {
     this.activityService.search({
       page: 0,
-      size: 1000, // Adjust the size as needed
+      size: 1000,
       sort: 'activity,asc'
     }).subscribe(res => {
       this.activities = res.content;
     });
-  }
-
-  readonly() {
-    return this.displayMode === 'view';
-  }
-
-  appearance() {
-    return this.readonly() ? 'fill' : 'outline';
-  }
-
-  activitiesText(activities: number[]): string {
-    return activities
-      .map(id => this.activities.find(a => a.id === id)?.activity)
-      .join(', ');
   }
 }

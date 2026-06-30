@@ -119,7 +119,11 @@ export class CommissionSetting {
     }
     const partnerId = this.routeParams()?.partnerId;
     if (partnerId) {
-      this.router.navigate(['/partners/edit', partnerId]);
+      this.router.navigate(['/partners/edit', partnerId], {
+        queryParams: {
+          returnUrl: this.router.url
+        }
+      });
       return;
     }
     this.router.navigate(['/dashboard']);

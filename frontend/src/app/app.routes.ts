@@ -21,6 +21,7 @@ import {TransactionCreate} from './features/dashboard/transaction/transaction-cr
 import {TransactionWorkflow} from './features/dashboard/transaction/transaction-workflow/transaction-workflow';
 import {Profile} from './features/dashboard/user/profile/profile/profile';
 import {PublicShell} from './features/core/public-shell/public-shell';
+import {PartnerView} from './features/dashboard/partner/partner-view/partner-view';
 
 export const routes: Routes = [
   {
@@ -56,13 +57,13 @@ export const routes: Routes = [
       {
         path: 'partners',
         canActivateChild: [roleGuard],
-        data: { roles: [Role.ADMIN] },
         children: [
-          { path: '', component: PartnerList },
-          { path: 'create', component: PartnerEdit, data: { mode: 'create' }},
-          { path: 'create/:applicationId', component: PartnerEdit, data: { mode: 'create' }},
-          { path: 'view/:partnerId', component: PartnerEdit, data: { mode: 'view' }},
-          { path: 'edit/:partnerId', component: PartnerEdit, data: { mode: 'edit' }}
+          { path: 'admin', component: PartnerList, data: { mode: 'admin', roles: [Role.ADMIN] } },
+          { path: '', component: PartnerList, data: { mode: 'global', roles: [Role.ADMIN, Role.PARTNER, Role.SALES] } },
+          { path: 'create', component: PartnerEdit, data: { mode: 'create', roles: [Role.ADMIN] } },
+          { path: 'create/:applicationId', component: PartnerEdit, data: { mode: 'create', roles: [Role.ADMIN] } },
+          { path: 'view/:partnerId', component: PartnerView, data: { mode: 'view', roles: [Role.ADMIN, Role.PARTNER, Role.SALES] } },
+          { path: 'edit/:partnerId', component: PartnerEdit, data: { mode: 'edit', roles: [Role.ADMIN] } }
         ]
       },
       {

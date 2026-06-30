@@ -23,31 +23,31 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     @GetMapping
     public ResponseEntity<PageResponse<ApplicationDto>> search(@RequestParam(required = false) List<ApplicationState> states, Pageable pageable) {
         return ResponseEntity.ok(applicationService.search(states, pageable));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     @GetMapping("/{id}")
     public ResponseEntity<ApplicationDto> get(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.get(id));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     @PostMapping("/{id}/process")
     public ResponseEntity<ApplicationDto> process(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.changeState(id, ApplicationState.IN_PROGRESS, AuthHelper.getUserId()));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     @PostMapping("/{id}/accept")
     public ResponseEntity<ApplicationDto> accept(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.changeState(id, ApplicationState.ACCEPTED, null));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     @PostMapping("/{id}/deny")
     public ResponseEntity<ApplicationDto> deny(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.changeState(id, ApplicationState.DENIED, null));

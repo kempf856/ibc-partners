@@ -73,7 +73,7 @@
           <div class="readonly-field">
             <span class="label">Eladói jóváhagyás</span>
             @if (transactionDto.value()?.sellerApproved; as approved) {
-              <span class="value">{{ transactionDto.value()?.sellerApproverName + ', ' + (approved | date:'yyyy.MM.dd HH:mm') }}</span>
+              <span class="value">{{ sellerApproved() + (approved | date:'yyyy.MM.dd HH:mm') }}</span>
             } @else {
               <span class="value">nincs</span>
             }
@@ -89,7 +89,7 @@
           <div class="readonly-field">
             <span class="label">Vevői jóváhagyás</span>
             @if (transactionDto.value()?.buyerApproved; as approved) {
-              <span class="value">{{ transactionDto.value()?.buyerApproverName + ', ' + (approved | date:'yyyy.MM.dd HH:mm') }}</span>
+              <span class="value">{{ buyerApproved() + (approved | date:'yyyy.MM.dd HH:mm') }}</span>
             } @else {
               <span class="value">nincs</span>
             }

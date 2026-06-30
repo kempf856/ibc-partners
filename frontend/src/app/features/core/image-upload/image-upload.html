@@ -1,0 +1,23 @@
+<div class="image-upload">
+  <div class="preview-box" [style.width.px]="previewWidth()" [style.height.px]="previewHeight()">
+    @if (previewUrl()) {
+      <img [src]="previewUrl()!" alt="előnézet" [style.width.px]="previewWidth()" [style.height.px]="previewHeight()">
+    } @else {
+      <div>nincs kép ({{ previewWidth() + 'x' + previewHeight()}})</div>
+    }
+  </div>
+
+
+  <input #fileInput type="file" accept="image/*" (change)="upload($event)" hidden/>
+  <div>
+    <button matButton="elevated" (click)="fileInput.click()">Kép kiválasztása</button>
+    @if (previewUrl()) {
+      <button matButton="elevated" (click)="remove()">Törlés</button>
+    }
+  </div>
+
+  @if (selectedFileName()) {
+    <span>{{ selectedFileName() }}</span>
+  }
+
+</div>

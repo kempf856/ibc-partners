@@ -7,6 +7,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "partners")
@@ -33,7 +34,13 @@ public class Partner extends AuditedEntity {
 
     private String site;
 
+    private String location;
+
+    private String contact;
+
     private String phone;
+
+    private String email;
 
     private String website;
 
@@ -48,4 +55,8 @@ public class Partner extends AuditedEntity {
     private String keyWords;
 
     private String introduction;
+
+    private String photo;
+
+    private String logo;
 }

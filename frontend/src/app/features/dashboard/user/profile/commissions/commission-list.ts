@@ -70,11 +70,10 @@ export class CommissionList {
 
   constructor() {
     effect(() => {
-      this.commissionService.getCommissions({
+      this.commissionService.my({
         page: this.pageIndex(),
         size: this.pageSize(),
-        sort: this.sort(),
-        userId: this.authService.getLoggedInUser() ?? undefined
+        sort: this.sort()
       }).subscribe(res => {
         this.commissions.set(res.content);
         this.totalElements.set(res.totalElements);

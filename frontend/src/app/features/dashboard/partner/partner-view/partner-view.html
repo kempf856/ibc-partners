@@ -1,0 +1,43 @@
+<div class="form-page-wrapper mw-md" xmlns="http://www.w3.org/1999/html">
+  <div class="page-header">
+    <h1>Partner: {{ partner.value()?.name }}</h1>
+    <img [src]="`${partner.value()?.logo}`" alt="logo" [style.width.px]="350" [style.height.px]="70">
+  </div>
+
+  <div class="partner-top-box">
+    <section class="partner-top-left">
+      <img [src]="`${partner.value()?.photo}`" alt="cégfotó" [style.width.px]="220" [style.height.px]="300">
+    </section>
+
+    <section class="form-block partner-top-right">
+      <div>
+        <p><span class="partner-top-bold">Tevékenység:</span> {{ activitiesText() }}</p>
+        <p><span class="partner-top-bold">Kulcsszavak:</span> {{ partner.value()?.keyWords }}</p>
+        <p><span class="partner-top-bold">Kontakt:</span> {{ partner.value()?.contact }}</p>
+        <p><span class="partner-top-bold">Telefon:</span> {{ partner.value()?.phone }}</p>
+        <p><span class="partner-top-bold">E-mail:</span> {{ partner.value()?.email }}</p>
+        <p><span class="partner-top-bold">Székhely:</span> {{ partner.value()?.headquarters }}</p>
+        <p><span class="partner-top-bold">Telephely:</span> {{ partner.value()?.site }}</p>
+        <p><span class="partner-top-bold">Webhely: </span>
+          @if (partner.value()?.website) {
+            <a [href]="partner.value()?.website" target="_blank">{{ partner.value()?.website }}</a>
+          } @else {
+            -
+          }
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <div>
+    <section class="form-block">
+      <div [innerHTML]="partner.value()?.introduction"></div>
+    </section>
+  </div>
+
+  <div class="form-actions">
+    <button matButton type="button" (click)="cancel()">
+      Mégsem
+    </button>
+  </div>
+</div>

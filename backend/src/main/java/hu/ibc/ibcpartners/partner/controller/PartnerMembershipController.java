@@ -18,7 +18,7 @@ public class PartnerMembershipController {
     private final PartnerMembershipService partnerMembershipService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     public ResponseEntity<Void> create(@RequestBody PartnerMembershipDto req) {
         partnerMembershipService.create(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -32,7 +32,7 @@ public class PartnerMembershipController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     public ResponseEntity<List<PartnerMembershipDto>> findByIds(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long partnerId) {
         return ResponseEntity.ok(partnerMembershipService.findByIds(userId, partnerId));
     }

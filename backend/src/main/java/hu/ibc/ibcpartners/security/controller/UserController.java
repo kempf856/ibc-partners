@@ -29,7 +29,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getLoggedInUser());
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     @GetMapping("/by-email")
     public ResponseEntity<UserDto> findByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.findByEmail(email));
@@ -41,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(userService.search(email, fullName, role, pageable));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody UserDto userDto) {
         userService.create(userDto);

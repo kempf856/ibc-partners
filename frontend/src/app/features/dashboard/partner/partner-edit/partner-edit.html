@@ -9,12 +9,6 @@
   </div>
 
   <form [formGroup]="form">
-    @if (displayMode === 'view') {
-      <div>
-        <div [innerHTML]="form.controls.introduction.value"></div>
-      </div>
-    }
-
     <div class="form-page">
       <section class="form-block">
         <div class="readonly-field">
@@ -22,58 +16,76 @@
           <span class="value">{{ referralCode ? referralCode : 'nincs' }}</span>
         </div>
 
-        <mat-form-field [appearance]="appearance()">
+        <mat-form-field appearance="outline">
           <mat-label>Adószám</mat-label>
-          <input matInput formControlName="taxNumber" required [readonly]="readonly()"/>
+          <input matInput formControlName="taxNumber" required/>
         </mat-form-field>
 
-        <mat-form-field [appearance]="appearance()">
+        <mat-form-field appearance="outline">
           <mat-label>Cégnév</mat-label>
-          <input matInput formControlName="name" required [readonly]="readonly()"/>
+          <input matInput formControlName="name" required/>
         </mat-form-field>
 
-        <mat-form-field [appearance]="appearance()">
-          <mat-label>Település</mat-label>
-          <input matInput formControlName="headquarters" required [readonly]="readonly()"/>
+        <mat-form-field appearance="outline">
+          <mat-label>Székhely</mat-label>
+          <input matInput formControlName="headquarters" required/>
         </mat-form-field>
 
-        <mat-form-field [appearance]="appearance()">
+        <mat-form-field appearance="outline">
           <mat-label>Telephely</mat-label>
-          <input matInput formControlName="site" [readonly]="readonly()"/>
+          <input matInput formControlName="site"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Település</mat-label>
+          <input matInput formControlName="location"/>
         </mat-form-field>
       </section>
 
       <section class="form-block">
-        <mat-form-field [appearance]="appearance()">
+        <mat-form-field appearance="outline">
+          <mat-label>Kontakt</mat-label>
+          <input matInput formControlName="contact"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
           <mat-label>Telefonszám</mat-label>
-          <input matInput formControlName="phone" [readonly]="readonly()"/>
+          <input matInput formControlName="phone"/>
         </mat-form-field>
 
-        <mat-form-field [appearance]="appearance()">
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
           <mat-label>Webhely</mat-label>
-          <input matInput formControlName="website" [readonly]="readonly()"/>
+          <input matInput formControlName="website"/>
         </mat-form-field>
 
-        <mat-form-field [appearance]="appearance()">
+        <mat-form-field appearance="outline">
           <mat-label>Tevékenységek</mat-label>
-          @if (readonly()) {
-            <input matInput [value]="activitiesText(form.get('activities')!.value)" readonly/>
-          } @else {
-            <mat-select formControlName="activities" multiple>
-              @for (activity of activities; track activity) {
-                <mat-option [value]="activity.id">
-                  {{ activity.activity }}
-                </mat-option>
-              }
-            </mat-select>
-          }
+          <mat-select formControlName="activities" multiple>
+            @for (activity of activities; track activity) {
+              <mat-option [value]="activity.id">
+                {{ activity.activity }}
+              </mat-option>
+            }
+          </mat-select>
         </mat-form-field>
 
-        <mat-form-field [appearance]="appearance()">
-          <mat-label>Kulcs szavak</mat-label>
-          <input matInput formControlName="keyWords" [readonly]="readonly()"/>
+        <mat-form-field appearance="outline">
+          <mat-label>Kulcsszavak</mat-label>
+          <input matInput formControlName="keyWords"/>
         </mat-form-field>
+      </section>
 
+      <section class="form-block">
+        <app-image-upload formControlName="photo" [previewWidth]="220" [previewHeight]="300"></app-image-upload>
+      </section>
+
+      <section class="form-block">
+        <app-image-upload formControlName="logo" [previewWidth]="350" [previewHeight]="70"></app-image-upload>
       </section>
     </div>
 
@@ -92,11 +104,9 @@
         Mégsem
       </button>
 
-      @if (!readonly()) {
-        <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
-          Mentés
-        </button>
-      }
+      <button matButton="elevated" (click)="save()" [disabled]="form.invalid">
+        Mentés
+      </button>
     </div>
   </form>
 </div>

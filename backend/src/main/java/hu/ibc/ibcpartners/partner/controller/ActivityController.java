@@ -45,13 +45,11 @@ public class ActivityController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ActivityDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(activityService.getById(id));
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PageResponse<ActivityDto>> search(@RequestParam(required = false) String activity, Pageable pageable) {
         return ResponseEntity.ok(activityService.search(activity, pageable));
     }

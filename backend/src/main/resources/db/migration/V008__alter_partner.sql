@@ -1,0 +1,5 @@
+ALTER TABLE partners ADD COLUMN contact TEXT;
+ALTER TABLE partners ADD COLUMN email TEXT;
+ALTER TABLE partners ADD COLUMN location TEXT;
+ALTER TABLE partners ADD COLUMN logo TEXT;
+ALTER TABLE partners ADD COLUMN photo TEXT;
