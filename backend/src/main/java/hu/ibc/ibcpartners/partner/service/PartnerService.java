@@ -44,8 +44,8 @@ public class PartnerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Partner nem található ezzel az adószámmal: " + taxNumber));
     }
 
-    public PageResponse<PartnerDto> search(String filter, Long[] activityIds, Pageable pageable) {
-        Page<Partner> page = partnerRepository.search(filter, activityIds == null ? new Long[] {} : activityIds, pageable);
+    public PageResponse<PartnerDto> search(Boolean browsableOnly, String filter, Long[] activityIds, Pageable pageable) {
+        Page<Partner> page = partnerRepository.search(Boolean.TRUE.equals(browsableOnly), filter, activityIds == null ? new Long[] {} : activityIds, pageable);
         return PageResponse.of(page, partnerMapper::map);
     }
 

@@ -7,7 +7,6 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {TextFieldModule} from '@angular/cdk/text-field';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-import {ActivityDto} from '../../../core/activity/activity-dto';
 import {ActivityService} from '../../../core/activity/activity-service';
 import {PartnerService} from '../partner-service';
 import {NotificationService} from '../../../../core/notification/notification';
@@ -19,13 +18,15 @@ import {Bold, ClassicEditor, Heading, Italic, Link, List} from 'ckeditor5';
 import hu from 'ckeditor5/translations/hu.js';
 import {AuthService} from '../../../../core/auth/auth-service';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {map} from 'rxjs';
+import {map, startWith} from 'rxjs';
 import {ImageUpload} from '../../../core/image-upload/image-upload';
+import {CityService} from '../../../core/city/city-service';
+import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-partner-edit',
   imports: [
-    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect, MatIcon, MatTooltip, RouterLink, CKEditorModule, ImageUpload
+    MatFormFieldModule, MatInputModule, MatLabel, MatButtonModule, ReactiveFormsModule, TextFieldModule, MatOption, MatSelect, MatIcon, MatTooltip, RouterLink, CKEditorModule, ImageUpload, MatAutocomplete, MatAutocompleteTrigger
   ],
   templateUrl: './partner-edit.html',
   styleUrl: './partner-edit.scss',
@@ -37,6 +38,7 @@ export class PartnerEdit implements OnInit {
 
   partnerService = inject(PartnerService);
   activityService = inject(ActivityService);
+  citiService = inject(CityService);
   notificationService = inject(NotificationService);
   applicationService = inject(ApplicationService);
   authService = inject(AuthService);
@@ -96,7 +98,37 @@ export class PartnerEdit implements OnInit {
     logo: new FormControl<string | null>('')
   });
 
-  activities: ActivityDto[] = [];
+  readonly activities = toSignal(
+    this.activityService.search({
+      page: 0,
+      size: 1000,
+      sort: 'activity,asc'
+    }).pipe(
+      map(page => page.content)
+    ),
+    { initialValue: []}
+  );
+
+  readonly cities = toSignal(
+    this.citiService.getAll().pipe(
+      map(cities => cities.map(city => city.city))
+    ),
+    { initialValue: []}
+  );
+
+  readonly filteredCities = toSignal(
+    this.form.controls.location.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const filter = (value ?? '').toLowerCase();
+        return this.cities().filter(city =>
+          city.toLowerCase().includes(filter)
+        );
+      })
+    ),
+    { initialValue: this.cities() }
+  );
+
   displayMode = this.route.snapshot.data['mode'] as DisplayMode;
   applicationId?: string;
   referralCode?: string;
@@ -108,8 +140,6 @@ export class PartnerEdit implements OnInit {
   );
 
   ngOnInit(): void {
-    this.loadActivities();
-
     const id = this.route.snapshot.paramMap.get('partnerId');
     if (id) {
       this.partnerService.getById(id).subscribe(partner => {
@@ -144,15 +174,5 @@ export class PartnerEdit implements OnInit {
     } else {
       this.router.navigate(['/partners']);
     }
-  }
-
-  loadActivities() {
-    this.activityService.search({
-      page: 0,
-      size: 1000,
-      sort: 'activity,asc'
-    }).subscribe(res => {
-      this.activities = res.content;
-    });
   }
 }

@@ -44,7 +44,7 @@ export class PartnerView {
       map(page => page.content)
     ),
     { initialValue: []}
-  )
+  );
 
   readonly partnerId = toSignal(
     this.route.paramMap.pipe(

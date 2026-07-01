@@ -12,6 +12,7 @@ import {UserService} from '../../dashboard/user/user-service';
 import {Role} from '../../../shared/role';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {PartnerService} from '../../dashboard/partner/partner-service';
+import {TransactionService} from '../../dashboard/transaction/transaction-service';
 
 @Component({
   selector: 'app-commission-setting',
@@ -33,6 +34,7 @@ export class CommissionSetting {
   commissionSettingService = inject(CommissionSettingService);
   userService = inject(UserService);
   partnerService = inject(PartnerService);
+  transactionService = inject(TransactionService);
   notification = inject(NotificationService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -76,11 +78,19 @@ export class CommissionSetting {
     }
   });
 
+  transaction = resource({
+    params: () => this.commissionSetting.value()?.transactionId,
+    loader: ({ params }) => {
+      if (!params) return Promise.resolve(null);
+      return firstValueFrom(this.transactionService.getTransaction(params));
+    }
+  });
+
   commissionLevel = computed(() => {
     const setting = this.commissionSetting.value();
 
     if (!setting) return '';
-    if (setting.transactionId) return 'Ügylet';
+    if (setting.transactionId) return `Ügylet: ${this.transaction.value()?.description}`;
     if (setting.partnerId) {
       return `Partner: ${this.partner.value()?.name ?? '...'}`;
     }

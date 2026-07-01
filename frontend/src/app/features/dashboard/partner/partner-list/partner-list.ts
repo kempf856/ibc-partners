@@ -72,8 +72,7 @@ export class PartnerList implements OnInit {
 
   sort = 'name,asc';
 
-  nameFilter = '';
-  addressFilter = '';
+  filter = '';
   activityFilter: number[] = [];
 
   listMode = this.route.snapshot.data['mode'] as ListMode;
@@ -88,8 +87,8 @@ export class PartnerList implements OnInit {
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sort,
-      name: this.nameFilter,
-      address: this.addressFilter,
+      filter: this.filter,
+      browsableOnly: this.listMode === 'global',
       activities: this.activityFilter.length > 0 ? this.activityFilter : undefined
     }).subscribe(res => {
       this.dataSource.data = res.content;

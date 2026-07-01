@@ -52,7 +52,7 @@ public class PartnerController {
 
     @GetMapping
     public ResponseEntity<PageResponse<PartnerDto>> search(
-            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Boolean browsableOnly, @RequestParam(required = false) String filter,
             @RequestParam(required = false) String activities, Pageable pageable) {
         Long[] activityIds = null;
         if (activities != null && !activities.isBlank()) {
@@ -63,11 +63,10 @@ public class PartnerController {
                     .toArray(Long[]::new);
         }
 
-        return ResponseEntity.ok(partnerService.search(name, activityIds, pageable));
+        return ResponseEntity.ok(partnerService.search(browsableOnly, filter, activityIds, pageable));
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<PartnerDto>> getAll() {
         return ResponseEntity.ok(partnerService.getAll());
     }

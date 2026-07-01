@@ -32,13 +32,13 @@ export class PartnerService {
     })
   }
 
-  search(req: { page: number; size: number; sort?: string; name?: string; address?: string; activities?: number[] }) {
+  search(req: { page: number; size: number; sort?: string; browsableOnly?: boolean; filter?: string; activities?: number[] }) {
     const params: any = {
       page: req.page,
       size: req.size,
       ...(req.sort ? { sort: req.sort } : {}),
-      ...(req.name ? { name: req.name } : {}),
-      ...(req.address ? { address: req.address } : {}),
+      ...(req.browsableOnly ? { browsableOnly: req.browsableOnly } : {}),
+      ...(req.filter ? { filter: req.filter } : {}),
     };
 
     if (req.activities && req.activities.length > 0) {

@@ -38,7 +38,13 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Település</mat-label>
-          <input matInput formControlName="location"/>
+
+          <input matInput formControlName="location" [matAutocomplete]="cityAutocomplete">
+          <mat-autocomplete #cityAutocomplete="matAutocomplete">
+            @for (city of filteredCities(); track city) {
+              <mat-option [value]="city">{{ city }}</mat-option>
+            }
+          </mat-autocomplete>
         </mat-form-field>
       </section>
 
@@ -66,7 +72,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Tevékenységek</mat-label>
           <mat-select formControlName="activities" multiple>
-            @for (activity of activities; track activity) {
+            @for (activity of activities(); track activity) {
               <mat-option [value]="activity.id">
                 {{ activity.activity }}
               </mat-option>
@@ -76,17 +82,20 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Kulcsszavak</mat-label>
-          <input matInput formControlName="keyWords"/>
+          <textarea matInput formControlName="keyWords" required
+                    cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="15" maxlength="250"></textarea>
         </mat-form-field>
       </section>
 
-      <section class="form-block">
-        <app-image-upload formControlName="photo" [previewWidth]="220" [previewHeight]="280"></app-image-upload>
-      </section>
+      @if (displayMode === 'edit') {
+        <section class="form-block">
+          <app-image-upload formControlName="photo" [previewWidth]="220" [previewHeight]="280"></app-image-upload>
+        </section>
 
-      <section class="form-block">
-        <app-image-upload formControlName="logo" [previewWidth]="350" [previewHeight]="40"></app-image-upload>
-      </section>
+        <section class="form-block">
+          <app-image-upload formControlName="logo" [previewWidth]="350" [previewHeight]="40"></app-image-upload>
+        </section>
+      }
     </div>
 
     @if (displayMode === 'edit') {

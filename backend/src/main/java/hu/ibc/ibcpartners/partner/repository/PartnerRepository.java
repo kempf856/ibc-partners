@@ -16,9 +16,10 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
 	@Query(value = """
         SELECT * FROM partners p WHERE (:filter IS NULL OR p.name ILIKE concat(:filter, '%') OR p.key_words ILIKE concat('%', :filter, '%')
         OR p.location ILIKE concat(:filter, '%'))
+        AND (:browsableOnly = false OR (p.introduction IS NOT NULL AND p.photo IS NOT NULL AND p.logo IS NOT NULL))
         AND (cardinality(cast(:ids AS INTEGER[])) = 0 OR p.activities && cast(:ids AS INTEGER[]))
         """, nativeQuery = true)
-    Page<Partner> search(String filter, Long[] ids, Pageable pageable);
+    Page<Partner> search(boolean browsableOnly, String filter, Long[] ids, Pageable pageable);
 
     Optional<Partner> findByTaxNumber(String taxNumber);
 
