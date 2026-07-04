@@ -81,7 +81,7 @@ export const routes: Routes = [
       {
         path: 'transactions',
         canActivateChild: [roleGuard],
-        data: { roles: [Role.ADMIN] },
+        data: { roles: [Role.ADMIN, Role.PARTNER] },
         children: [
           { path: '', component: TransactionList },
           { path: 'create', component: TransactionCreate },

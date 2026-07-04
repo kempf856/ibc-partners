@@ -1,9 +1,9 @@
 package hu.ibc.ibcpartners.partner.service;
 
 import hu.ibc.ibcpartners.partner.dto.PartnerMembershipDto;
-import hu.ibc.ibcpartners.partner.entity.PartnerMembership;
 import hu.ibc.ibcpartners.partner.mapper.PartnerMembershipMapper;
 import hu.ibc.ibcpartners.partner.repository.PartnerMembershipRepository;
+import hu.ibc.ibcpartners.security.service.AuthHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,17 @@ public class PartnerMembershipService {
 
     private final PartnerMembershipRepository partnerMembershipRepository;
     private final PartnerMembershipMapper partnerMembershipMapper;
+
+    public void checkMembership(Long partnerId) {
+        if (!hasMembership(partnerId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nincs jogod ehhez a partnerhez: " + partnerId);
+        }
+    }
+
+    public boolean hasMembership(Long partnerId) {
+        List<PartnerMembershipDto> partnerMemberships = findByIds(AuthHelper.getUserId(), partnerId);
+        return !partnerMemberships.isEmpty();
+    }
 
     public List<PartnerMembershipDto> findByIds(Long userId, Long partnerId) {
         return partnerMembershipRepository.findByIds(userId, partnerId);

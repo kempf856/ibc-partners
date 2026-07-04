@@ -19,7 +19,7 @@ import {
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {commissionStatusClass, commissionStatusLabel} from '../../../../../shared/commission-status';
 import {CommissionService} from './commission-service';
 import {AuthService} from '../../../../../core/auth/auth-service';
@@ -60,6 +60,8 @@ export class CommissionList {
 
   commissionService = inject(CommissionService);
   authService = inject(AuthService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   commissions = signal<CommissionDto[]>([]);
   totalElements = signal(0);
@@ -95,5 +97,15 @@ export class CommissionList {
     }
 
     this.sort.set(`${event.active},${event.direction}`);
+  }
+
+  getReturnUrl(): string {
+    const tree = this.router.createUrlTree([], {
+      queryParams: {
+        ...this.route.snapshot.queryParams,
+        tab: 1
+      }
+    });
+    return this.router.serializeUrl(tree);
   }
 }

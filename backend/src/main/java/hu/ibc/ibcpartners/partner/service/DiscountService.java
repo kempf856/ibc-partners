@@ -1,14 +1,20 @@
 package hu.ibc.ibcpartners.partner.service;
 
+import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.core.entity.CommissionSetting;
 import hu.ibc.ibcpartners.core.service.CommissionSettingService;
+import hu.ibc.ibcpartners.partner.dto.DiscountDto;
 import hu.ibc.ibcpartners.partner.entity.Discount;
 import hu.ibc.ibcpartners.partner.entity.DiscountStatus;
 import hu.ibc.ibcpartners.partner.entity.Transaction;
 import hu.ibc.ibcpartners.partner.repository.DiscountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +23,10 @@ public class DiscountService {
     private final CommissionSettingService commissionSettingService;
     private final DiscountRepository discountRepository;
 
-//    public PageResponse<CommissionDto> search(Long userId, Long transactionId, Pageable pageable) {
-//        Page<CommissionDto> commissionPage = commissionRepository.search(userId, transactionId, pageable);
-//        return PageResponse.of(commissionPage, Function.identity());
-//    }
+    public PageResponse<DiscountDto> search(Long sellerId, Long buyerId, Pageable pageable) {
+        Page<DiscountDto> discountPage = discountRepository.search(sellerId, buyerId, pageable);
+        return PageResponse.of(discountPage, Function.identity());
+    }
 
     @Transactional
     public void bookDiscount(Transaction transaction) {

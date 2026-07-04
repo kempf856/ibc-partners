@@ -38,4 +38,8 @@ export class ActivePartnerService {
   getActivePartners() {
     return this.http.get<PartnerDto[]>('/api/partners/active');
   }
+
+  getActivePartnerName() {
+    return this.partners().find(partner => partner.id === this.activePartnerId())?.name || '';
+  }
 }

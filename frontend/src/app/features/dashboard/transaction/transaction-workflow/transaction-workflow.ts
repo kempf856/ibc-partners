@@ -19,6 +19,8 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import {TransactionStatus, transactionStatusClass, transactionStatusLabel} from '../../../../shared/transaction-status';
 import {DatePipe} from '@angular/common';
+import {AuthService} from '../../../../core/auth/auth-service';
+import {Role} from '../../../../shared/role';
 
 @Component({
   selector: 'app-transaction-create',
@@ -30,13 +32,15 @@ import {DatePipe} from '@angular/common';
 })
 export class TransactionWorkflow {
 
+  protected readonly Role = Role;
   protected readonly TransactionStatus = TransactionStatus;
   protected readonly transactionStatusClass = transactionStatusClass;
   protected readonly transactionStatusLabel = transactionStatusLabel;
 
   transactionService = inject(TransactionService);
   partnerService = inject(PartnerService);
-  notification = inject(NotificationService);
+  notificationService = inject(NotificationService);
+  authService = inject(AuthService);
   router = inject(Router);
   route = inject(ActivatedRoute);
 
@@ -49,6 +53,12 @@ export class TransactionWorkflow {
     description: new FormControl<string | null>(''),
     fulfillmentDate: new FormControl<string | null>('')
   });
+
+  readonly returnUrl = toSignal(
+    this.route.queryParamMap.pipe(
+      map(params => params.get('returnUrl') ? params.get('returnUrl') : undefined)
+    )
+  );
 
   readonly transactionId = toSignal(
     this.route.paramMap.pipe(
@@ -104,12 +114,17 @@ export class TransactionWorkflow {
   }
 
   cancel() {
-    this.router.navigate(['/transactions']);
+    const returnUrl = this.returnUrl();
+    if (returnUrl) {
+      this.router.navigateByUrl(returnUrl);
+    } else {
+      this.router.navigate(['/transactions']);
+    }
   }
 
   protected sellerApprove() {
     this.transactionService.approveSeller(this.form.controls.id.value).subscribe(() => {
-        this.notification.success('Ügylet jóváhagyva');
+        this.notificationService.success('Ügylet jóváhagyva');
         this.transactionDto.reload();
       }
     );
@@ -117,7 +132,7 @@ export class TransactionWorkflow {
 
   protected buyerApprove() {
     this.transactionService.approveBuyer(this.form.controls.id.value).subscribe(() => {
-        this.notification.success('Ügylet jóváhagyva');
+        this.notificationService.success('Ügylet jóváhagyva');
         this.transactionDto.reload();
       }
     );
@@ -125,7 +140,7 @@ export class TransactionWorkflow {
 
   protected book() {
     this.transactionService.book(this.form.controls.id.value).subscribe(() => {
-        this.notification.success('Ügylet elszámolva');
+        this.notificationService.success('Ügylet elszámolva');
         this.transactionDto.reload();
       }
     );

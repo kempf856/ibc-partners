@@ -2,6 +2,7 @@ package hu.ibc.ibcpartners.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
@@ -9,6 +10,11 @@ import org.springframework.web.server.ResponseStatusException;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseStatusException handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
+        return new ResponseStatusException(HttpStatus.FORBIDDEN, "Nincs jogod a művelethez!");
+    }
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseStatusException handleGenericException(ResponseStatusException ex) {

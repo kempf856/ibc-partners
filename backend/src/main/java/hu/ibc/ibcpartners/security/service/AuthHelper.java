@@ -7,6 +7,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class AuthHelper {
 
+    private AuthHelper() {}
+
     public static Long getUserId() {
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof SimplePrincipal principal) {
             return principal.userId();

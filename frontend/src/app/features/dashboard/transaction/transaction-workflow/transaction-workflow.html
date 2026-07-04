@@ -1,9 +1,11 @@
 <div class="form-page-wrapper mw-md">
   <div class="page-header">
     <h1>Ügylet</h1>
-    <button mat-icon-button matTooltip="Jutalék beállítások" routerLink="/commission-setting" [queryParams]="{ transactionId: form.controls.id.value }">
-      <mat-icon>paid</mat-icon>
-    </button>
+    @if (authService.hasRole(Role.ADMIN)) {
+      <button mat-icon-button matTooltip="Jutalék beállítások" routerLink="/commission-setting" [queryParams]="{ transactionId: form.controls.id.value }">
+        <mat-icon>paid</mat-icon>
+      </button>
+    }
   </div>
 
   <form [formGroup]="form">
@@ -47,7 +49,6 @@
         <mat-form-field appearance="fill">
           <mat-label>Teljesítés dátuma</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="fulfillmentDate" readonly/>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </section>

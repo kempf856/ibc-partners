@@ -1,6 +1,7 @@
 package hu.ibc.ibcpartners.partner.service;
 
 import hu.ibc.ibcpartners.core.dto.PageResponse;
+import hu.ibc.ibcpartners.core.entity.CommissionSetting;
 import hu.ibc.ibcpartners.core.service.CommissionSettingService;
 import hu.ibc.ibcpartners.partner.dto.TransactionDto;
 import hu.ibc.ibcpartners.partner.dto.TransactionRequest;
@@ -31,6 +32,7 @@ public class TransactionService {
     private final CommissionSettingService commissionSettingService;
     private final CommissionService commissionService;
     private final DiscountService discountService;
+    private final PartnerMembershipService partnerMembershipService;
 
     public void create(TransactionRequest transactionRequest) {
         Transaction transaction = transactionMapper.map(transactionRequest);
@@ -78,6 +80,18 @@ public class TransactionService {
 
     public TransactionDto getById(Long transactionId) {
         return map(findById(transactionId));
+    }
+
+    public TransactionDto getMyById(Long transactionId) {
+        Transaction transaction = findById(transactionId);
+        if (!partnerMembershipService.hasMembership(transaction.getSellerId()) && !partnerMembershipService.hasMembership(transaction.getBuyerId())) {
+            CommissionSetting commissionSetting = commissionSettingService.findByIds(null, transactionId);
+            if (!AuthHelper.getUserId().equals(commissionSetting.getReferralId())) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nincs jogod az ügylet megtekintéséhez!");
+            }
+        }
+
+        return map(transaction);
     }
 
     public PageResponse<TransactionDto> search(Long partnerId, Pageable pageable) {

@@ -52,6 +52,11 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getById(id));
     }
 
+    @GetMapping("/{id}/my")
+    public ResponseEntity<TransactionDto> getMy(@PathVariable Long id) {
+        return ResponseEntity.ok(transactionService.getMyById(id));
+    }
+
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PageResponse<TransactionDto>> search(@RequestParam(required = false) Long partnerId, Pageable pageable) {

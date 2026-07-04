@@ -1,14 +1,17 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {PageResponse} from '../../page-response';
 import {TransactionDto} from './transaction-dto';
 import {TransactionRequest} from './transaction-request';
+import {AuthService} from '../../../core/auth/auth-service';
+import {Role} from '../../../shared/role';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
 
   createTransaction(req: TransactionRequest) {
     return this.http.post('/api/transactions', req);
@@ -29,7 +32,11 @@ export class TransactionService {
    }
 
   getTransaction(id: number) {
-    return this.http.get<TransactionDto>(`/api/transactions/${id}`);
+    if (this.authService.hasRole(Role.ADMIN)) {
+      return this.http.get<TransactionDto>(`/api/transactions/${id}`);
+    } else {
+      return this.http.get<TransactionDto>(`/api/transactions/${id}/my`);
+    }
   }
 
   approveSeller(id: number) {
