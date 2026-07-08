@@ -5,7 +5,9 @@ import lombok.Getter;
 public enum EmailTemplate {
 
     REGISTRATION("myIBC regisztráció"),
-    FORGOTTEN_PASSWORD("myIBC elfelejtett jelszó");
+    FORGOTTEN_PASSWORD("myIBC elfelejtett jelszó"),
+    SELLER_APPROVAL("myIBC ügylet jóváhagyás"),
+    BUYER_APPROVAL("myIBC ügylet jóváhagyás");
 
     @Getter
     private final String subject;

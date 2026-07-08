@@ -22,6 +22,7 @@ public class DiscountService {
 
     private final CommissionSettingService commissionSettingService;
     private final DiscountRepository discountRepository;
+    private final DiscountAccountService discountAccountService;
 
     public PageResponse<DiscountDto> search(Long sellerId, Long buyerId, Pageable pageable) {
         Page<DiscountDto> discountPage = discountRepository.search(sellerId, buyerId, pageable);
@@ -49,5 +50,6 @@ public class DiscountService {
                 .build();
 
         discountRepository.save(discount);
+        discountAccountService.book(sellerId, buyerId, discount.getDiscount());
     }
 }

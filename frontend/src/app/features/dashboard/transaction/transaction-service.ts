@@ -13,14 +13,18 @@ export class TransactionService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
 
-  createTransaction(req: TransactionRequest) {
-    return this.http.post('/api/transactions', req);
+  createTransaction(req: TransactionRequest, my: boolean) {
+    if (my) {
+      return this.http.post('/api/transactions/my', req);
+    } else {
+      return this.http.post('/api/transactions', req);
+    }
   }
 
   getTransactions(req: {
     page: number;
     size: number;
-    sort?: string
+    sort?: string;
   }) {
     return this.http.get<PageResponse<TransactionDto>>('/api/transactions', {
       params: {
@@ -31,6 +35,22 @@ export class TransactionService {
     });
    }
 
+  my(req: {
+    page: number;
+    size: number;
+    sort?: string;
+    partnerId: number;
+  }) {
+    return this.http.get<PageResponse<TransactionDto>>('/api/transactions/my', {
+      params: {
+        page: req.page,
+        size: req.size,
+        ...(req.sort ? { sort: req.sort } : {}),
+        partnerId: req.partnerId
+      }
+    });
+  }
+
   getTransaction(id: number) {
     if (this.authService.hasRole(Role.ADMIN)) {
       return this.http.get<TransactionDto>(`/api/transactions/${id}`);
@@ -39,12 +59,20 @@ export class TransactionService {
     }
   }
 
-  approveSeller(id: number) {
-    return this.http.post(`/api/transactions/${id}/approve-seller`, {});
+  approveSeller(id: number, my: boolean) {
+    if (my) {
+      return this.http.post(`/api/transactions/${id}/approve-seller/my`, {});
+    } else {
+      return this.http.post(`/api/transactions/${id}/approve-seller`, {});
+    }
   }
 
-  approveBuyer(id: number) {
-    return this.http.post(`/api/transactions/${id}/approve-buyer`, {});
+  approveBuyer(id: number, my: boolean) {
+    if (my) {
+      return this.http.post(`/api/transactions/${id}/approve-buyer/my`, {});
+    } else {
+      return this.http.post(`/api/transactions/${id}/approve-buyer`, {});
+    }
   }
 
   book(id: number) {

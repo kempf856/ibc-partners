@@ -24,6 +24,7 @@ public class DiscountController {
     private final PartnerMembershipService partnerMembershipService;
 
     @GetMapping("/my")
+    @PreAuthorize("hasAuthority('PARTNER')")
     public ResponseEntity<PageResponse<DiscountDto>> my(@RequestParam(required = false) Long sellerId, @RequestParam(required = false) Long buyerId, Pageable pageable) {
         if (sellerId != null) {
             partnerMembershipService.checkMembership(sellerId);

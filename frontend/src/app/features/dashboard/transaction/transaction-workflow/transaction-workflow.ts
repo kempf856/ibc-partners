@@ -21,6 +21,7 @@ import {TransactionStatus, transactionStatusClass, transactionStatusLabel} from 
 import {DatePipe} from '@angular/common';
 import {AuthService} from '../../../../core/auth/auth-service';
 import {Role} from '../../../../shared/role';
+import {ActivePartnerService} from '../../../../core/auth/active-partner-service';
 
 @Component({
   selector: 'app-transaction-create',
@@ -41,6 +42,7 @@ export class TransactionWorkflow {
   partnerService = inject(PartnerService);
   notificationService = inject(NotificationService);
   authService = inject(AuthService);
+  activePartnerService = inject(ActivePartnerService);
   router = inject(Router);
   route = inject(ActivatedRoute);
 
@@ -50,9 +52,12 @@ export class TransactionWorkflow {
     buyerId: new FormControl<number>(0, { nonNullable: true }),
     invoiceNumber: new FormControl<string | null>(''),
     amount: new FormControl<number>(0, { nonNullable: true }),
+    discount: new FormControl<number>(0, { nonNullable: true }),
     description: new FormControl<string | null>(''),
     fulfillmentDate: new FormControl<string | null>('')
   });
+
+  displayMode = this.route.snapshot.data['mode'] as ListMode;
 
   readonly returnUrl = toSignal(
     this.route.queryParamMap.pipe(
@@ -122,16 +127,28 @@ export class TransactionWorkflow {
     }
   }
 
+  canSellerApprove() {
+    return this.transactionDto.value()?.status === TransactionStatus.PENDING && !this.transactionDto.value()?.sellerApproved
+      && (this.displayMode === 'admin' || (this.displayMode === 'my' && this.activePartnerService.activePartnerId() === this.transactionDto.value()?.sellerId));
+  }
+
   protected sellerApprove() {
-    this.transactionService.approveSeller(this.form.controls.id.value).subscribe(() => {
+    const my = this.displayMode === 'my';
+    this.transactionService.approveSeller(this.form.controls.id.value, my).subscribe(() => {
         this.notificationService.success('Ügylet jóváhagyva');
         this.transactionDto.reload();
       }
     );
   }
 
+  canBuyerApprove() {
+    return this.transactionDto.value()?.status === TransactionStatus.PENDING && !this.transactionDto.value()?.buyerApproved
+      && (this.displayMode === 'admin' || (this.displayMode === 'my' && this.activePartnerService.activePartnerId() === this.transactionDto.value()?.buyerId));
+  }
+
   protected buyerApprove() {
-    this.transactionService.approveBuyer(this.form.controls.id.value).subscribe(() => {
+    const my = this.displayMode === 'my';
+    this.transactionService.approveBuyer(this.form.controls.id.value, my).subscribe(() => {
         this.notificationService.success('Ügylet jóváhagyva');
         this.transactionDto.reload();
       }

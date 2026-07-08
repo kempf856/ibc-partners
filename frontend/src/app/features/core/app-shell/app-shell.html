@@ -4,7 +4,7 @@
   <mat-toolbar class="topbar">
     <div class="brand">
       <a routerLink="/dashboard">
-        <img src="/myibc_logo.png" alt="myIBC"/>
+        <img src="/transp_logo.png" alt="myIBC"/>
       </a>
     </div>
 
@@ -30,7 +30,9 @@
         }
 
         <button matButton routerLink="/partners">Partner adatbázis</button>
-        <button matButton>Ügyleteim</button>
+        @if (authService.hasAnyRole(Role.PARTNER)) {
+          <button matButton routerLink="/transactions/my">Ügyleteim</button>
+        }
 
         @if (authService.hasRole(Role.ADMIN)) {
           <button matButton [matMenuTriggerFor]="adminMenu">Admin</button>
@@ -61,7 +63,9 @@
           }
 
           <button mat-menu-item routerLink="/partners">Partner adatbázis</button>
-          <button mat-menu-item>Ügyleteim</button>
+          @if (authService.hasAnyRole(Role.PARTNER)) {
+            <button mat-menu-item routerLink="/transactions/my">Ügyleteim</button>
+          }
 
           @if (authService.hasRole(Role.ADMIN)) {
             <button mat-menu-item routerLink="/partners/admin">Partnerkezelő</button>

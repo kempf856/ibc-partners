@@ -3,6 +3,7 @@ package hu.ibc.ibcpartners.partner.controller;
 import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.partner.dto.TransactionDto;
 import hu.ibc.ibcpartners.partner.dto.TransactionRequest;
+import hu.ibc.ibcpartners.partner.service.PartnerMembershipService;
 import hu.ibc.ibcpartners.partner.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final PartnerMembershipService partnerMembershipService;
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -25,17 +27,38 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/my")
+    @PreAuthorize("hasAuthority('PARTNER')")
+    public ResponseEntity<Void> createMy(@RequestBody TransactionRequest req) {
+        transactionService.createMy(req);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @PostMapping("/{id}/approve-seller")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> approveSeller(@PathVariable Long id) {
-        transactionService.sellerApprove(id);
+        transactionService.sellerApprove(id, false);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/{id}/approve-seller/my")
+    @PreAuthorize("hasAuthority('PARTNER')")
+    public ResponseEntity<Void> approveSellerMy(@PathVariable Long id) {
+        transactionService.sellerApprove(id, true);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/{id}/approve-buyer")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> approveBuyer(@PathVariable Long id) {
-        transactionService.buyerApprove(id);
+        transactionService.buyerApprove(id, false);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/{id}/approve-buyer/my")
+    @PreAuthorize("hasAuthority('PARTNER')")
+    public ResponseEntity<Void> approveBuyerMy(@PathVariable Long id) {
+        transactionService.buyerApprove(id, true);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -46,7 +69,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<TransactionDto> get(@PathVariable Long id) {
         return ResponseEntity.ok(transactionService.getById(id));
@@ -55,6 +78,13 @@ public class TransactionController {
     @GetMapping("/{id}/my")
     public ResponseEntity<TransactionDto> getMy(@PathVariable Long id) {
         return ResponseEntity.ok(transactionService.getMyById(id));
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("hasAuthority('PARTNER')")
+    public ResponseEntity<PageResponse<TransactionDto>> my(@RequestParam Long partnerId, Pageable pageable) {
+        partnerMembershipService.checkMembership(partnerId);
+        return ResponseEntity.ok(transactionService.search(partnerId, pageable));
     }
 
     @GetMapping

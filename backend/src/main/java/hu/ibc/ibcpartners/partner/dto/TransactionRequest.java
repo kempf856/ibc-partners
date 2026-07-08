@@ -12,6 +12,7 @@ public record TransactionRequest(
         @NotNull Long buyerId,
         String invoiceNumber,
         @NotNull Long amount,
+        @NotNull Long discount,
         String description,
         LocalDate fulfillmentDate
 ) {

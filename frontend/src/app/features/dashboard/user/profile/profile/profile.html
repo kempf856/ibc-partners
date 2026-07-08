@@ -12,8 +12,8 @@
     </mat-tab>
     @if (activePartnerService.activePartnerId()) {
       <mat-tab label="Kedvezmények - {{ activePartnerService.getActivePartnerName() }}">
-        <app-discount-list [buyerId]="activePartnerService.activePartnerId()"></app-discount-list>
-        <app-discount-list [sellerId]="activePartnerService.activePartnerId()"></app-discount-list>
+        <app-discount-account-list [buyerId]="activePartnerService.activePartnerId()"></app-discount-account-list>
+        <app-discount-account-list [sellerId]="activePartnerService.activePartnerId()"></app-discount-account-list>
       </mat-tab>
     }
   </mat-tab-group>

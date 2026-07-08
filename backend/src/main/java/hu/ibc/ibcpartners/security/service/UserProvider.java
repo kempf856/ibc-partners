@@ -37,4 +37,13 @@ public class UserProvider {
 
         return getAll().get(userId).fullName();
     }
+
+    public String getEmail(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+
+        return getAll().get(userId).email();
+    }
+
 }

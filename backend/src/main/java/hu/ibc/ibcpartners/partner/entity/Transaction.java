@@ -33,6 +33,9 @@ public class Transaction extends AuditedEntity {
     @Column(name = "amount", nullable = false)
     private Long amount;
 
+    @Column(name = "discount", nullable = false)
+    private Long discount;
+
     @Column(name = "description")
     private String description;
 

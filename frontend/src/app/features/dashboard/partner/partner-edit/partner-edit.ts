@@ -153,7 +153,10 @@ export class PartnerEdit implements OnInit {
       this.applicationService.getApplication(applicationId).subscribe(application => {
         this.form.patchValue({
           name: application.companyName,
-          taxNumber: application.taxNumber
+          taxNumber: application.taxNumber,
+          phone: application.phone,
+          email: application.email,
+          contact: application.fullName
         });
         this.referralCode = application.referralCode;
       });

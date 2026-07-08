@@ -1,30 +1,56 @@
 <div class="form-page-wrapper mw-sm">
   <div class="page-header">
-    <h1>Ügylet rögzítés</h1>
+    <h1>
+      @if (displayMode === 'sell') {
+        Eladás rögzítése
+      } @else if (displayMode === 'buy') {
+        Vétel rögzítése
+      } @else {
+        Ügylet rögzítése
+      }
+    </h1>
   </div>
 
   <form [formGroup]="form">
     <div class="form-page">
       <section class="form-block">
-        <mat-form-field appearance="outline">
-          <mat-label>Eladó</mat-label>
-          <input type="text" matInput [formControl]="sellerSearch" [matAutocomplete]="autoSeller" required/>
-          <mat-autocomplete #autoSeller="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedSeller($event.option.value)">
-            @for (partner of filteredSellers(); track partner.id) {
-              <mat-option [value]="partner">{{ partner.name }}</mat-option>
-            }
-          </mat-autocomplete>
-        </mat-form-field>
+        @if (displayMode === 'sell') {
+          <mat-form-field appearance="fill">
+            <mat-label>Eladó</mat-label>
+            <mat-select formControlName="sellerId">
+              <mat-option [value]="activePartnerService.activePartnerId()">{{ activePartnerService.getActivePartnerName() }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        } @else {
+          <mat-form-field appearance="outline">
+            <mat-label>Eladó</mat-label>
+            <input type="text" matInput [formControl]="sellerSearch" [matAutocomplete]="autoSeller" required/>
+            <mat-autocomplete #autoSeller="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedSeller($event.option.value)">
+              @for (partner of filteredSellers(); track partner.id) {
+                <mat-option [value]="partner">{{ partner.name }}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        }
 
-        <mat-form-field appearance="outline">
-          <mat-label>Vevő</mat-label>
-          <input type="text" matInput [formControl]="buyerSearch" [matAutocomplete]="autoBuyer" required/>
-          <mat-autocomplete #autoBuyer="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedBuyer($event.option.value)">
-            @for (partner of filteredBuyers(); track partner.id) {
-              <mat-option [value]="partner">{{ partner.name }}</mat-option>
-            }
-          </mat-autocomplete>
-        </mat-form-field>
+        @if (displayMode === 'buy') {
+          <mat-form-field appearance="fill">
+            <mat-label>Vevő</mat-label>
+            <mat-select formControlName="buyerId">
+              <mat-option [value]="activePartnerService.activePartnerId()">{{ activePartnerService.getActivePartnerName() }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        } @else {
+          <mat-form-field appearance="outline">
+            <mat-label>Vevő</mat-label>
+            <input type="text" matInput [formControl]="buyerSearch" [matAutocomplete]="autoBuyer" required/>
+            <mat-autocomplete #autoBuyer="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedBuyer($event.option.value)">
+              @for (partner of filteredBuyers(); track partner.id) {
+                <mat-option [value]="partner">{{ partner.name }}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        }
 
         <mat-form-field appearance="outline">
           <mat-label>Bizonylat száma</mat-label>
@@ -33,7 +59,17 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Nettó összeg</mat-label>
-          <input matInput formControlName="amount" name="amount" required/>
+          <input matInput formControlName="amount" required/>
+        </mat-form-field>
+
+        <div class="readonly-field">
+          <span class="label">Meglévő kedvezmény</span>
+          <span class="value">{{ (availableDiscount.hasValue() ? availableDiscount.value()?.availableBalance ?? 0 : 0) | number:'1.0-0' }}</span>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Felhasznált kedvezmény</mat-label>
+          <input matInput formControlName="discount" required/>
         </mat-form-field>
 
         <mat-form-field appearance="outline">

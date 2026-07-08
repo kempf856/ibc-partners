@@ -8,6 +8,7 @@ export interface TransactionDto {
   buyerName: string | null;
   invoiceNumber: string | null;
   amount: number;
+  discount: number;
   description: string | null;
   fulfillmentDate: string | null;
   sellerApproved: string | null;

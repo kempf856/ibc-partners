@@ -14,6 +14,7 @@ public record TransactionDto(
         String buyerName,
         String invoiceNumber,
         @NotNull Long amount,
+        @NotNull Long discount,
         String description,
         LocalDate fulfillmentDate,
         Instant sellerApproved,

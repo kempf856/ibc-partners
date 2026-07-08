@@ -81,11 +81,14 @@ export const routes: Routes = [
       {
         path: 'transactions',
         canActivateChild: [roleGuard],
-        data: { roles: [Role.ADMIN, Role.PARTNER] },
         children: [
-          { path: '', component: TransactionList },
-          { path: 'create', component: TransactionCreate },
-          { path: ':id', component: TransactionWorkflow },
+          { path: '', component: TransactionList, data: { mode: 'admin', roles: [Role.ADMIN] } },
+          { path: 'my', component: TransactionList, data: { mode: 'my', roles: [Role.PARTNER] } },
+          { path: 'create', component: TransactionCreate, data: { mode: 'admin', roles: [Role.ADMIN] } },
+          { path: 'sell', component: TransactionCreate, data: { mode: 'sell', roles: [Role.PARTNER] } },
+          { path: 'buy', component: TransactionCreate, data: { mode: 'buy', roles: [Role.PARTNER] } },
+          { path: ':id', component: TransactionWorkflow, data: { mode: 'admin', roles: [Role.ADMIN, Role.PARTNER, Role.SALES] } },
+          { path: 'my/:id', component: TransactionWorkflow, data: { mode: 'my', roles: [Role.ADMIN, Role.PARTNER, Role.SALES] } },
         ]
       },
       {

@@ -4,7 +4,7 @@ import {UserService} from '../../user-service';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {ReferralCode} from '../referral-code/referral-code';
 import {CommissionList} from '../commission/commission-list';
-import {DiscountList} from '../discount/discount-list';
+import {DiscountAccountList} from '../discount-account/discount-account-list';
 import {ActivePartnerService} from '../../../../../core/auth/active-partner-service';
 import {ActivatedRoute} from '@angular/router';
 
@@ -16,7 +16,7 @@ import {ActivatedRoute} from '@angular/router';
     MatTabGroup,
     ReferralCode,
     CommissionList,
-    DiscountList
+    DiscountAccountList
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
