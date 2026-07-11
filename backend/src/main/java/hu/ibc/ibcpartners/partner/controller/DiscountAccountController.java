@@ -1,8 +1,7 @@
 package hu.ibc.ibcpartners.partner.controller;
 
-import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.partner.dto.DiscountAccountDto;
-import hu.ibc.ibcpartners.partner.dto.DiscountDto;
+import hu.ibc.ibcpartners.partner.dto.DiscountAccountSummary;
 import hu.ibc.ibcpartners.partner.service.DiscountAccountService;
 import hu.ibc.ibcpartners.partner.service.PartnerMembershipService;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +25,17 @@ public class DiscountAccountController {
 
     @PreAuthorize("hasAuthority('PARTNER')")
     @GetMapping("/my")
-    public ResponseEntity<PageResponse<DiscountAccountDto>> my(@RequestParam(required = false) Long sellerId, @RequestParam(required = false) Long buyerId, Pageable pageable) {
+    public ResponseEntity<DiscountAccountSummary> my(@RequestParam(required = false) Long sellerId, @RequestParam(required = false) Long buyerId, Pageable pageable) {
         if (sellerId != null) {
             partnerMembershipService.checkMembership(sellerId);
-            return ResponseEntity.ok(discountAccountService.search(sellerId, null, pageable));
+            DiscountAccountDto sumDiscounts = discountAccountService.sumDiscounts(sellerId, null);
+            return ResponseEntity.ok(new DiscountAccountSummary(discountAccountService.search(sellerId, null, pageable), sumDiscounts.allDiscounts(), sumDiscounts.availableBalance()));
         }
 
         if (buyerId != null) {
             partnerMembershipService.checkMembership(buyerId);
-            return ResponseEntity.ok(discountAccountService.search(null, buyerId, pageable));
+            DiscountAccountDto sumDiscounts = discountAccountService.sumDiscounts(null, buyerId);
+            return ResponseEntity.ok(new DiscountAccountSummary(discountAccountService.search(null, buyerId, pageable), sumDiscounts.allDiscounts(), sumDiscounts.availableBalance()));
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Hiányzó eladó vagy vevő azonosító!");

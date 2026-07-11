@@ -9,6 +9,12 @@
         Kedvezmények
       }
     </h2>
+    <div>
+      <p>Összes kedvezmény: {{ allDiscounts() | number:'1.0-0' }}</p>
+    </div>
+    <div>
+      <p>Felhasználható kedvezmény: {{ availableBalance() | number:'1.0-0' }}</p>
+    </div>
   </div>
 
   <table mat-table [dataSource]="discounts()" matSort (matSortChange)="onSort($event)">

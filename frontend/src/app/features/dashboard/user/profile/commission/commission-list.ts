@@ -1,6 +1,6 @@
 import {Component, effect, inject, signal} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatIconButton} from '@angular/material/button';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIcon} from '@angular/material/icon';
 import {DatePipe, DecimalPipe} from '@angular/common';
@@ -20,10 +20,15 @@ import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {commissionStatusClass, commissionStatusLabel} from '../../../../../shared/commission-status';
+import {CommissionStatus, commissionStatusClass, commissionStatusLabel} from '../../../../../shared/commission-status';
 import {CommissionService} from './commission-service';
 import {AuthService} from '../../../../../core/auth/auth-service';
 import {CommissionDto} from './commission-dto';
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {InvoiceService} from '../invoice/invoice-service';
+import {NotificationService} from '../../../../../core/notification/notification';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-commission-list',
@@ -48,7 +53,11 @@ import {CommissionDto} from './commission-dto';
     MatTable,
     RouterLink,
     MatHeaderCellDef,
-    DatePipe
+    DatePipe,
+    MatCheckbox,
+    MatButton,
+    MatButtonToggle,
+    MatButtonToggleGroup
   ],
   templateUrl: './commission-list.html',
   styleUrl: './commission-list.scss',
@@ -59,9 +68,16 @@ export class CommissionList {
   protected readonly commissionStatusLabel = commissionStatusLabel;
 
   commissionService = inject(CommissionService);
+  invoiceService = inject(InvoiceService);
   authService = inject(AuthService);
+  notificationService = inject(NotificationService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+
+  statusFilter = new FormControl<CommissionStatus>(CommissionStatus.LISTED, { nonNullable: true });
+
+  allCommissions = signal(0);
+  billableCommissions = signal(0)
 
   commissions = signal<CommissionDto[]>([]);
   totalElements = signal(0);
@@ -70,15 +86,22 @@ export class CommissionList {
   pageIndex = signal(0);
   sort = signal<string>('transactionId,desc');
 
+  selection = new SelectionModel<number>(true);
+
   constructor() {
     effect(() => {
+      this.commissionService.commissionChanged();
+
       this.commissionService.my({
         page: this.pageIndex(),
         size: this.pageSize(),
-        sort: this.sort()
+        sort: this.sort(),
+        status: this.statusFilter.value
       }).subscribe(res => {
-        this.commissions.set(res.content);
-        this.totalElements.set(res.totalElements);
+        this.allCommissions.set(res.allCommissions);
+        this.billableCommissions.set(res.billableCommissions);
+        this.commissions.set(res.pageResponse.content);
+        this.totalElements.set(res.pageResponse.totalElements);
       });
     });
   }
@@ -108,4 +131,32 @@ export class CommissionList {
     });
     return this.router.serializeUrl(tree);
   }
+
+  protected billSelected() {
+    const selected = this.selection.selected;
+    if (!selected || selected.length === 0) {
+      this.notificationService.error('Nincs kiválasztott jutalék!');
+      return;
+    }
+
+    this.createInvoice(selected);
+  }
+
+  protected billAll() {
+    this.createInvoice([]);
+  }
+
+  private createInvoice(ids: number[]) {
+    this.invoiceService.create(ids).subscribe(() => {
+      this.selection.clear();
+      this.refreshCommission();
+      this.notificationService.success('Sikeres számlázás');
+    });
+  }
+
+  protected refreshCommission() {
+    this.commissionService.commissionChanged.set(!this.commissionService.commissionChanged());
+  }
+
+  protected readonly CommissionStatus = CommissionStatus;
 }

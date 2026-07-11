@@ -72,6 +72,9 @@ export class DiscountAccountList {
     return columns;
   });
 
+  allDiscounts = signal(0);
+  availableBalance = signal(0)
+
   discounts = signal<DiscountAccountDto[]>([]);
   totalElements = signal(0);
 
@@ -88,8 +91,10 @@ export class DiscountAccountList {
         buyerId: this.buyerId(),
         sellerId: this.sellerId()
       }).subscribe(res => {
-        this.discounts.set(res.content);
-        this.totalElements.set(res.totalElements);
+        this.allDiscounts.set(res.allDiscounts);
+        this.availableBalance.set(res.availableBalance);
+        this.discounts.set(res.pageResponse.content);
+        this.totalElements.set(res.pageResponse.totalElements);
       });
     });
   }

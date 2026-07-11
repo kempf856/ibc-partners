@@ -45,6 +45,10 @@ public class DiscountAccountService {
         return PageResponse.of(discountAccountRepository.search(sellerId, buyerId, pageable), Function.identity());
     }
 
+    public DiscountAccountDto sumDiscounts(Long sellerId, Long buyerId) {
+        return discountAccountRepository.sumDiscounts(sellerId, buyerId);
+    }
+
     @Transactional
     public void block(Transaction transaction) {
         DiscountAccount discountAccount = findByPartners(transaction.getSellerId(), transaction.getBuyerId());

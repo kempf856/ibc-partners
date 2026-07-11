@@ -1,6 +1,8 @@
 <div class="form-page-wrapper mw-md">
   <div class="page-header">
-    <h1>Ügylet</h1>
+    <div>
+      <h1>Ügylet <span class="header-id">#{{ transactionDto.value()?.id }}</span></h1>
+    </div>
     @if (authService.hasRole(Role.ADMIN)) {
       <button mat-icon-button matTooltip="Jutalék beállítások" routerLink="/commission-setting" [queryParams]="{ transactionId: form.controls.id.value }">
         <mat-icon>paid</mat-icon>

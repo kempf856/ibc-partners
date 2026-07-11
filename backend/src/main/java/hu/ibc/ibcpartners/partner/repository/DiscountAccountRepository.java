@@ -26,5 +26,12 @@ public interface DiscountAccountRepository extends JpaRepository<DiscountAccount
         """)
     Page<DiscountAccountDto> search(Long sellerId, Long buyerId, Pageable pageable);
 
+    @Query("""
+        SELECT new hu.ibc.ibcpartners.partner.dto.DiscountAccountDto(
+                null, :sellerId, :buyerId, null, null, SUM(da.allDiscounts), SUM(da.availableBalance), SUM(da.blockedBalance))
+        FROM DiscountAccount da
+        WHERE (:buyerId IS NULL OR da.buyerId = :buyerId) AND (:sellerId IS NULL OR da.sellerId = :sellerId)
+        """)
+    DiscountAccountDto sumDiscounts(Long sellerId, Long buyerId);
 }
 

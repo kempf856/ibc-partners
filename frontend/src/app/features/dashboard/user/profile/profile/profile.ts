@@ -7,6 +7,7 @@ import {CommissionList} from '../commission/commission-list';
 import {DiscountAccountList} from '../discount-account/discount-account-list';
 import {ActivePartnerService} from '../../../../../core/auth/active-partner-service';
 import {ActivatedRoute} from '@angular/router';
+import {InvoiceList} from '../invoice/invoice-list';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,8 @@ import {ActivatedRoute} from '@angular/router';
     MatTabGroup,
     ReferralCode,
     CommissionList,
-    DiscountAccountList
+    DiscountAccountList,
+    InvoiceList
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',

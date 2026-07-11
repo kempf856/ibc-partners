@@ -4,6 +4,7 @@ import hu.ibc.ibcpartners.core.dto.PageResponse;
 import hu.ibc.ibcpartners.core.entity.CommissionSetting;
 import hu.ibc.ibcpartners.core.service.CommissionSettingService;
 import hu.ibc.ibcpartners.partner.dto.CommissionDto;
+import hu.ibc.ibcpartners.partner.dto.CommissionSummary;
 import hu.ibc.ibcpartners.partner.entity.Commission;
 import hu.ibc.ibcpartners.partner.entity.CommissionStatus;
 import hu.ibc.ibcpartners.partner.repository.CommissionRepository;
@@ -22,9 +23,13 @@ public class CommissionService {
     private final CommissionSettingService commissionSettingService;
     private final CommissionRepository commissionRepository;
 
-    public PageResponse<CommissionDto> search(Long userId, Long transactionId, Pageable pageable) {
-        Page<CommissionDto> commissionPage = commissionRepository.search(userId, transactionId, pageable);
+    public PageResponse<CommissionDto> search(Long userId, Long transactionId, CommissionStatus status, Pageable pageable) {
+        Page<CommissionDto> commissionPage = commissionRepository.search(userId, transactionId, status, pageable);
         return PageResponse.of(commissionPage, Function.identity());
+    }
+
+    public CommissionSummary sumCommissions(Long userId) {
+        return commissionRepository.sumCommissions(userId);
     }
 
     @Transactional

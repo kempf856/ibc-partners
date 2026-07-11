@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {DiscountAccountDto} from './discount-account-dto';
-import {PageResponse} from '../../../../page-response';
+import {DiscountAccountSummary} from './discount-account-summary';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class DiscountAccountService {
       params['sellerId'] = req.sellerId;
     }
 
-    return this.http.get<PageResponse<DiscountAccountDto>>('/api/discount-accounts/my', { params });
+    return this.http.get<DiscountAccountSummary>('/api/discount-accounts/my', { params });
   }
 
   myByPartner(req: {

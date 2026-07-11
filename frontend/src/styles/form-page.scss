@@ -31,6 +31,13 @@
   font-weight: 500;
 }
 
+.header-id {
+  font-size: 11px;
+  color: #777;
+  margin-top: 2px;
+  vertical-align: super;
+}
+
 .form-page {
   display: grid;
   grid-template-columns: repeat(auto-fit, 400px);
