@@ -22,6 +22,7 @@ import {TransactionWorkflow} from './features/dashboard/transaction/transaction-
 import {Profile} from './features/dashboard/user/profile/profile/profile';
 import {PublicShell} from './features/core/public-shell/public-shell';
 import {PartnerView} from './features/dashboard/partner/partner-view/partner-view';
+import {AuditLogList} from './features/dashboard/audit-log/audit-log-list/audit-log-list';
 
 export const routes: Routes = [
   {
@@ -106,6 +107,12 @@ export const routes: Routes = [
       {
         path: 'commission-setting',
         component: CommissionSetting,
+        canActivate: [roleGuard],
+        data: {roles: [Role.ADMIN] },
+      },
+      {
+        path: 'audit-logs',
+        component: AuditLogList,
         canActivate: [roleGuard],
         data: { roles: [Role.ADMIN] },
       }

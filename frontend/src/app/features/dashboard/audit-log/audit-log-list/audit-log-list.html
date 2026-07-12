@@ -1,0 +1,60 @@
+<div class="single-page-wrapper mw-lg">
+  <div class="page-header">
+    <h1>Audit napló</h1>
+  </div>
+
+  <table mat-table [dataSource]="auditLogs()" matSort (matSortChange)="onSort($event)">
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Esemény dátuma</th>
+      <td mat-cell *matCellDef="let auditLog">{{ auditLog.createdAt | date:'yyyy.MM.dd HH:mm' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="eventType">
+      <th mat-header-cell *matHeaderCellDef>Esemény típusa</th>
+      <td mat-cell *matCellDef="let auditLog">{{ auditEventTypeLabel(auditLog.eventType) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Megnevezés</th>
+      <td mat-cell *matCellDef="let auditLog">{{ auditLog.description }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdByName">
+      <th mat-header-cell *matHeaderCellDef>Felhasználó</th>
+      <td mat-cell *matCellDef="let auditLog">{{ auditLog.createdByName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="changes">
+      <th mat-header-cell *matHeaderCellDef>Változások</th>
+      <td mat-cell *matCellDef="let auditLog">
+        @for (change of changes(auditLog.changes, auditLog.eventType); track change) {
+          <div>
+            {{ change }}
+          </div>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="before">
+      <th mat-header-cell *matHeaderCellDef>Előtte</th>
+      <td mat-cell *matCellDef="let auditLog"><div [matTooltip]="json(auditLog.before)" matTooltipClass="json-tooltip">&#123;...&#125;</div></td>
+    </ng-container>
+
+    <ng-container matColumnDef="after">
+      <th mat-header-cell *matHeaderCellDef>Utána</th>
+      <td mat-cell *matCellDef="let auditLog"><div [matTooltip]="json(auditLog.after)" matTooltipClass="json-tooltip">&#123;...&#125;</div></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['createdAt', 'eventType', 'description', 'createdByName', 'changes', 'before', 'after']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['createdAt', 'eventType', 'description', 'createdByName', 'changes', 'before', 'after']"></tr>
+
+  </table>
+
+  <mat-paginator
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    [pageSizeOptions]="[10, 20, 50]"
+    (page)="onPage($event)">
+  </mat-paginator>
+</div>

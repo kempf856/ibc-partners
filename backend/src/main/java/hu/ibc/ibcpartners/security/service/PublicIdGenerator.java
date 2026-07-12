@@ -2,7 +2,7 @@ package hu.ibc.ibcpartners.security.service;
 
 import java.security.SecureRandom;
 
-public final class PublicIdGenerator {
+public class PublicIdGenerator {
 
     private static final String CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXY";
     private static final SecureRandom RANDOM = new SecureRandom();

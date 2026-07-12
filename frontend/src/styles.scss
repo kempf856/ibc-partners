@@ -108,3 +108,8 @@ body {
     filled-container-color: var(--mat-sys-surface),
   ));
 }
+
+.json-tooltip .mdc-tooltip__surface {
+  text-align: left;
+  white-space: pre-wrap;
+}
