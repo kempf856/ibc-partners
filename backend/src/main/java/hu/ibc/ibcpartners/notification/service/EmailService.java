@@ -23,7 +23,7 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String from;
 
-    public void sendEmail(String to, EmailTemplate template, Map<String, String> params) {
+    public void sendEmail(String to, EmailTemplate template, Map<String, Object> params) {
         log.info("Sending email to {}, {}", to, template);
 
         Context context = new Context();

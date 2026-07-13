@@ -10,10 +10,10 @@
       }
     </h2>
     <div>
-      <p>Összes kedvezmény: {{ allDiscounts() | number:'1.0-0' }}</p>
+      <p>Összes kedvezmény: <span class="bold-text">{{ allDiscounts() | number:'1.0-0' }} Ft</span></p>
     </div>
     <div>
-      <p>Felhasználható kedvezmény: {{ availableBalance() | number:'1.0-0' }}</p>
+      <p>Felhasználható kedvezmény: <span [class]="discountClass()">{{ availableBalance() | number:'1.0-0' }} Ft</span></p>
     </div>
   </div>
 
@@ -31,22 +31,22 @@
 
     <ng-container matColumnDef="allDiscounts">
       <th mat-header-cell *matHeaderCellDef>Összes kedvezmény</th>
-      <td mat-cell *matCellDef="let discount">{{ discount.allDiscounts | number:'1.0-0' }}</td>
+      <td mat-cell *matCellDef="let discount">{{ discount.allDiscounts | number:'1.0-0' }} Ft</td>
     </ng-container>
 
     <ng-container matColumnDef="availableBalance">
       <th mat-header-cell *matHeaderCellDef>Felhasználható kedvezmény</th>
-      <td mat-cell *matCellDef="let discount">{{ discount.availableBalance | number:'1.0-0' }}</td>
+      <td mat-cell *matCellDef="let discount">{{ discount.availableBalance | number:'1.0-0' }} Ft</td>
     </ng-container>
 
     <ng-container matColumnDef="blockedBalance">
       <th mat-header-cell *matHeaderCellDef>Zárolt kedvezmény</th>
-      <td mat-cell *matCellDef="let discount">{{ discount.blockedBalance | number:'1.0-0' }}</td>
+      <td mat-cell *matCellDef="let discount">{{ discount.blockedBalance | number:'1.0-0' }} Ft</td>
     </ng-container>
 
     <ng-container matColumnDef="allUsedDiscounts">
       <th mat-header-cell *matHeaderCellDef>Összes felhasznált kedvezmény</th>
-      <td mat-cell *matCellDef="let discount">{{ (discount.allDiscounts - discount.availableBalance - discount.blockedBalance) | number:'1.0-0' }}</td>
+      <td mat-cell *matCellDef="let discount">{{ (discount.allDiscounts - discount.availableBalance - discount.blockedBalance) | number:'1.0-0' }} Ft</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>

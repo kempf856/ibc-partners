@@ -16,12 +16,7 @@
             {{ shortUrl() }}
           </a>
 
-          <button
-            mat-icon-button
-            (click)="copyUrl()"
-            matTooltip="Másolás">
-            <mat-icon>content_copy</mat-icon>
-          </button>
+          <mat-icon (click)="copyUrl()" matTooltip="Másolás" class="copy-icon">content_copy</mat-icon>
         </span>
       </div>
       <div class="readonly-field">

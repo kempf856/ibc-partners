@@ -22,13 +22,13 @@ public interface CommissionRepository extends JpaRepository<Commission, Long> {
         JOIN User u ON c.userId = u.id
         JOIN Transaction t ON c.transactionId = t.id
         JOIN Partner p ON t.sellerId = p.id
-        WHERE (:userId IS NULL OR c.userId = :userId) AND (:transactionId IS NULL OR c.transactionId = :transactionId) AND (:status IS NULL OR c.status = :status)
+        WHERE (:userId IS NULL OR c.userId = :userId) AND (:invoiceId IS NULL OR c.invoiceId = :invoiceId) AND (:status IS NULL OR c.status = :status)
         """)
-    Page<CommissionDto> search(Long userId, Long transactionId, CommissionStatus status, Pageable pageable);
+    Page<CommissionDto> search(Long userId, Long invoiceId, CommissionStatus status, Pageable pageable);
 
     @Query("""
-        SELECT new hu.ibc.ibcpartners.partner.dto.CommissionSummary(null, SUM(c.commission),
-            SUM(CASE WHEN c.status = hu.ibc.ibcpartners.partner.entity.CommissionStatus.LISTED THEN c.commission ELSE 0 END))
+        SELECT new hu.ibc.ibcpartners.partner.dto.CommissionSummary(null, COALESCE(SUM(c.commission), 0),
+            COALESCE(SUM(CASE WHEN c.status = hu.ibc.ibcpartners.partner.entity.CommissionStatus.LISTED THEN c.commission ELSE 0 END), 0))
         FROM Commission c WHERE c.userId = :userId
         """)
     CommissionSummary sumCommissions(Long userId);

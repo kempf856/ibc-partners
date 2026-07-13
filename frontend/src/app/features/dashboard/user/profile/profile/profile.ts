@@ -3,11 +3,11 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {UserService} from '../../user-service';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {ReferralCode} from '../referral-code/referral-code';
-import {CommissionList} from '../commission/commission-list';
+import {CommissionList} from '../commission/commission-list/commission-list';
 import {DiscountAccountList} from '../discount-account/discount-account-list';
 import {ActivePartnerService} from '../../../../../core/auth/active-partner-service';
 import {ActivatedRoute} from '@angular/router';
-import {InvoiceList} from '../invoice/invoice-list';
+import {InvoiceList} from '../invoice/invoice-list/invoice-list';
 
 @Component({
   selector: 'app-profile',

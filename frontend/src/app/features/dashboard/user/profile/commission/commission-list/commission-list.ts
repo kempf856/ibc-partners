@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -20,14 +20,14 @@ import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {CommissionStatus, commissionStatusClass, commissionStatusLabel} from '../../../../../shared/commission-status';
-import {CommissionService} from './commission-service';
-import {AuthService} from '../../../../../core/auth/auth-service';
-import {CommissionDto} from './commission-dto';
+import {CommissionStatus, commissionStatusClass, commissionStatusLabel} from '../../../../../../shared/commission-status';
+import {CommissionService} from '../commission-service';
+import {AuthService} from '../../../../../../core/auth/auth-service';
+import {CommissionDto} from '../commission-dto';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {InvoiceService} from '../invoice/invoice-service';
-import {NotificationService} from '../../../../../core/notification/notification';
+import {InvoiceService} from '../../invoice/invoice-service';
+import {NotificationService} from '../../../../../../core/notification/notification';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 
 @Component({
@@ -76,6 +76,8 @@ export class CommissionList {
 
   statusFilter = new FormControl<CommissionStatus>(CommissionStatus.LISTED, { nonNullable: true });
 
+  userId = input<number | null>(null);
+
   allCommissions = signal(0);
   billableCommissions = signal(0)
 
@@ -84,7 +86,7 @@ export class CommissionList {
 
   pageSize = signal(20);
   pageIndex = signal(0);
-  sort = signal<string>('transactionId,desc');
+  sort = signal<string>('id,desc');
 
   selection = new SelectionModel<number>(true);
 
@@ -92,12 +94,12 @@ export class CommissionList {
     effect(() => {
       this.commissionService.commissionChanged();
 
-      this.commissionService.my({
+      this.commissionService.search({
         page: this.pageIndex(),
         size: this.pageSize(),
         sort: this.sort(),
         status: this.statusFilter.value
-      }).subscribe(res => {
+      }, this.userId()).subscribe(res => {
         this.allCommissions.set(res.allCommissions);
         this.billableCommissions.set(res.billableCommissions);
         this.commissions.set(res.pageResponse.content);
@@ -115,7 +117,7 @@ export class CommissionList {
     this.pageIndex.set(0);
 
     if (!event.direction) {
-      this.sort.set('transactionId,desc');
+      this.sort.set('id,desc');
       return;
     }
 

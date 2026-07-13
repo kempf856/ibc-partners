@@ -15,11 +15,15 @@
   --mat-sys-surface-container-low: #101a31;
   --mat-sys-surface-container: #16213d;
   --mat-sys-surface-container-high: #1c294a;
+
+  --app-ibc: #00a2e8;
+  --app-success: #62ff00;
+  --app-error: #ff0000;
 }
 
 html {
   height: 100%;
-  font-size: 14px;
+  font-size: 15px;
   @include mat.theme((
     color: (
       primary: mat.$azure-palette,
@@ -58,6 +62,10 @@ body {
 @include mat.form-field-overrides((
   filled-container-color: var(--mat-sys-surface-container-low)
 ));
+
+.app-ibc {
+  color: var(--app-ibc);
+}
 
 .snackbar-error {
   @include mat.snack-bar-overrides((

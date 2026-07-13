@@ -51,6 +51,10 @@ public class AuditLogService {
         auditLogRepository.save(auditLog);
     }
 
+    public List<AuditChange> createChanges(Object before, Object after) {
+        return createChanges(objectMapper.valueToTree(before), objectMapper.valueToTree(after));
+    }
+
     private List<AuditChange> createChanges(JsonNode before, JsonNode after) {
         List<AuditChange> changes = new ArrayList<>();
         Iterator<String> fields = before != null ? before.fieldNames() : after.fieldNames();

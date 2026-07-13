@@ -22,7 +22,7 @@
             </mat-select>
           </mat-form-field>
         } @else {
-          <mat-form-field appearance="outline">
+          <mat-form-field>
             <mat-label>Eladó</mat-label>
             <input type="text" matInput [formControl]="sellerSearch" [matAutocomplete]="autoSeller" required/>
             <mat-autocomplete #autoSeller="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedSeller($event.option.value)">
@@ -41,7 +41,7 @@
             </mat-select>
           </mat-form-field>
         } @else {
-          <mat-form-field appearance="outline">
+          <mat-form-field>
             <mat-label>Vevő</mat-label>
             <input type="text" matInput [formControl]="buyerSearch" [matAutocomplete]="autoBuyer" required/>
             <mat-autocomplete #autoBuyer="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedBuyer($event.option.value)">
@@ -52,32 +52,34 @@
           </mat-form-field>
         }
 
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Bizonylat száma</mat-label>
-          <input matInput formControlName="invoiceNumber"/>
+          <input matInput formControlName="invoiceNumber" matTooltip="Ügylet azonosításához kitöltendő" maxlength="40"/>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Nettó összeg</mat-label>
-          <input matInput formControlName="amount" required/>
+          <input matInput formControlName="amount" required matTooltip="Az ügylet nettó értéke"/>
+          <span matTextSuffix>&nbsp;Ft</span>
         </mat-form-field>
 
-        <div class="readonly-field">
-          <span class="label">Meglévő kedvezmény</span>
-          <span class="value">{{ (availableDiscount.hasValue() ? availableDiscount.value()?.availableBalance ?? 0 : 0) | number:'1.0-0' }}</span>
+        <div class="readonly-field" matTooltip="A partnerkapcsolatból származó igénybevehető nettó kedvezmény">
+          <span class="label">Igénybevehető nettó kedvezmény</span>
+          <span class="value">{{ (availableDiscount.hasValue() ? availableDiscount.value()?.availableBalance ?? 0 : 0) | number:'1.0-0' }} Ft</span>
         </div>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Felhasznált kedvezmény</mat-label>
-          <input matInput formControlName="discount" required/>
+        <mat-form-field>
+          <mat-label>Felhasználni kívánt nettó kedvezmény</mat-label>
+          <input matInput formControlName="discount" required matTooltip="Jelen ügylethez felhasználni kívánt kedvezmény nettó összege"/>
+          <span matTextSuffix>&nbsp;Ft</span>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Megnevezés</mat-label>
-          <input matInput formControlName="description" maxlength="80"/>
+          <input matInput formControlName="description" maxlength="100" matTooltip="Az ügylet rövid leírása"/>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Teljesítés dátuma</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="fulfillmentDate"/>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

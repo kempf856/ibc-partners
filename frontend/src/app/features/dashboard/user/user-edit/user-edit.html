@@ -75,7 +75,7 @@
     </div>
 
     <div class="readonly-row">
-      <mat-form-field appearance="outline" class="partner-member-field">
+      <mat-form-field class="partner-member-field">
         <mat-label>Partner</mat-label>
         <input type="text" matInput [formControl]="partnerSearch" [matAutocomplete]="autoPartner" required/>
         <mat-autocomplete #autoPartner="matAutocomplete" [displayWith]="displayPartner" (optionSelected)="onSelectedPartner($event.option.value)">

@@ -8,7 +8,7 @@
 
   <div class="filters-bar">
     <div class="filters">
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>Kulcs</mat-label>
         <mat-select [formControl]="key" required>
           <mat-option></mat-option>
@@ -17,11 +17,11 @@
           }
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>Név</mat-label>
         <input matInput [formControl]="name" required>
       </mat-form-field>
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>Érték</mat-label>
         <input matInput [formControl]="value">
       </mat-form-field>

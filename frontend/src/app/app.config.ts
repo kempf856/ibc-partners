@@ -9,6 +9,7 @@ import {errorInterceptor} from './core/notification/error-interceptor';
 import {MAT_DATE_LOCALE, provideNativeDateAdapter} from '@angular/material/core';
 import {DatePipe, registerLocaleData} from '@angular/common';
 import localeHu from '@angular/common/locales/hu';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
 registerLocaleData(localeHu);
 
@@ -21,6 +22,13 @@ export const appConfig: ApplicationConfig = {
     { provide: MatPaginatorIntl, useClass: HungarianPaginatorIntl },
     provideNativeDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'hu-HU' },
-    DatePipe
+    DatePipe,
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+        floatLabel: 'always'
+      }
+    }
   ]
 };

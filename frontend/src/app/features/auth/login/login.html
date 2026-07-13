@@ -10,7 +10,7 @@
 
       <form class="login-form" (ngSubmit)="onLogin()" #loginForm="ngForm">
 
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>E-mail cím</mat-label>
           <input matInput [(ngModel)]="username" name="username" required #usernameControl="ngModel">
           @if (usernameControl.invalid && usernameControl.touched) {
@@ -20,7 +20,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Jelszó</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" required #passwordControl="ngModel">
           <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()" tabindex="-1">

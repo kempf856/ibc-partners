@@ -15,12 +15,9 @@ import {
   MatTable
 } from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
-import {MatChip, MatChipSet} from '@angular/material/chips';
-import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {MatFormField, MatInput} from '@angular/material/input';
-import {DatePipe, DecimalPipe} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DatePipe} from '@angular/common';
 import {AuditLogService} from '../audit-log-service';
 import {AuditLogDto} from '../audit-log-dto';
 import {auditEventFieldLabel, AuditEventType, auditEventTypeLabel} from '../../../../shared/audit-event-type';
@@ -43,14 +40,7 @@ import {AuditChangeDto} from '../audit-change-dto';
     MatRowDef,
     MatPaginator,
     MatButtonModule,
-    MatChip,
-    MatChipSet,
-    MatIcon,
     MatTooltip,
-    RouterLink,
-    MatFormField,
-    MatInput,
-    DecimalPipe,
     DatePipe
   ],
   templateUrl: './audit-log-list.html',

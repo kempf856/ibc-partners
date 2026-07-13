@@ -2,10 +2,13 @@
   <div class="page-header">
     <h2>Jutalékok</h2>
     <div>
-      <p>Összes jutalék: {{ allCommissions() | number:'1.0-0' }}</p>
+      <p>Összes nettó jutalék: <span class="bold-text">{{ allCommissions() | number:'1.0-0' }} Ft</span></p>
     </div>
     <div>
-      <p>Számlázható jutalék: {{ billableCommissions() | number:'1.0-0' }}</p>
+      <p class="app-ibc">Számlázható nettó jutalék: <span class="bold-text">{{ billableCommissions() | number:'1.0-0' }} Ft</span></p>
+    </div>
+    <div>
+      <p>Számlázott nettó jutalék: <span class="bold-text">{{ allCommissions() - billableCommissions() | number:'1.0-0' }} Ft</span></p>
     </div>
   </div>
 
@@ -17,10 +20,12 @@
         <mat-button-toggle [value]="">Mind</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <div class="list-actions">
-      <button matButton="elevated" (click)="billSelected()">Kijelöltek számlázása</button>
-      <button matButton="elevated" (click)="billAll()">Összes számlázása</button>
-    </div>
+    @if (!userId()) {
+      <div class="list-actions">
+        <button matButton="elevated" (click)="billSelected()">Kijelöltek számlázása</button>
+        <button matButton="elevated" (click)="billAll()">Összes számlázása</button>
+      </div>
+    }
   </div>
 
   <table mat-table [dataSource]="commissions()" matSort (matSortChange)="onSort($event)">
@@ -35,19 +40,14 @@
       <td mat-cell *matCellDef="let commission">{{ commission.description }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="fulfillmentDate">
-      <th mat-header-cell *matHeaderCellDef>Teljesítés dátuma</th>
-      <td mat-cell *matCellDef="let commission">{{ commission.fulfillmentDate | date:'yyyy.MM.dd' }}</td>
-    </ng-container>
-
     <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef>Összeg</th>
-      <td mat-cell *matCellDef="let commission">{{ commission.amount | number:'1.0-0' }}</td>
+      <th mat-header-cell *matHeaderCellDef>Nettó összeg</th>
+      <td mat-cell *matCellDef="let commission">{{ commission.amount | number:'1.0-0' }} Ft</td>
     </ng-container>
 
     <ng-container matColumnDef="commission">
       <th mat-header-cell *matHeaderCellDef>Jutalék</th>
-      <td mat-cell *matCellDef="let commission">{{ commission.commission | number:'1.0-0' }}</td>
+      <td mat-cell *matCellDef="let commission">{{ commission.commission | number:'1.0-0' }} Ft</td>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -87,8 +87,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['select', 'sellerName', 'description', 'fulfillmentDate', 'amount', 'commission', 'status', 'actions']"></tr>
-    <tr mat-row *matRowDef="let commission; columns: ['select', 'sellerName', 'description', 'fulfillmentDate', 'amount', 'commission', 'status', 'actions']"
+    <tr mat-header-row *matHeaderRowDef="['select', 'sellerName', 'description', 'amount', 'commission', 'status', 'actions']"></tr>
+    <tr mat-row *matRowDef="let commission; columns: ['select', 'sellerName', 'description', 'amount', 'commission', 'status', 'actions']"
         (click)="selection.toggle(commission.id)"></tr>
   </table>
 

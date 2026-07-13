@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatIconButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -18,11 +18,11 @@ import {
 } from '@angular/material/table';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../../../../core/auth/auth-service';
-import {InvoiceService} from './invoice-service';
-import {InvoiceDto} from './invoice-dto';
-import {CommissionService} from '../commission/commission-service';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {AuthService} from '../../../../../../core/auth/auth-service';
+import {InvoiceService} from '../invoice-service';
+import {InvoiceDto} from '../invoice-dto';
+import {CommissionService} from '../../commission/commission-service';
 
 @Component({
   selector: 'app-invoice-list',
@@ -44,7 +44,8 @@ import {CommissionService} from '../commission/commission-service';
     MatSort,
     MatTable,
     MatHeaderCellDef,
-    DatePipe
+    DatePipe,
+    RouterLink
   ],
   templateUrl: './invoice-list.html',
   styleUrl: './invoice-list.scss',
@@ -57,6 +58,11 @@ export class InvoiceList {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
+  userId = input<number | null>(null);
+
+  allCommissions = signal(0);
+  billableCommissions = signal(0)
+
   invoices = signal<InvoiceDto[]>([]);
   totalElements = signal(0);
 
@@ -64,35 +70,19 @@ export class InvoiceList {
   pageIndex = signal(0);
   sort = signal<string>('id,desc');
 
-  listMode = this.route.snapshot.data['mode'] as ListMode;
-
-  readonly displayedColumns = computed(() => {
-    const columns = [];
-
-    if (this.listMode === 'admin') {
-      columns.push('userName');
-    }
-
-    columns.push(
-      'createdAt',
-      'amount',
-      'actions'
-    );
-
-    return columns;
-  });
-
   constructor() {
     effect(() => {
       this.commissionService.commissionChanged();
 
-      this.invoiceService.my({
+      this.invoiceService.search({
         page: this.pageIndex(),
         size: this.pageSize(),
         sort: this.sort()
-      }).subscribe(res => {
-        this.invoices.set(res.content);
-        this.totalElements.set(res.totalElements);
+      }, this.userId()).subscribe(res => {
+        this.allCommissions.set(res.allCommissions);
+        this.billableCommissions.set(res.billableCommissions);
+        this.invoices.set(res.pageResponse.content);
+        this.totalElements.set(res.pageResponse.totalElements);
       });
     });
   }
@@ -111,5 +101,19 @@ export class InvoiceList {
     }
 
     this.sort.set(`${event.active},${event.direction}`);
+  }
+
+  getReturnUrl(): string {
+    if (this.userId()) {
+      return this.router.url;
+    } else {
+      const tree = this.router.createUrlTree([], {
+        queryParams: {
+          ...this.route.snapshot.queryParams,
+          tab: 1
+        }
+      });
+      return this.router.serializeUrl(tree);
+    }
   }
 }

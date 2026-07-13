@@ -28,7 +28,7 @@ public interface DiscountAccountRepository extends JpaRepository<DiscountAccount
 
     @Query("""
         SELECT new hu.ibc.ibcpartners.partner.dto.DiscountAccountDto(
-                null, :sellerId, :buyerId, null, null, SUM(da.allDiscounts), SUM(da.availableBalance), SUM(da.blockedBalance))
+                null, :sellerId, :buyerId, null, null, COALESCE(SUM(da.allDiscounts), 0), COALESCE(SUM(da.availableBalance), 0), COALESCE(SUM(da.blockedBalance), 0))
         FROM DiscountAccount da
         WHERE (:buyerId IS NULL OR da.buyerId = :buyerId) AND (:sellerId IS NULL OR da.sellerId = :sellerId)
         """)

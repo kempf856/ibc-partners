@@ -5,12 +5,12 @@
 
   <div class="filters-bar">
     <div class="filters">
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>Keresés</mat-label>
-        <input matInput [(ngModel)]="filter" (ngModelChange)="loadPartners()">
+        <input matInput [(ngModel)]="filter" (ngModelChange)="loadPartners()" matTooltip="Cégnév, Település, Kulcsszó keresés">
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="multiselect-field">
+      <mat-form-field class="multiselect-field">
         <mat-label>Tevékenységek</mat-label>
         <mat-select [(ngModel)]="activityFilter" (selectionChange)="loadPartners()" multiple>
           @for (activity of activities; track activity) {

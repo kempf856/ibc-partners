@@ -1,7 +1,5 @@
 package hu.ibc.ibcpartners.partner.controller;
 
-import hu.ibc.ibcpartners.core.dto.PageResponse;
-import hu.ibc.ibcpartners.partner.dto.CommissionDto;
 import hu.ibc.ibcpartners.partner.dto.CommissionSummary;
 import hu.ibc.ibcpartners.partner.entity.CommissionStatus;
 import hu.ibc.ibcpartners.partner.service.CommissionService;
@@ -25,14 +23,16 @@ public class CommissionController {
     @GetMapping("/my")
     public ResponseEntity<CommissionSummary> my(@RequestParam(required = false) CommissionStatus status, Pageable pageable) {
         CommissionSummary commissionSummary = commissionService.sumCommissions(AuthHelper.getUserId());
-        return ResponseEntity.ok(new CommissionSummary(commissionService.search(AuthHelper.getUserId(), null, status, pageable),
+        return ResponseEntity.ok(new CommissionSummary(commissionService.search(AuthHelper.getUserId(), status, pageable),
                 commissionSummary.allCommissions(), commissionSummary.billableCommissions()));
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<PageResponse<CommissionDto>> search(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long transactionId, Pageable pageable) {
-        return ResponseEntity.ok(commissionService.search(userId, transactionId, null, pageable));
+    public ResponseEntity<CommissionSummary> search(@RequestParam Long userId, @RequestParam(required = false) CommissionStatus status, Pageable pageable) {
+        CommissionSummary commissionSummary = commissionService.sumCommissions(userId);
+        return ResponseEntity.ok(new CommissionSummary(commissionService.search(userId, status, pageable),
+                commissionSummary.allCommissions(), commissionSummary.billableCommissions()));
     }
 }
 

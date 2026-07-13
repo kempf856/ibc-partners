@@ -5,17 +5,17 @@
 
   <div class="filters-bar">
     <div class="filters">
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>E-mail</mat-label>
         <input matInput [(ngModel)]="emailFilter" (ngModelChange)="loadUsers()">
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>Teljes név</mat-label>
         <input matInput [(ngModel)]="fullNameFilter" (ngModelChange)="loadUsers()">
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>Szerepkör</mat-label>
         <mat-select [(ngModel)]="roleFilter" (selectionChange)="loadUsers()">
           <mat-option value="">Összes</mat-option>

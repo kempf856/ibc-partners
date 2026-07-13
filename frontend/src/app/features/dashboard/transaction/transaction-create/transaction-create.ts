@@ -17,13 +17,14 @@ import {firstValueFrom, map, startWith} from 'rxjs';
 import {ActivePartnerService} from '../../../../core/auth/active-partner-service';
 import {DiscountAccountService} from '../../user/profile/discount-account/discount-account-service';
 import {DecimalPipe} from '@angular/common';
+import {MatTooltip} from '@angular/material/tooltip';
 
 type TrDisplayMode = 'sell' | 'buy' | 'admin';
 
 @Component({
   selector: 'app-transaction-create',
   imports: [
-    MatFormFieldModule, MatInputModule, MatLabel, MatOption, MatButtonModule, ReactiveFormsModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteTrigger, MatAutocomplete, MatSelect, DecimalPipe
+    MatFormFieldModule, MatInputModule, MatLabel, MatOption, MatButtonModule, ReactiveFormsModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteTrigger, MatAutocomplete, MatSelect, DecimalPipe, MatTooltip
   ],
   templateUrl: './transaction-create.html',
   styleUrl: './transaction-create.scss',

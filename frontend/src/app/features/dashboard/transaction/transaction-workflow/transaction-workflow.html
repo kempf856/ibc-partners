@@ -13,7 +13,7 @@
   <form [formGroup]="form">
     <div class="form-page">
       <section class="form-block">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="bold-input">
           <mat-label>Eladó</mat-label>
           <input type="text" matInput [formControl]="sellerSearch" [matAutocomplete]="autoSeller" required readonly/>
           <mat-autocomplete #autoSeller="matAutocomplete" (optionSelected)="onSelectedSeller($event.option.value)">
@@ -23,7 +23,7 @@
           </mat-autocomplete>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="bold-input">
           <mat-label>Vevő</mat-label>
           <input type="text" matInput [formControl]="buyerSearch" [matAutocomplete]="autoBuyer" required readonly/>
           <mat-autocomplete #autoBuyer="matAutocomplete" (optionSelected)="onSelectedBuyer($event.option.value)">
@@ -38,14 +38,16 @@
           <input matInput formControlName="invoiceNumber" readonly/>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="bold-input">
           <mat-label>Nettó összeg</mat-label>
-          <input matInput formControlName="amount" required readonly/>
+          <input matInput formControlName="amount" required readonly matTooltip="Az ügylet nettó értéke"/>
+          <span matTextSuffix>&nbsp;Ft</span>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="bold-input">
           <mat-label>Felhasznált kedvezmény</mat-label>
           <input matInput formControlName="discount" required readonly/>
+          <span matTextSuffix>&nbsp;Ft</span>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -78,7 +80,7 @@
         </div>
 
         <div class="readonly-row">
-          <div class="readonly-field">
+          <div class="readonly-field app-ibc">
             <span class="label">Eladói jóváhagyás</span>
             @if (transactionDto.value()?.sellerApproved; as approved) {
               <span class="value">{{ sellerApproved() + (approved | date:'yyyy.MM.dd HH:mm') }}</span>
@@ -94,7 +96,7 @@
         </div>
 
         <div class="readonly-row">
-          <div class="readonly-field">
+          <div class="readonly-field app-ibc">
             <span class="label">Vevői jóváhagyás</span>
             @if (transactionDto.value()?.buyerApproved; as approved) {
               <span class="value">{{ buyerApproved() + (approved | date:'yyyy.MM.dd HH:mm') }}</span>

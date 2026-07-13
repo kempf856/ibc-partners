@@ -74,11 +74,11 @@
 .readonly-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.4rem;
   padding-left: 16px;
-  padding-top: 6px;
-  padding-bottom: 8px;
-  margin-bottom: var(--mat-sys-body-small-line-height);
+  padding-top: 7px;
+  padding-bottom: 0.6rem;
+  margin-bottom: 1.3rem;
 }
 
 .readonly-row {
@@ -88,14 +88,22 @@
 }
 
 .label {
-  font-size: 12px;
+  font: var(--mat-sys-body-small);
 }
 
 .value {
-  height: 20px;
-  font-size: 16px;
+  height: var(--mat-sys-body-large-size);
+  font: var(--mat-sys-body-large);
+}
+
+.bold-input input.mat-mdc-form-field-input-control {
+  font-weight: 600;
+}
+
+.bold-text {
+  font-weight: 600;
 }
 
 .space-after {
-  margin-bottom: 10px;
+  margin-bottom: 0.6rem;
 }

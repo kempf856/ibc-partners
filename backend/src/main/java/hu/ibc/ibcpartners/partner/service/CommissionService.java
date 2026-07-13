@@ -23,8 +23,8 @@ public class CommissionService {
     private final CommissionSettingService commissionSettingService;
     private final CommissionRepository commissionRepository;
 
-    public PageResponse<CommissionDto> search(Long userId, Long transactionId, CommissionStatus status, Pageable pageable) {
-        Page<CommissionDto> commissionPage = commissionRepository.search(userId, transactionId, status, pageable);
+    public PageResponse<CommissionDto> search(Long userId, CommissionStatus status, Pageable pageable) {
+        Page<CommissionDto> commissionPage = commissionRepository.search(userId, null, status, pageable);
         return PageResponse.of(commissionPage, Function.identity());
     }
 

@@ -17,3 +17,12 @@
 h2 {
   margin: 0;
 }
+
+.received-discount {
+  color: var(--app-success);
+}
+
+.given-discount {
+  color: var(--app-error);
+}
+

@@ -11,10 +11,4 @@ import org.springframework.stereotype.Repository;
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     Page<Invoice> findByUserId(Long userId, Pageable pageable);
-
-    @Query("""
-        SELECT i FROM Invoice i JOIN User u ON i.userId = u.id WHERE :userName IS NULL OR u.fullName ilike %:userName%
-        """)
-    Page<Invoice> findByUserName(String userName, Pageable pageable);
 }
-

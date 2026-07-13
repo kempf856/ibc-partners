@@ -124,4 +124,15 @@ export class DiscountAccountList {
     });
     return this.router.serializeUrl(tree);
   }
+
+  protected discountClass() {
+    const base = 'bold-text';
+    if (this.sellerId()) {
+      return `${base} given-discount`;
+    }
+    if (this.buyerId()) {
+      return `${base} received-discount`;
+    }
+    return base;
+  }
 }

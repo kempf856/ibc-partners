@@ -23,6 +23,8 @@ import {Profile} from './features/dashboard/user/profile/profile/profile';
 import {PublicShell} from './features/core/public-shell/public-shell';
 import {PartnerView} from './features/dashboard/partner/partner-view/partner-view';
 import {AuditLogList} from './features/dashboard/audit-log/audit-log-list/audit-log-list';
+import {CommissionAdmin} from './features/dashboard/user/profile/commission/commission-admin/commission-admin';
+import {InvoiceView} from './features/dashboard/user/profile/invoice/invoice-view/invoice-view';
 
 export const routes: Routes = [
   {
@@ -44,6 +46,13 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: Home },
       { path: 'profile', component: Profile },
+      {
+        path: 'invoices',
+        children: [
+          { path: ':invoiceId', component: InvoiceView, data: { mode: 'admin'} },
+          { path: ':invoiceId/my', component: InvoiceView, data: { mode: 'my'} }
+        ]
+      },
 
       {
         path: 'applications',
@@ -109,6 +118,12 @@ export const routes: Routes = [
         component: CommissionSetting,
         canActivate: [roleGuard],
         data: {roles: [Role.ADMIN] },
+      },
+      {
+        path: 'commission-admin',
+        component: CommissionAdmin,
+        canActivate: [roleGuard],
+        data: { roles: [Role.ADMIN] },
       },
       {
         path: 'audit-logs',

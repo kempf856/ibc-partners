@@ -13,32 +13,29 @@ export class CommissionService {
 
   commissionChanged = signal(false);
 
-  my(req: {
+  search(req: {
     page: number;
     size: number;
     sort: string;
     status?: CommissionStatus;
-  }) {
+  }, userId: number | null) {
     const params = {
       page: req.page,
       size: req.size,
       sort: req.sort,
       ...(req.status ? { status: req.status } : {})
     }
-    return this.http.get<CommissionSummary>('/api/commissions/my', {
-      params: params
-    });
+    if (userId) {
+      return this.http.get<CommissionSummary>('/api/commissions', {
+        params: {
+          ...params,
+          userId: userId
+        }
+      });
+    } else {
+      return this.http.get<CommissionSummary>('/api/commissions/my', {
+        params: params
+      });
+    }
   }
-
-  getCommissions(req: {
-    page: number;
-    size: number;
-    sort: string;
-    userId?: number;
-    transactionId?: number;
-  }) {
-    return this.http.get<PageResponse<CommissionDto>>('/api/commissions', {
-      params: req
-    });
-   }
 }
