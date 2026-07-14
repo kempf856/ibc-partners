@@ -96,18 +96,19 @@ public class CommissionSettingService {
                 "link", frontendUrl
         );
 
+        List<String> salesChanges = formatChanges(auditLogService.createChanges(before, after).stream()
+                .filter(change -> change.field().startsWith("referral")).toList());
         Map<String, Object> salesParams = Map.of(
                 "userName", userProvider.getName(AuthHelper.getUserId()),
                 "commissionLevel", commissionLevel,
-                "changes", formatChanges(auditLogService.createChanges(before, after).stream()
-                        .filter(change -> change.field().startsWith("referral")).toList()),
+                "changes", salesChanges,
                 "link", frontendUrl
         );
 
-        if (before.referralId() != null) {
+        if (!salesChanges.isEmpty() && before.referralId() != null) {
             sendEmail(userProvider.getEmail(before.referralId()), userProvider.getName(before.referralId()), salesParams);
         }
-        if (after.referralId() != null && !Objects.equals(before.referralId(), after.referralId())) {
+        if (!salesChanges.isEmpty() && after.referralId() != null && !Objects.equals(before.referralId(), after.referralId())) {
             sendEmail(userProvider.getEmail(after.referralId()), userProvider.getName(after.referralId()), salesParams);
         }
 

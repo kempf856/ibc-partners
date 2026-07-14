@@ -14,9 +14,9 @@
 
   <table mat-table [dataSource]="invoices()" matSort (matSortChange)="onSort($event)">
 
-    <ng-container matColumnDef="userName">
-      <th mat-header-cell *matHeaderCellDef>Felhasználó</th>
-      <td mat-cell *matCellDef="let invoice">{{ invoice.userName }}</td>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Sorszám</th>
+      <td mat-cell *matCellDef="let invoice">IBC#{{ invoice.id.toString().padStart(4, '0') }}</td>
     </ng-container>
 
     <ng-container matColumnDef="createdAt">
@@ -39,8 +39,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['createdAt', 'amount', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['createdAt', 'amount', 'actions']"></tr>
+    <tr mat-header-row *matHeaderRowDef="['id', 'createdAt', 'amount', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['id', 'createdAt', 'amount', 'actions']"></tr>
   </table>
 
   <mat-paginator

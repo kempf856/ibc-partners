@@ -6,6 +6,10 @@
   <div class="form-page">
     <section class="form-block">
       <div class="readonly-field">
+        <span class="label">Sorszám</span>
+        <span class="value">IBC#{{ invoice.value()?.id?.toString()?.padStart(4, '0') }}</span>
+      </div>
+      <div class="readonly-field">
         <span class="label">Számlázás dátuma</span>
         <span class="value">{{ invoice.value()?.createdAt | date:'yyyy.MM.dd HH:mm' }}</span>
       </div>
