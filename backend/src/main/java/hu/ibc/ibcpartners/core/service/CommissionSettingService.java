@@ -1,6 +1,5 @@
 package hu.ibc.ibcpartners.core.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import hu.ibc.ibcpartners.core.dto.AuditChange;
 import hu.ibc.ibcpartners.core.dto.CommissionSettingDto;
 import hu.ibc.ibcpartners.core.entity.AuditEventType;
@@ -24,27 +23,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class CommissionSettingService {
-
-    private static final Map<String, String> FIELDS = Map.of(
-            "sellerPercent", "Partneri jutalék",
-            "buyerPercent", "Vevő kedvezmény",
-            "director1Id", "Direktor 1",
-            "director1Percent", "Direktor 1 jutalék",
-            "director2Id", "Direktor 2",
-            "director2Percent", "Direktor 2 jutalék",
-            "director3Id", "Direktor 3",
-            "director3Percent", "Direktor 3 jutalék",
-            "referralId", "Üzletkötő",
-            "referralPercent", "Üzletkötői jutalék"
-    );
 
     private final CommissionSettingRepository commissionSettingRepository;
     private final CommissionSettingMapper commissionSettingMapper;
@@ -106,27 +89,42 @@ public class CommissionSettingService {
     }
 
     private void sendEmail(String commissionLevel, CommissionSettingDto before, CommissionSettingDto after) {
-        Map<String, Object> params = Map.of(
+        Map<String, Object> directorParams = Map.of(
                 "userName", userProvider.getName(AuthHelper.getUserId()),
                 "commissionLevel", commissionLevel,
                 "changes", formatChanges(auditLogService.createChanges(before, after)),
                 "link", frontendUrl
         );
+
+        Map<String, Object> salesParams = Map.of(
+                "userName", userProvider.getName(AuthHelper.getUserId()),
+                "commissionLevel", commissionLevel,
+                "changes", formatChanges(auditLogService.createChanges(before, after).stream()
+                        .filter(change -> change.field().startsWith("referral")).toList()),
+                "link", frontendUrl
+        );
+
+        if (before.referralId() != null) {
+            sendEmail(userProvider.getEmail(before.referralId()), userProvider.getName(before.referralId()), salesParams);
+        }
+        if (after.referralId() != null && !Objects.equals(before.referralId(), after.referralId())) {
+            sendEmail(userProvider.getEmail(after.referralId()), userProvider.getName(after.referralId()), salesParams);
+        }
+
         userRepository.search(null, null, Role.ADMIN.name(), Pageable.unpaged()).getContent()
-                .forEach(user -> {
-                    Map<String, Object> fullParams = new HashMap<>(params);
-                    fullParams.put("name", user.getFullName());
-                    sendEmail(user.getEmail(), fullParams);
-                });
+                .forEach(user -> sendEmail(user.getEmail(), user.getFullName(), directorParams));
+    }
+
+    private void sendEmail(String email, String userName, Map<String, Object> params) {
+        Map<String, Object> fullParams = new HashMap<>(params);
+        fullParams.put("name", userName);
+        emailService.sendEmail(email, EmailTemplate.COMMISSION_SETTING_CHANGED, fullParams);
+
     }
 
     private List<String> formatChanges(List<AuditChange> changes) {
         return commissionSettingChangeResolver.resolveChanges(changes).stream()
-                .map(c -> FIELDS.getOrDefault(c.field(), c.field()) + ": " + nullValue(c.oldValue()) + " -> " + nullValue(c.newValue())).toList();
-    }
-
-    private String nullValue(String value) {
-        return value == null ? "{ üres }" : value;
+                .map(commissionSettingChangeResolver::formatChanges).toList();
     }
 
     private String getTransactionLevel(Long transactionId) {
@@ -137,10 +135,6 @@ public class CommissionSettingService {
 
     private String getPartnerLevel(Long partnerId) {
         return "Partner szint: " + partnerProvider.getName(partnerId);
-    }
-
-    private void sendEmail(String to, Map<String, Object> map) {
-        emailService.sendEmail(to, EmailTemplate.COMMISSION_SETTING_CHANGED, map);
     }
 
     private int nvl(Integer percent) {

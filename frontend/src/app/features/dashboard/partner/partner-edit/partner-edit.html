@@ -18,7 +18,10 @@
 
         <mat-form-field>
           <mat-label>Adószám</mat-label>
-          <input matInput formControlName="taxNumber" required/>
+          <input matInput formControlName="taxNumber" required maxlength="8"/>
+          @if (form.controls.taxNumber.hasError('taxNumber') && form.controls.taxNumber.touched) {
+            <mat-error>Érvénytelen adószám</mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field>
@@ -106,6 +109,9 @@
           formControlName="introduction">
         </ckeditor>
       </div>
+      @if (form.controls.introduction.hasError('maxlength') && form.controls.introduction.touched) {
+        <mat-error>A bemutatkozás túl hosszú</mat-error>
+      }
     }
 
     <div class="form-actions">

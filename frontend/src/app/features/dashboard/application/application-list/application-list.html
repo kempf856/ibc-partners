@@ -30,6 +30,11 @@
       <td mat-cell *matCellDef="let application">{{ application.companyName }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="referralCode">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ajánlói kód</th>
+      <td mat-cell *matCellDef="let application">{{ application.referralCode }}</td>
+    </ng-container>
+
     <ng-container matColumnDef="createdAt">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Regisztrált</th>
       <td mat-cell *matCellDef="let application">{{ application.createdAt | date:'yyyy.MM.dd HH:mm' }}</td>
@@ -56,8 +61,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['email', 'fullName', 'companyName', 'createdAt', 'state', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['email', 'fullName', 'companyName', 'createdAt', 'state', 'actions']"></tr>
+    <tr mat-header-row *matHeaderRowDef="['email', 'fullName', 'companyName', 'referralCode', 'createdAt', 'state', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['email', 'fullName', 'companyName', 'referralCode', 'createdAt', 'state', 'actions']"></tr>
 
   </table>
 

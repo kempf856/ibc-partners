@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule, MatLabel} from '@angular/material/input';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {TextFieldModule} from '@angular/cdk/text-field';
@@ -22,6 +22,7 @@ import {map, startWith} from 'rxjs';
 import {ImageUpload} from '../../../core/image-upload/image-upload';
 import {CityService} from '../../../core/city/city-service';
 import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {taxNumberValidator} from '../../../../core/validator/tax-number-validator';
 
 @Component({
   selector: 'app-partner-edit',
@@ -82,7 +83,7 @@ export class PartnerEdit implements OnInit {
 
   form = new FormGroup({
     id: new FormControl<number>(0, { nonNullable: true }),
-    taxNumber: new FormControl('', { nonNullable: true }),
+    taxNumber: new FormControl('', { nonNullable: true, validators: taxNumberValidator() }),
     name: new FormControl('', { nonNullable: true }),
     headquarters: new FormControl('', { nonNullable: true }),
     site: new FormControl<string | null>(''),
@@ -92,7 +93,7 @@ export class PartnerEdit implements OnInit {
     email: new FormControl<string | null>(''),
     website: new FormControl<string | null>(''),
     keyWords: new FormControl<string | null>(''),
-    introduction: new FormControl<string | null>(''),
+    introduction: new FormControl<string | null>('', Validators.maxLength(4000)),
     activities: new FormControl<number[]>([], { nonNullable: true }),
     photo: new FormControl<string | null>(''),
     logo: new FormControl<string | null>('')

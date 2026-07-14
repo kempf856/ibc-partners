@@ -3,7 +3,7 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIcon} from '@angular/material/icon';
-import {DatePipe, DecimalPipe} from '@angular/common';
+import {DecimalPipe} from '@angular/common';
 import {
   MatCell,
   MatCellDef,
@@ -20,7 +20,11 @@ import {MatChip, MatChipSet} from '@angular/material/chips';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {CommissionStatus, commissionStatusClass, commissionStatusLabel} from '../../../../../../shared/commission-status';
+import {
+  CommissionStatus,
+  commissionStatusClass,
+  commissionStatusLabel
+} from '../../../../../../shared/commission-status';
 import {CommissionService} from '../commission-service';
 import {AuthService} from '../../../../../../core/auth/auth-service';
 import {CommissionDto} from '../commission-dto';
@@ -53,7 +57,6 @@ import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-to
     MatTable,
     RouterLink,
     MatHeaderCellDef,
-    DatePipe,
     MatCheckbox,
     MatButton,
     MatButtonToggle,

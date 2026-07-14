@@ -14,7 +14,7 @@ import java.util.List;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
     @Query("""
-        SELECT a FROM Application a WHERE :states IS NULL OR a.state IN :states
+        SELECT a FROM Application a WHERE (:salesId IS NULL OR a.salesId = :salesId OR a.salesId IS NULL) AND (:states IS NULL OR a.state IN :states)
         """)
-    Page<Application> findAllByStates(List<ApplicationState> states, Pageable pageable);
+    Page<Application> findAllByStates(Long salesId, List<ApplicationState> states, Pageable pageable);
 }

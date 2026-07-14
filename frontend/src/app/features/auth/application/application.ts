@@ -9,6 +9,7 @@ import {AuthService} from '../../../core/auth/auth-service';
 import {ApplicationRequest} from './application-request';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {map} from 'rxjs';
+import {taxNumberValidator} from '../../../core/validator/tax-number-validator';
 
 @Component({
   selector: 'app-applicant',
@@ -29,7 +30,7 @@ export class Application {
     fullName: new FormControl('', { nonNullable: true }),
     phone: new FormControl('', { nonNullable: true }),
     companyName: new FormControl('', { nonNullable: true }),
-    taxNumber: new FormControl('', { nonNullable: true }),
+    taxNumber: new FormControl('', { nonNullable: true, validators: taxNumberValidator() }),
     source: new FormControl('', { nonNullable: true })
   });
   readonly email = this.form.controls.email;

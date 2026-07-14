@@ -47,7 +47,9 @@ export class AuthService {
     this.exp = decoded.exp ?? 0;
     this.roles = decoded.roles ?? [];
     this.userId = decoded.userId ?? null;
-    this.activePartnerService.loadActivePartners();
+    if (decoded && decoded.exp * 1000 > Date.now()) {
+      this.activePartnerService.loadActivePartners();
+    }
   }
 
   register(otp: string, password: string) {

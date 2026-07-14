@@ -15,15 +15,26 @@ export class ApplicationService {
     page: number;
     size: number;
     sort?: string
-  }) {
-    return this.http.get<PageResponse<ApplicationDto>>('/api/applications', {
-      params: {
-        page: req.page,
-        size: req.size,
-        ...(req.sort ? { sort: req.sort } : {}),
-        ...(req.states ? { states: req.states } : {})
-      }
-    });
+  }, admin: boolean) {
+    if (admin) {
+      return this.http.get<PageResponse<ApplicationDto>>('/api/applications', {
+        params: {
+          page: req.page,
+          size: req.size,
+          ...(req.sort ? {sort: req.sort} : {}),
+          ...(req.states ? {states: req.states} : {})
+        }
+      });
+    } else {
+      return this.http.get<PageResponse<ApplicationDto>>('/api/applications/my', {
+        params: {
+          page: req.page,
+          size: req.size,
+          ...(req.sort ? {sort: req.sort} : {}),
+          ...(req.states ? {states: req.states} : {})
+        }
+      });
+    }
    }
 
   getApplication(id: string) {

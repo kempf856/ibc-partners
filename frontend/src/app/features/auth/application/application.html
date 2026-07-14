@@ -42,7 +42,10 @@
 
         <mat-form-field>
           <mat-label>Adószám</mat-label>
-          <input matInput formControlName="taxNumber" required/>
+          <input matInput formControlName="taxNumber" required maxlength="8"/>
+          @if (form.controls.taxNumber.hasError('taxNumber') && form.controls.taxNumber.touched) {
+            <mat-error>Érvénytelen adószám</mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field>

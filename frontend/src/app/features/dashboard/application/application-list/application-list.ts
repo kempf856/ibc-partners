@@ -25,6 +25,8 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {RouterLink} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
+import {AuthService} from '../../../../core/auth/auth-service';
+import {Role} from '../../../../shared/role';
 
 @Component({
   selector: 'app-application-list',
@@ -62,6 +64,7 @@ export class ApplicationList implements OnInit {
 
   dataSource = new MatTableDataSource<ApplicationDto>([]);
   applicationService = inject(ApplicationService);
+  authService = inject(AuthService);
 
   stateFilter = new FormControl<'live' | 'closed' | 'all'>('live');
 
@@ -81,7 +84,7 @@ export class ApplicationList implements OnInit {
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sort
-    }).subscribe(res => {
+    }, this.authService.hasRole(Role.ADMIN)).subscribe(res => {
       this.dataSource.data = res.content;
       this.totalElements = res.totalElements;
     });

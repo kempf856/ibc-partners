@@ -23,10 +23,16 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<PageResponse<ApplicationDto>> search(@RequestParam(required = false) List<ApplicationState> states, Pageable pageable) {
-        return ResponseEntity.ok(applicationService.search(states, pageable));
+        return ResponseEntity.ok(applicationService.search(null, states, pageable));
+    }
+
+    @PreAuthorize("hasAuthority('SALES')")
+    @GetMapping("/my")
+    public ResponseEntity<PageResponse<ApplicationDto>> searchMy(@RequestParam(required = false) List<ApplicationState> states, Pageable pageable) {
+        return ResponseEntity.ok(applicationService.search(AuthHelper.getUserId(), states, pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SALES')")

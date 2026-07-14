@@ -38,8 +38,8 @@ public class ApplicationService {
         applicationRepository.save(application);
     }
 
-    public PageResponse<ApplicationDto> search(List<ApplicationState> states, Pageable pageable) {
-        return PageResponse.of(applicationRepository.findAllByStates(states, pageable), applicationMapper::map);
+    public PageResponse<ApplicationDto> search(Long salesId, List<ApplicationState> states, Pageable pageable) {
+        return PageResponse.of(applicationRepository.findAllByStates(salesId, states, pageable), applicationMapper::map);
     }
 
     public ApplicationDto get(Long id) {
