@@ -9,7 +9,8 @@ import hu.ibc.ibcpartners.core.mapper.auditchange.CommissionSettingChangeResolve
 import hu.ibc.ibcpartners.core.repository.CommissionSettingRepository;
 import hu.ibc.ibcpartners.notification.service.EmailService;
 import hu.ibc.ibcpartners.notification.service.EmailTemplate;
-import hu.ibc.ibcpartners.partner.repository.TransactionRepository;
+import hu.ibc.ibcpartners.partner.entity.Transaction;
+import hu.ibc.ibcpartners.partner.entity.TransactionStatus;
 import hu.ibc.ibcpartners.partner.service.PartnerProvider;
 import hu.ibc.ibcpartners.security.entity.Role;
 import hu.ibc.ibcpartners.security.repository.UserRepository;
@@ -36,7 +37,6 @@ public class CommissionSettingService {
     private final UserRepository userRepository;
     private final UserProvider userProvider;
     private final PartnerProvider partnerProvider;
-    private final TransactionRepository transactionRepository;
     private final CommissionSettingChangeResolver commissionSettingChangeResolver;
 
     @Value("${app.frontend-url}")
@@ -71,14 +71,17 @@ public class CommissionSettingService {
     }
 
     @Transactional
-    public void update(CommissionSettingDto dto) {
+    public void update(CommissionSettingDto dto, Transaction t) {
+        if (dto.transactionId() != null && t.getStatus() == TransactionStatus.ACCOUNTED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A jutalék beállítás nem módosítható, mert az ügylet már el van számolva!");
+        }
         if (nvl(dto.director1Percent()) + nvl(dto.director2Percent()) + nvl(dto.director3Percent()) + nvl(dto.referralPercent()) +
                 nvl(dto.buyerPercent()) > dto.sellerPercent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A jutalékok összege nem lehet nagyobb a Partneri jutaléknál!");
         }
 
         CommissionSetting setting = findByIds(dto.partnerId(), dto.transactionId());
-        String commissionLevel = setting.getTransactionId() != null ? getTransactionLevel(setting.getTransactionId())
+        String commissionLevel = setting.getTransactionId() != null ? getTransactionLevel(t)
                 : setting.getPartnerId() != null ? getPartnerLevel(setting.getPartnerId())
                 : "DEFAULT szint";
         CommissionSettingDto beforeDto = commissionSettingMapper.map(setting);
@@ -128,10 +131,8 @@ public class CommissionSettingService {
                 .map(commissionSettingChangeResolver::formatChanges).toList();
     }
 
-    private String getTransactionLevel(Long transactionId) {
-        return "Ügylet szint: " + transactionRepository.findById(transactionId)
-                .map(t -> partnerProvider.getName(t.getSellerId()) + " - " + t.getDescription() + " (#" + t.getId() + ") ")
-                .orElse("");
+    private String getTransactionLevel(Transaction t) {
+        return "Ügylet szint: " + partnerProvider.getName(t.getSellerId()) + " - " + t.getDescription() + " (#" + t.getId() + ")";
     }
 
     private String getPartnerLevel(Long partnerId) {

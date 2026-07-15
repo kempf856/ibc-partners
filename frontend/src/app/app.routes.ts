@@ -97,8 +97,9 @@ export const routes: Routes = [
           { path: 'create', component: TransactionCreate, data: { mode: 'admin', roles: [Role.ADMIN] } },
           { path: 'sell', component: TransactionCreate, data: { mode: 'sell', roles: [Role.PARTNER] } },
           { path: 'buy', component: TransactionCreate, data: { mode: 'buy', roles: [Role.PARTNER] } },
-          { path: ':id', component: TransactionWorkflow, data: { mode: 'admin', roles: [Role.ADMIN, Role.PARTNER, Role.SALES] } },
+          { path: ':id', component: TransactionWorkflow, data: { mode: 'admin', roles: [Role.ADMIN] } },
           { path: 'my/:id', component: TransactionWorkflow, data: { mode: 'my', roles: [Role.ADMIN, Role.PARTNER, Role.SALES] } },
+          { path: 'view/:id', component: TransactionWorkflow, data: { mode: 'view', roles: [Role.ADMIN, Role.PARTNER, Role.SALES] } },
         ]
       },
       {
@@ -115,9 +116,11 @@ export const routes: Routes = [
       },
       {
         path: 'commission-setting',
-        component: CommissionSetting,
-        canActivate: [roleGuard],
-        data: {roles: [Role.ADMIN] },
+        canActivateChild: [roleGuard],
+        children: [
+          { path: '', component: CommissionSetting, data: { mode: 'edit', roles: [Role.ADMIN] } },
+          { path: 'view', component: CommissionSetting, data: { mode: 'view', roles: [Role.ADMIN] } },
+        ]
       },
       {
         path: 'commission-admin',

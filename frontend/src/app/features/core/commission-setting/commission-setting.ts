@@ -55,6 +55,8 @@ export class CommissionSetting {
     referralPercent: new FormControl<number | null>(null)
   });
 
+  displayMode = this.route.snapshot.data['mode'] as DisplayMode;
+
   readonly routeParams = toSignal(
     this.route.queryParamMap.pipe(
       map(params => ({
@@ -143,5 +145,22 @@ export class CommissionSetting {
     return (this.form.controls.director1Percent.value ?? 0) + (this.form.controls.director2Percent.value ?? 0) +
       (this.form.controls.director3Percent.value ?? 0) + (this.form.controls.referralPercent.value ?? 0) +
       (this.form.controls.buyerPercent.value ?? 0);
+  }
+
+  protected appearance() {
+    return this.readonly() ? 'fill' : 'outline';
+  }
+
+  protected readonly() {
+    return this.displayMode === 'view';
+  }
+
+  protected getUserName(userId: number | null) {
+    if (!userId) {
+      return '';
+    }
+
+    const user = this.allUsers.value()?.content.find((u) => u.id === userId);
+    return user ? user.fullName : '';
   }
 }

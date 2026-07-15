@@ -124,7 +124,7 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
-    private Transaction findById(Long transactionId) {
+    public Transaction findById(Long transactionId) {
         return transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ügylet nem található ezzel az ID-val: " + transactionId));
     }

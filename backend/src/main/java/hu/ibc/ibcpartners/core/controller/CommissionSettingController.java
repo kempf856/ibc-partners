@@ -2,6 +2,8 @@ package hu.ibc.ibcpartners.core.controller;
 
 import hu.ibc.ibcpartners.core.dto.CommissionSettingDto;
 import hu.ibc.ibcpartners.core.service.CommissionSettingService;
+import hu.ibc.ibcpartners.partner.entity.Transaction;
+import hu.ibc.ibcpartners.partner.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,11 +17,16 @@ import org.springframework.web.bind.annotation.*;
 public class CommissionSettingController {
 
     private final CommissionSettingService commissionSettingService;
+    private final TransactionService transactionService;
 
     @PutMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> update(@Valid @RequestBody CommissionSettingDto commissionSettingDto) {
-        commissionSettingService.update(commissionSettingDto);
+        Transaction t = null;
+        if (commissionSettingDto.transactionId() != null) {
+            t = transactionService.findById(commissionSettingDto.transactionId());
+        }
+        commissionSettingService.update(commissionSettingDto, t);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

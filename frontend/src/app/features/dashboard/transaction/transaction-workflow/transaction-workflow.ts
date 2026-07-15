@@ -23,6 +23,8 @@ import {AuthService} from '../../../../core/auth/auth-service';
 import {Role} from '../../../../shared/role';
 import {ActivePartnerService} from '../../../../core/auth/active-partner-service';
 
+type TrDisplayMode = 'view' | 'my' | 'admin';
+
 @Component({
   selector: 'app-transaction-create',
   imports: [
@@ -57,7 +59,7 @@ export class TransactionWorkflow {
     fulfillmentDate: new FormControl<string | null>('')
   });
 
-  displayMode = this.route.snapshot.data['mode'] as ListMode;
+  displayMode = this.route.snapshot.data['mode'] as TrDisplayMode;
 
   readonly returnUrl = toSignal(
     this.route.queryParamMap.pipe(
