@@ -57,7 +57,7 @@ export class InvoiceView {
       if (!params) {
         return undefined;
       }
-      return firstValueFrom(this.invoiceService.getById(params, this.listMode === 'admin'));
+      return firstValueFrom(this.invoiceService.getById(params, this.listMode !== 'admin'));
     }
   });
 

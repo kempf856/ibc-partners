@@ -83,19 +83,24 @@ public class CommissionSettingService {
         CommissionSetting setting = findByIds(dto.partnerId(), dto.transactionId());
         String commissionLevel = setting.getTransactionId() != null ? getTransactionLevel(t)
                 : setting.getPartnerId() != null ? getPartnerLevel(setting.getPartnerId())
-                : "DEFAULT szint";
+                : "DEFAULT";
         CommissionSettingDto beforeDto = commissionSettingMapper.map(setting);
-        auditLogService.write(AuditEventType.COMMISSION_SETTING_CHANGED, beforeDto, dto, commissionLevel);
+        auditLogService.write(AuditEventType.COMMISSION_SETTING_CHANGED, beforeDto, dto, "Jutalék szint: " + commissionLevel);
         commissionSettingMapper.map(dto, setting);
         commissionSettingRepository.save(setting);
         sendEmail(commissionLevel, beforeDto, dto);
     }
 
     private void sendEmail(String commissionLevel, CommissionSettingDto before, CommissionSettingDto after) {
+        List<String> directorChanges = formatChanges(auditLogService.createChanges(before, after));
+        if (directorChanges.isEmpty()) {
+            return;
+        }
+
         Map<String, Object> directorParams = Map.of(
                 "userName", userProvider.getName(AuthHelper.getUserId()),
                 "commissionLevel", commissionLevel,
-                "changes", formatChanges(auditLogService.createChanges(before, after)),
+                "changes", directorChanges,
                 "link", frontendUrl
         );
 
@@ -132,11 +137,11 @@ public class CommissionSettingService {
     }
 
     private String getTransactionLevel(Transaction t) {
-        return "Ügylet szint: " + partnerProvider.getName(t.getSellerId()) + " - " + t.getDescription() + " (#" + t.getId() + ")";
+        return "Ügylet - " + partnerProvider.getName(t.getSellerId()) + " - " + t.getDescription() + " (#" + t.getId() + ")";
     }
 
     private String getPartnerLevel(Long partnerId) {
-        return "Partner szint: " + partnerProvider.getName(partnerId);
+        return "Partner - " + partnerProvider.getName(partnerId);
     }
 
     private int nvl(Integer percent) {

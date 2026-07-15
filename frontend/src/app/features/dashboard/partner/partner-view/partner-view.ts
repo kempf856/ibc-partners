@@ -11,11 +11,16 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {AuthService} from '../../../../core/auth/auth-service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {firstValueFrom, map} from 'rxjs';
+import {MatCard} from '@angular/material/card';
+import {MatIcon} from '@angular/material/icon';
+import {Role} from '../../../../shared/role';
+import {membershipLabel} from '../../../../shared/partner-membership-role';
+import {MatChip} from '@angular/material/chips';
 
 @Component({
   selector: 'app-partner-view',
   imports: [
-    MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, TextFieldModule, CKEditorModule
+    MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, TextFieldModule, CKEditorModule, MatCard, MatIcon, MatChip
   ],
   templateUrl: './partner-view.html',
   styleUrl: './partner-view.scss',
@@ -62,6 +67,16 @@ export class PartnerView {
     }
   });
 
+  readonly memberships = resource({
+    params: () => this.partnerId(),
+    loader: async ({ params }) => {
+      if (!params) {
+        return undefined;
+      }
+      return firstValueFrom(this.partnerService.findMembership(undefined, params));
+    }
+  });
+
   cancel() {
     const returnUrl = this.returnUrl();
     if (returnUrl) {
@@ -76,4 +91,7 @@ export class PartnerView {
       .map(id => this.activities().find(a => a.id === id)?.activity)
       .join(', ') ?? '';
   }
+
+  protected readonly Role = Role;
+  protected readonly membershipLabel = membershipLabel;
 }

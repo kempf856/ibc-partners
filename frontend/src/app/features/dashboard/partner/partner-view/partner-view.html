@@ -37,6 +37,36 @@
     </section>
   </div>
 
+  @if (authService.hasRole(Role.ADMIN)) {
+    <div class="partner-contacts">
+      <section class="form-block">
+        <div><h2>Kapcsolatok</h2></div>
+        <div class="user-cards">
+          @for (membership of memberships.value(); track membership.id) {
+            <mat-card appearance="outlined" class="user-card">
+              <div class="user-name">
+                <mat-icon>person</mat-icon>
+                <span>{{ membership.userName }}</span>
+              </div>
+              <div class="user-info">
+                <mat-icon>badge</mat-icon>
+                <mat-chip>{{ membershipLabel(membership.role) }}</mat-chip>
+              </div>
+              <div class="user-info">
+                <mat-icon>mail</mat-icon>
+                <a [href]="'mailto:' + membership.email">{{ membership.email }}</a>
+              </div>
+              <div class="user-info">
+                <mat-icon>call</mat-icon>
+                <span>{{ membership.phone }}</span>
+              </div>
+            </mat-card>
+          }
+        </div>
+      </section>
+    </div>
+  }
+
   <div class="form-actions">
     <button matButton type="button" (click)="cancel()">Vissza</button>
   </div>
