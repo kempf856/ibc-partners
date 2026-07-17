@@ -1,0 +1,54 @@
+<div class="form-page-wrapper mw-md">
+  <div class="page-header">
+    <h1>Dia</h1>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="form-page">
+      <section class="form-block">
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Sorrend</mat-label>
+          <input matInput type="number" formControlName="sortOrder" required [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <mat-form-field [appearance]="appearance()">
+          <mat-label>Megnevezés</mat-label>
+          <input matInput formControlName="description" required [readonly]="readonly()"/>
+        </mat-form-field>
+
+        <div class="readonly-field">
+          <span class="label">Aktív</span>
+          <span class="value">
+            <mat-slide-toggle formControlName="active"></mat-slide-toggle>
+          </span>
+        </div>
+
+        <mat-form-field>
+          <mat-label>Megjelenés kezdete</mat-label>
+          <input matInput [matDatepicker]="pickerFrom" formControlName="visibleFrom"/>
+          <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Megjelenés vége</mat-label>
+          <input matInput [matDatepicker]="pickerTo" formControlName="visibleTo"/>
+          <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+          <mat-datepicker #pickerTo></mat-datepicker>
+        </mat-form-field>
+      </section>
+      <section class="form-block">
+        <app-image-upload formControlName="slide" [previewWidth]="350" [previewHeight]="200"></app-image-upload>
+      </section>
+    </div>
+
+    <div class="form-actions">
+      @if (readonly()) {
+        <button matButton type="button" (click)="cancel()">Vissza</button>
+      } @else {
+        <button matButton type="button" (click)="cancel()">Mégsem</button>
+        <button matButton="elevated" (click)="save()" [disabled]="form.invalid">Mentés</button>
+      }
+    </div>
+  </form>
+</div>

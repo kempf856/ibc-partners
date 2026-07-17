@@ -8,12 +8,9 @@ import {
   signal,
   ViewChild
 } from '@angular/core';
-import {DashboardService} from './dashboard-service';
-
-export interface Slide {
-  title: string;
-  image: string;
-}
+import {DashboardService} from '../dashboard-service';
+import {SlideService} from '../slide-service';
+import {SlideDto} from '../slide-dto';
 
 @Component({
   selector: 'app-home',
@@ -25,23 +22,11 @@ export interface Slide {
 export class Home implements OnInit, AfterViewInit {
 
   private dashboardService = inject(DashboardService);
+  private slideService = new SlideService();
 
   message = signal('');
 
-  slides = signal<Slide[]>([
-    {
-      title: 'Első',
-      image: '/slide1.jpg'
-    },
-    {
-      title: 'Második',
-      image: '/slide2.jpg'
-    },
-    {
-      title: 'Harmadik',
-      image: '/slide3.jpg'
-    }
-  ]);
+  slides = signal<SlideDto[]>([]);
 
   @ViewChild('swiper') swiper!: ElementRef;
 
@@ -63,5 +48,6 @@ export class Home implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.dashboardService.welcome()
       .subscribe(dto => this.message.set(dto.message));
+    this.slideService.getAllVisible().subscribe((result) => this.slides.set(result));
   }
 }

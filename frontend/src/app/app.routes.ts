@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {Login} from './features/auth/login/login';
-import {Home} from './features/dashboard/home/home';
+import {Home} from './features/dashboard/home/home/home';
 import {authGuard} from './core/auth/auth-guard';
 import {AppShell} from './features/core/app-shell/app-shell';
 import {UserList} from './features/dashboard/user/user-list/user-list';
@@ -25,6 +25,8 @@ import {PartnerView} from './features/dashboard/partner/partner-view/partner-vie
 import {AuditLogList} from './features/dashboard/audit-log/audit-log-list/audit-log-list';
 import {CommissionAdmin} from './features/dashboard/user/profile/commission/commission-admin/commission-admin';
 import {InvoiceView} from './features/dashboard/user/profile/invoice/invoice-view/invoice-view';
+import {SlideList} from './features/dashboard/home/slide-list/slide-list';
+import {SlideEdit} from './features/dashboard/home/slide-edit/slide-edit';
 
 export const routes: Routes = [
   {
@@ -107,6 +109,16 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: [Role.ADMIN] },
         component: ActivityList
+      },
+      {
+        path: 'slides',
+        canActivateChild: [roleGuard],
+        data: { roles: [Role.ADMIN] },
+        children: [
+          { path: '', component: SlideList },
+          { path: 'create', component: SlideEdit, data: { mode: 'create' } },
+          { path: ':id', component: SlideEdit, data: { mode: 'edit' } },
+        ]
       },
       {
         path: 'settings',
