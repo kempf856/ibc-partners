@@ -1,19 +1,19 @@
 <div class="single-page-wrapper mw-lg">
   <div class="page-header">
-    <h1>{{ listMode === 'admin' ? 'Partner kezelő' : 'Partner adatbázis' }}</h1>
+    <h1>{{ listMode === 'admin' ? 'Partnerkezelő' : 'Partner adatbázis' }}</h1>
   </div>
 
   <div class="filters-bar">
     <div class="filters">
       <mat-form-field>
         <mat-label>Keresés</mat-label>
-        <input matInput [(ngModel)]="filter" (ngModelChange)="loadPartners()" matTooltip="Cégnév, Település, Kulcsszó keresés">
+        <input matInput [formControl]="filter" matTooltip="Cégnév, Település, Kulcsszó keresés">
       </mat-form-field>
 
       <mat-form-field class="multiselect-field">
         <mat-label>Tevékenységek</mat-label>
-        <mat-select [(ngModel)]="activityFilter" (selectionChange)="loadPartners()" multiple>
-          @for (activity of activities; track activity) {
+        <mat-select [formControl]="activityFilter" multiple>
+          @for (activity of activities(); track activity) {
             <mat-option [value]="activity.id">
               {{ activity.activity }}
             </mat-option>
@@ -28,30 +28,30 @@
     }
   </div>
 
-  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">
+  <div class="list-table">
+    <table mat-table [dataSource]="partners()" matSort (matSortChange)="onSort($event)">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cégnév</th>
+        <td mat-cell *matCellDef="let partner">{{ partner.name }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Cégnév</th>
-      <td mat-cell *matCellDef="let partner">{{ partner.name }}</td>
-    </ng-container>
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Település</th>
+        <td mat-cell *matCellDef="let partner">{{ partner.location }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="location">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Település</th>
-      <td mat-cell *matCellDef="let partner">{{ partner.location }}</td>
-    </ng-container>
+      <ng-container matColumnDef="activities">
+        <th mat-header-cell *matHeaderCellDef>Tevékenységek</th>
+        <td mat-cell *matCellDef="let partner">{{ activitiesText(partner.activities) }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="activities">
-      <th mat-header-cell *matHeaderCellDef>Tevékenységek</th>
-      <td mat-cell *matCellDef="let partner">{{ activitiesText(partner.activities) }}</td>
-    </ng-container>
+      <ng-container matColumnDef="keyWords">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Kulcsszavak</th>
+        <td mat-cell *matCellDef="let partner">{{ partner.keyWords }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="keyWords">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Kulcsszavak</th>
-      <td mat-cell *matCellDef="let partner">{{ partner.keyWords }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="website">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Webhely</th>
+      <ng-container matColumnDef="website">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Webhely</th>
         <td mat-cell *matCellDef="let partner">
           @if (partner.website) {
             <a [href]="partner.website" target="_blank">link</a>
@@ -59,33 +59,53 @@
             <span>-</span>
           }
         </td>
-    </ng-container>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
 
-      <td mat-cell *matCellDef="let partner">
-        <button mat-icon-button matTooltip="Megtekintés" [routerLink]="['/partners/view', partner.id]" [queryParams]="{ returnUrl: router.url }">
-          <mat-icon>visibility</mat-icon>
-        </button>
-        @if (listMode === 'admin') {
-          <button mat-icon-button matTooltip="Szerkesztés" [routerLink]="['/partners/edit', partner.id]" [queryParams]="{ returnUrl: router.url }">
-            <mat-icon>edit</mat-icon>
+        <td mat-cell *matCellDef="let partner">
+          <button mat-icon-button matTooltip="Megtekintés" [routerLink]="['/partners/view', partner.id]" [queryParams]="{ returnUrl: router.url }">
+            <mat-icon>visibility</mat-icon>
           </button>
-        }
-      </td>
-    </ng-container>
+          @if (listMode === 'admin') {
+            <button mat-icon-button matTooltip="Szerkesztés" [routerLink]="['/partners/edit', partner.id]" [queryParams]="{ returnUrl: router.url }">
+              <mat-icon>edit</mat-icon>
+            </button>
+          }
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['name', 'location', 'activities', 'keyWords', 'website', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['name', 'location', 'activities', 'keyWords', 'website', 'actions']"></tr>
+      <tr mat-header-row *matHeaderRowDef="['name', 'location', 'activities', 'keyWords', 'website', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['name', 'location', 'activities', 'keyWords', 'website', 'actions']"></tr>
 
-  </table>
+    </table>
 
-  <mat-paginator
-    [length]="totalElements"
-    [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
-    [pageSizeOptions]="[10, 20, 50]"
-    (page)="onPage($event)">
-  </mat-paginator>
+    <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPage($event)">
+    </mat-paginator>
+  </div>
+
+  <div class="list-cards">
+    @for (partner of partners(); track partner.id) {
+      <mat-card appearance="outlined" class="list-card" [routerLink]="['/partners/view', partner.id]" [queryParams]="{ returnUrl: router.url }">
+        <div class="list-card-title">
+          {{ partner.name }}
+        </div>
+        <div class="list-card-info">
+          <span class="info-title">Település:</span> {{ partner.location }}
+        </div>
+        <div class="list-card-info">
+          <span class="info-title">Tevékenységek:</span> {{ activitiesText(partner.activities) }}
+        </div>
+        <div class="list-card-info">
+          <span class="info-title">Kulcsszavak: </span> {{ partner.keyWords }}
+        </div>
+      </mat-card>
+    }
+  </div>
 </div>

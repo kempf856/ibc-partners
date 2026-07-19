@@ -3,7 +3,7 @@
     <div>
       <h1><span class="partner-top-bold">Partner:</span> {{ partner.value()?.name }} <span class="header-id">#{{ partner.value()?.id }}</span></h1>
     </div>
-    <img [src]="`${partner.value()?.logo}`" alt="logo" [style.width.px]="350" [style.height.px]="40">
+    <img [src]="`${partner.value()?.logo}`" alt="logo" [style.width.px]="330" [style.height.px]="40">
   </div>
 
   <div class="partner-top-box">
@@ -42,6 +42,10 @@
       <section class="form-block">
         <div><h2>Kapcsolatok</h2></div>
         <div class="user-cards">
+          @if (!memberships.value()?.length) {
+            <span>Nincs felhasználó a partnerhez rendelve</span>
+          }
+
           @for (membership of memberships.value(); track membership.id) {
             <mat-card appearance="outlined" class="user-card">
               <div class="user-name">

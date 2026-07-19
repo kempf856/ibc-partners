@@ -26,6 +26,8 @@ import {MatChip} from '@angular/material/chips';
   styleUrl: './partner-view.scss',
 })
 export class PartnerView {
+  protected readonly Role = Role;
+  protected readonly membershipLabel = membershipLabel;
 
   router = inject(Router)
   route = inject(ActivatedRoute);
@@ -91,7 +93,4 @@ export class PartnerView {
       .map(id => this.activities().find(a => a.id === id)?.activity)
       .join(', ') ?? '';
   }
-
-  protected readonly Role = Role;
-  protected readonly membershipLabel = membershipLabel;
 }

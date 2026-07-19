@@ -105,12 +105,19 @@ body {
   }
 }
 
+.mat-mdc-table {
+  .mat-mdc-header-cell {
+    color: var(--mat-sys-primary);
+  }
+}
+
 .partner-member-field .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
 .partner-field .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
+
 .partner-field {
   @include mat.form-field-overrides((
     filled-container-color: var(--mat-sys-surface),

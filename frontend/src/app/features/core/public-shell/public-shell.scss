@@ -31,8 +31,15 @@
 /* CONTENT */
 .content {
   flex: 1;
+  min-height: 0;
   overflow: auto;
-  padding: 20px 20px 72px;
+  padding: 1.25rem 1.5rem 4.5rem;
+}
+
+.content::after {
+  content: '';
+  display: block;
+  height: env(safe-area-inset-bottom);
 }
 
 /* BOTTOM BAR */
@@ -43,4 +50,11 @@
   left: 0;
   right: 0;
   z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (max-width: 599px) {
+  .content {
+    padding: 0.6rem 0.6rem 4.5rem;
+  }
 }

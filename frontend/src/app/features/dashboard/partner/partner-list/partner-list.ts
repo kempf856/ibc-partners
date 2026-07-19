@@ -1,8 +1,8 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSortModule, Sort} from '@angular/material/sort';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {
   MatCell,
@@ -14,17 +14,18 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable,
-  MatTableDataSource
+  MatTable
 } from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {PartnerDto} from '../partner-dto';
 import {PartnerService} from '../partner-service';
-import {ActivityDto} from '../../../core/activity/activity-dto';
 import {ActivityService} from '../../../core/activity/activity-service';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
+import {MatCard} from '@angular/material/card';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {map} from 'rxjs';
 
 @Component({
   selector: 'app-partner-list',
@@ -50,76 +51,80 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatButtonModule,
     RouterLink,
     MatIcon,
-    MatTooltip
+    MatTooltip,
+    MatCard,
+    ReactiveFormsModule
   ],
   templateUrl: './partner-list.html',
   styleUrl: './partner-list.scss',
 })
-export class PartnerList implements OnInit {
+export class PartnerList {
 
-  dataSource = new MatTableDataSource<PartnerDto>([]);
   partnerService = inject(PartnerService);
   activityService = inject(ActivityService);
   route = inject(ActivatedRoute);
   router = inject(Router);
 
-  activities: ActivityDto[] = [];
+  readonly activities = toSignal(
+    this.activityService.search({
+      page: 0,
+      size: 1000,
+      sort: 'activity,asc'
+    }).pipe(
+      map(page => page.content)
+    ),
+    { initialValue: []}
+  );
 
-  totalElements = 0;
+  partners = signal<PartnerDto[]>([]);
+  totalElements = signal(0);
 
-  pageSize = 20;
-  pageIndex = 0;
+  pageSize = signal(20);
+  pageIndex = signal(0);
+  sort = signal<string>('name,asc');
 
-  sort = 'name,asc';
-
-  filter = '';
-  activityFilter: number[] = [];
+  filter = new FormControl('', { nonNullable: true });
+  filterSignal = toSignal(this.filter.valueChanges, { initialValue: this.filter.value } );
+  activityFilter = new FormControl<number[]>([], { nonNullable: true });
+  activityFilterSignal = toSignal(this.activityFilter.valueChanges, { initialValue: this.activityFilter.value } );
 
   listMode = this.route.snapshot.data['mode'] as ListMode;
 
-  ngOnInit() {
-    this.loadActivities();
-    this.loadPartners();
-  }
-
-  loadPartners() {
-    this.partnerService.search({
-      page: this.pageIndex,
-      size: this.pageSize,
-      sort: this.sort,
-      filter: this.filter,
-      browsableOnly: this.listMode === 'global',
-      activities: this.activityFilter.length > 0 ? this.activityFilter : undefined
-    }).subscribe(res => {
-      this.dataSource.data = res.content;
-      this.totalElements = res.totalElements;
-    });
-  }
-
-  loadActivities() {
-    this.activityService.search({
-      page: 0,
-      size: 1000, // Adjust the size as needed
-      sort: 'activity,asc'
-    }).subscribe(res => {
-      this.activities = res.content;
+  constructor() {
+    effect(() => {
+      this.partnerService.search({
+        page: this.pageIndex(),
+        size: this.pageSize(),
+        sort: this.sort(),
+        filter: this.filterSignal(),
+        browsableOnly: this.listMode === 'global',
+        activities: this.activityFilterSignal()?.length > 0 ? this.activityFilterSignal() : undefined
+      }).subscribe(res => {
+        this.partners.set(res.content);
+        this.totalElements.set(res.totalElements);
+      });
     });
   }
 
   onPage(event: PageEvent) {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.loadPartners();
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
   }
 
   onSort(event: Sort) {
-    this.sort = `${event.active},${event.direction}`;
-    this.loadPartners();
+    this.pageIndex.set(0);
+
+    if (!event.direction) {
+      this.sort.set('name,asc');
+      return;
+    }
+
+    this.sort.set(`${event.active},${event.direction}`);
   }
 
   activitiesText(activities: number[]): string {
     return activities
-      .map(id => this.activities.find(a => a.id === id)?.activity)
+      .map(id => this.activities().find(a => a.id === id)?.activity)
       .join(', ');
   }
 }

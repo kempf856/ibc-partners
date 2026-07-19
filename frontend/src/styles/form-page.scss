@@ -19,10 +19,11 @@
 }
 
 .page-header {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .page-header h1 {
@@ -106,4 +107,10 @@
 
 .space-after {
   margin-bottom: 0.6rem;
+}
+
+@media (max-width: 599px) {
+  .form-page {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
+  }
 }

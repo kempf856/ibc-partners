@@ -1,17 +1,16 @@
 .partner-top-box {
   display: flex;
-  justify-content: center;
-  gap: 24px;
-  align-items: start;
-  margin-bottom: 24px;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
 }
 
 .partner-top-left {
-  flex: 3;
+  flex: 0 0 220px;
 }
 
 .partner-top-right {
-  flex: 7;
+  flex: 1;
 }
 
 .partner-top-bold {
@@ -20,7 +19,7 @@
 }
 
 .partner-contacts {
-  margin-top: 24px;
+  margin-top: 1.5rem;
 }
 
 .user-cards {
@@ -62,5 +61,36 @@
     width: 1.2rem;
     height: 1.2rem;
     color: var(--mat-sys-primary);
+  }
+}
+
+@media (max-width: 599px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-header img {
+    align-self: center;
+  }
+
+  .partner-top-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .partner-top-left {
+    display: flex;
+    justify-content: center;
+  }
+
+  .partner-top-box,
+  .partner-top-right,
+  .form-block {
+    box-sizing: border-box;
+  }
+
+  .user-cards {
+    grid-template-columns: 1fr;
   }
 }
