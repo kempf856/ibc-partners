@@ -13,6 +13,8 @@ import {HttpClient} from '@angular/common/http';
 import {FileUploadResponse} from './file-upload-response';
 import {firstValueFrom} from 'rxjs';
 import {MatButton} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
+import {ImageCropDialog} from './crop/image-crop-dialog';
 
 @Component({
   selector: 'app-image-upload',
@@ -33,6 +35,7 @@ import {MatButton} from '@angular/material/button';
 export class ImageUpload implements ControlValueAccessor {
 
   http = inject(HttpClient);
+  dialog = inject(MatDialog);
 
   readonly fileId = signal<string | null>(null);
 
@@ -44,6 +47,11 @@ export class ImageUpload implements ControlValueAccessor {
 
   readonly previewWidth = input(200);
   readonly previewHeight = input(150);
+
+  readonly crop = input(false);
+  readonly cropAspectRatio = input(1);
+  readonly cropResizeWidth = input<number | null>(null);
+  readonly cropResizeHeight = input<number | null>(null);
 
   readonly selectedFileName = signal<string | null>(null);
 
@@ -64,12 +72,34 @@ export class ImageUpload implements ControlValueAccessor {
 
   async upload(event: Event) {
     const input = event.target as HTMLInputElement;
-
     if (!input.files?.length) {
       return;
     }
+    const originalFile = input.files[0];
 
-    const file = input.files[0];
+    let file = originalFile;
+    if (this.crop()) {
+      const dialogRef = this.dialog.open(ImageCropDialog, {
+        width: '800px',
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+        disableClose: true,
+        data: {
+          file: originalFile,
+          aspectRatio: this.cropAspectRatio(),
+          resizeWidth: this.cropResizeWidth(),
+          resizeHeight: this.cropResizeHeight()
+        }
+      });
+
+      const cropped = await firstValueFrom(dialogRef.afterClosed());
+      if (!cropped) {
+        input.value = '';
+        return;
+      }
+      file = cropped;
+    }
+
     this.selectedFileName.set(file.name);
 
     try {

@@ -1,0 +1,23 @@
+.crop-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+.crop-container {
+  flex: 1;
+  overflow: hidden;
+}
+
+image-cropper {
+  display: block;
+  max-height: 65vh;
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem;
+}

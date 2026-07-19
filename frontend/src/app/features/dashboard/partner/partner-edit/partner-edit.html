@@ -92,11 +92,23 @@
 
       @if (displayMode === 'edit') {
         <section class="form-block">
-          <app-image-upload formControlName="photo" [previewWidth]="220" [previewHeight]="280"></app-image-upload>
+          <app-image-upload formControlName="photo"
+                            [previewWidth]="220"
+                            [previewHeight]="280"
+                            [cropResizeWidth]="440"
+                            [cropResizeHeight]="560"
+                            [crop]="true">
+          </app-image-upload>
         </section>
 
         <section class="form-block">
-          <app-image-upload formControlName="logo" [previewWidth]="330" [previewHeight]="40"></app-image-upload>
+          <app-image-upload formControlName="logo"
+                            [previewWidth]="300"
+                            [previewHeight]="50"
+                            [cropResizeWidth]="600"
+                            [cropResizeHeight]="100"
+                            [crop]="true">
+          </app-image-upload>
         </section>
       }
     </div>

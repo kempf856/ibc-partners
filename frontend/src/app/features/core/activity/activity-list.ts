@@ -20,7 +20,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {ActivityDto} from './activity-dto';
 import {ActivityService} from './activity-service';
-import {ConfirmDialogComponent} from '../../../core/dialog/confirm-dialog-component';
+import {ConfirmDialog} from '../../../core/dialog/confirm-dialog';
 import {MatDialog} from '@angular/material/dialog';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {NotificationService} from '../../../core/notification/notification';
@@ -95,7 +95,7 @@ export class ActivityList implements OnInit {
   }
 
   delete(activity: ActivityDto): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
       data: {
         title: 'Törlés',
         message: `Biztos törölni szeretnéd ezt a tevékenységet: ${activity.activity}?`

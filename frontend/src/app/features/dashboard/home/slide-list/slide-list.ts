@@ -23,7 +23,7 @@ import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-to
 import {SlideDto} from '../slide-dto';
 import {SlideService} from '../slide-service';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {ConfirmDialogComponent} from '../../../../core/dialog/confirm-dialog-component';
+import {ConfirmDialog} from '../../../../core/dialog/confirm-dialog';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationService} from '../../../../core/notification/notification';
 import {MatChip, MatChipSet} from '@angular/material/chips';
@@ -95,7 +95,7 @@ export class SlideList {
   }
 
   protected delete(slide: SlideDto) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
       data: {
         title: 'Törlés',
         message: `Biztos törölni szeretnéd ezt a diát: ${slide.description}?`

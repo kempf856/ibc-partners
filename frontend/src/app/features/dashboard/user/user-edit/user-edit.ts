@@ -33,7 +33,7 @@ import {PartnerMembershipDto} from '../../partner/partner-membership-dto';
 import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {PartnerDto} from '../../partner/partner-dto';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
-import {ConfirmDialogComponent} from '../../../../core/dialog/confirm-dialog-component';
+import {ConfirmDialog} from '../../../../core/dialog/confirm-dialog';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
@@ -178,7 +178,7 @@ export class UserEdit {
   }
 
   deleteMembershipRole(membership: PartnerMembershipDto): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
       data: {
         title: 'Törlés',
         message: `Biztos törölni szeretnéd ezt a partner kapcsolatot: ${membership.partnerName}?`

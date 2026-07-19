@@ -1,0 +1,19 @@
+<div class="crop-dialog">
+
+  <div class="crop-container">
+    <image-cropper
+      [imageFile]="data.file"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="data.resizeWidth/data.resizeHeight"
+      [resizeToWidth]="data.resizeWidth"
+      [resizeToHeight]="data.resizeHeight"
+      (imageCropped)="imageCropped($event)">
+    </image-cropper>
+  </div>
+
+  <div class="buttons">
+    <button matButton (click)="dialogRef.close()">Mégsem</button>
+    <button matButton="filled" (click)="save()">OK</button>
+  </div>
+
+</div>

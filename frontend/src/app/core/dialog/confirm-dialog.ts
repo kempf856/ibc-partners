@@ -27,7 +27,7 @@ import {MatButton} from '@angular/material/button';
     </mat-dialog-actions>
   `
 })
-export class ConfirmDialogComponent {
+export class ConfirmDialog {
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: { title: string; message: string }
